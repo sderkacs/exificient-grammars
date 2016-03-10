@@ -78,7 +78,7 @@ public class Grammars2JSON {
 
 	GrammarsPreperation gpreps = new GrammarsPreperation();
 	
-	public Grammars2JSON() throws EXIException {
+	public Grammars2JSON() {
 		super();
 	}
 
@@ -86,16 +86,16 @@ public class Grammars2JSON {
 		gpreps.clear();
 	}
 
-	public void toGrammarsJSON(SchemaInformedGrammars grammar, OutputStream os)
+	public void toGrammarsJSON(SchemaInformedGrammars grammars, OutputStream os)
 			throws IOException, EXIException {
 
 		// clear
 		clear();
 
 		// prepare grammar rules
-		gpreps.prepareGrammar(grammar);
+		gpreps.prepareGrammars(grammars);
 
-		GrammarContext grammarContext = grammar.getGrammarContext();
+		GrammarContext grammarContext = grammars.getGrammarContext();
 
 		Writer w = new OutputStreamWriter(os);
 		
@@ -268,10 +268,10 @@ public class Grammars2JSON {
 			
 			
 			
-			PrintfUtils.printfIndLn(w, ind, "\"%s\" : %d ,", GrammarsConstants.DOCUMENT_GRAMMAR_ID,  gpreps.getGrammarID(grammar.getDocumentGrammar()));
-			PrintfUtils.printfIndLn(w, ind, "\"%s\" : %d ,", GrammarsConstants.FRAGMENT_GRAMMAR_ID , gpreps.getGrammarID(grammar.getFragmentGrammar()));
+			PrintfUtils.printfIndLn(w, ind, "\"%s\" : %d ,", GrammarsConstants.DOCUMENT_GRAMMAR_ID,  gpreps.getGrammarID(grammars.getDocumentGrammar()));
+			PrintfUtils.printfIndLn(w, ind, "\"%s\" : %d ,", GrammarsConstants.FRAGMENT_GRAMMAR_ID , gpreps.getGrammarID(grammars.getFragmentGrammar()));
 
-			PrintfUtils.printfIndLn(w, ind, "\"%s\" : [", GrammarsConstants.GRAMMAR,  gpreps.getGrammarID(grammar.getDocumentGrammar()));
+			PrintfUtils.printfIndLn(w, ind, "\"%s\" : [", GrammarsConstants.GRAMMAR,  gpreps.getGrammarID(grammars.getDocumentGrammar()));
 			ind++;
 
 			for (int i = 0; i < gpreps.getNumberOfGrammars(); i++) {

@@ -72,7 +72,7 @@ public class GrammarsPreperation {
 	}
 	
 	
-	public void prepareGrammar(Grammars grammar) throws IOException {
+	public void prepareGrammars(Grammars grammar) throws IOException {
 		this.clear();
 		
 		// document
