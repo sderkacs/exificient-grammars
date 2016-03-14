@@ -60,9 +60,10 @@ public class GrammarsConstants {
 	static final String LOCAL_NAME = "localName";
 	static final String LOCAL_NAME_ID = "localNameID";
 	
-	static final String ATTRIBUTE_QNAME_ID = "attributeQNameID";
+	
 	static final String START_ELEMENT_QNAME_ID = "startElementQNameID";
 	static final String START_ELEMENT_NAMESPACE_ID = "startElementNamespaceID";
+	static final String START_ELEMENT_LOCALNAME_ID = "startElementLocalNameID";
 	static final String GLOBAL_TYPE_GRAMMAR_ID = "globalTypeGrammarID";
 	static final String GLOBAL_ELEMENT_GRAMMAR_ID = "globalElementGrammarID";
 
@@ -70,7 +71,9 @@ public class GrammarsConstants {
 	static final String GLOBAL_ATTRIBUTE_DATATYPE_ID = "globalAttributeDatatypeID";
 	static final String ATTRIBUTE_DATATYPE_ID = "attributeDatatypeID";
 	static final String CHARACTERS_DATATYPE_ID = "charactersDatatypeID";
+	static final String ATTRIBUTE_QNAME_ID = "attributeQNameID";
 	static final String ATTRIBUTE_NAMESPACE_ID = "attributeNamespaceID";
+	static final String ATTRIBUTE_LOCALNAME_ID = "attributeLocalNameID";
 	static final String SIMPLE_DATATYPE = "simpleDatatype";
 	static final String SIMPLE_DATATYPE_ID = "simpleDatatypeID";
 	static final String SIMPLE_DATATYPES = "simpleDatatypes";

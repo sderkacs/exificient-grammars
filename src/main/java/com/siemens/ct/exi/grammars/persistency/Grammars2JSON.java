@@ -164,7 +164,7 @@ public class Grammars2JSON {
 						PrintfUtils.printfIndLn(w, ind, "{");
 						ind++;
 						
-						PrintfUtils.printfIndLn(w, ind, "\"%s\" : %d ,", GrammarsConstants.QNAME_ID, qnc.getQNameID()); // QNameID not necessary but useful
+						// PrintfUtils.printfIndLn(w, ind, "\"%s\" : %d ,", GrammarsConstants.QNAME_ID, qnc.getQNameID()); // QNameID not necessary but useful
 						PrintfUtils.printfIndLn(w, ind, "\"%s\" : %d ,", GrammarsConstants.LOCAL_NAME_ID, qnc.getLocalNameID()); // LocalNameID not necessary but useful
 						
 						// local-names
@@ -371,8 +371,10 @@ public class Grammars2JSON {
 					StartElement se = (StartElement) event;
 					QNameContext eqname = se.getQNameContext();
 
-					// qnameID
-					PrintfUtils.printfIndLn(w, ind, "\"%s\" : %d ,", GrammarsConstants.START_ELEMENT_QNAME_ID,  eqname.getQNameID());
+					// qname
+					// PrintfUtils.printfIndLn(w, ind, "\"%s\" : %d ,", GrammarsConstants.START_ELEMENT_QNAME_ID,  eqname.getQNameID());
+					PrintfUtils.printfIndLn(w, ind, "\"%s\" : %d ,", GrammarsConstants.START_ELEMENT_NAMESPACE_ID,  eqname.getNamespaceUriID());
+					PrintfUtils.printfIndLn(w, ind, "\"%s\" : %d ,", GrammarsConstants.START_ELEMENT_LOCALNAME_ID,  eqname.getLocalNameID());
 
 					// grammar
 					Grammar seRule = se.getGrammar();
@@ -395,8 +397,10 @@ public class Grammars2JSON {
 					Attribute at = (Attribute) event;
 					QNameContext eqname = at.getQNameContext();
 
-					// qnameID
-					PrintfUtils.printfIndLn(w, ind, "\"%s\" : %d ,", GrammarsConstants.ATTRIBUTE_QNAME_ID, eqname.getQNameID());
+					// qname
+					// PrintfUtils.printfIndLn(w, ind, "\"%s\" : %d ,", GrammarsConstants.ATTRIBUTE_QNAME_ID, eqname.getQNameID());
+					PrintfUtils.printfIndLn(w, ind, "\"%s\" : %d ,", GrammarsConstants.ATTRIBUTE_NAMESPACE_ID, eqname.getNamespaceUriID());
+					PrintfUtils.printfIndLn(w, ind, "\"%s\" : %d ,", GrammarsConstants.ATTRIBUTE_LOCALNAME_ID, eqname.getLocalNameID());
 					
 					// datatype
 					Datatype dt = at.getDatatype();
