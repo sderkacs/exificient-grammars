@@ -729,10 +729,10 @@ public class GrammarTest extends TestCase {
 		// EvolvingUriContext ruc = new RuntimeEvolvingUriContext(0, "");
 		int namespaceUriID = 0;
 		QNameContext qncAt = new QNameContext(namespaceUriID, 0,
-				new QName("a"), 0);
+				new QName("a"));
 		rule.learnAttribute(new Attribute(qncAt, null));
 		QNameContext qncSE = new QNameContext(namespaceUriID, 1,
-				new QName("s"), 1);
+				new QName("s"));
 		rule.learnStartElement(new StartElement(qncSE));
 		rule.learnEndElement();
 		rule.learnCharacters();
@@ -769,7 +769,7 @@ public class GrammarTest extends TestCase {
 
 		// learn SE, can have multiple events even if similar
 		QNameContext qncSE = new QNameContext(namespaceUriID, 1,
-				new QName("s"), 1);
+				new QName("s"));
 		StartElement s = new StartElement(qncSE);
 		startTag.learnStartElement(s);
 		startTag.learnStartElement(s);
@@ -780,7 +780,7 @@ public class GrammarTest extends TestCase {
 
 		// learn AT, can have multiple events even if similar
 		QNameContext qncAt = new QNameContext(namespaceUriID, 0,
-				new QName("a"), 0);
+				new QName("a"));
 		Attribute a = new Attribute(qncAt, null);
 		startTag.learnAttribute(a);
 		startTag.learnAttribute(a);
@@ -789,7 +789,7 @@ public class GrammarTest extends TestCase {
 
 		// learn multiple AT(xsi:type) --> at most one AT(xsi:type)
 		QNameContext qncAtxsiType = new QNameContext(2, 1, new QName(
-				XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type"), 0);
+				XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type"));
 		startTag.learnAttribute(new Attribute(qncAtxsiType, null));
 		startTag.learnAttribute(new Attribute(qncAtxsiType, null));
 		assertTrue(startTag.getNumberOfEvents() == 7);
@@ -906,7 +906,7 @@ public class GrammarTest extends TestCase {
 		assertTrue(fidelityOptions.get1stLevelEventCodeLength(frag) == 1);
 		// fragmentContent SE(dd), SE(*), ED
 		QName qn = new QName("dd");
-		frag.learnStartElement(new StartElement(new QNameContext(0, 0, qn, 0)));
+		frag.learnStartElement(new StartElement(new QNameContext(0, 0, qn)));
 		assertTrue(fidelityOptions.get1stLevelEventCodeLength(frag) == 2);
 		Event l = frag.getProduction(0).getEvent();
 		assertTrue(l.getEventType() == EventType.START_ELEMENT);

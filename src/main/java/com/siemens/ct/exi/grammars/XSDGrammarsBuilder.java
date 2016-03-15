@@ -936,9 +936,8 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 				String localName = localNames.get(k);
 				// add entry
 				QName qname = new QName(namespaceUri, localName);
-				grammarLocalNames[k] = new QNameContext(i, k, qname, qNameID++); // ,
-																					// grammarGlobalElement,
-																					// grammarGlobalAttribute);
+				grammarLocalNames[k] = new QNameContext(i, k, qname);
+				qNameID++;
 			}
 
 			// create grammar uri context
