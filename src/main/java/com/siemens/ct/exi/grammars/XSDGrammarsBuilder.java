@@ -146,6 +146,9 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 	// pool for datatypes
 	protected Map<XSSimpleTypeDefinition, Datatype> datatypePool;
 
+	// unique named elements
+	protected Map<QName, List<XSElementDeclaration>> uniqueNamedElements;
+	
 	// when schema information is available to describe the contents of an EXI
 	// stream and more than one element is declared with the same qname
 	protected SchemaInformedFirstStartTagGrammar elementFragment0;
@@ -225,6 +228,7 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 		grammarTypes.clear();
 		attributePool.clear();
 
+		uniqueNamedElements = null;
 		elementFragment0 = null;
 
 		schemaLocalNames.clear();
@@ -366,11 +370,14 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 		return true;
 	}
 
-	protected List<StartElement> getFragmentElements() throws EXIException {
-		List<StartElement> fragmentElements = new ArrayList<StartElement>();
-
+	
+	protected Map<QName, List<XSElementDeclaration>> getUniqueNamedElements() {
+		if (this.uniqueNamedElements != null) {
+			return uniqueNamedElements;
+		}
+		
 		// create unique qname map
-		Map<QName, List<XSElementDeclaration>> uniqueNamedElements = new HashMap<QName, List<XSElementDeclaration>>();
+		uniqueNamedElements = new HashMap<QName, List<XSElementDeclaration>>();
 		for (XSElementDeclaration elDecl : elementPool.keySet()) {
 			QName en = new QName(elDecl.getNamespace(), elDecl.getName());
 			if (uniqueNamedElements.containsKey(en)) {
@@ -381,6 +388,15 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 				uniqueNamedElements.put(en, list);
 			}
 		}
+		
+		return uniqueNamedElements;
+	}
+	
+	protected List<StartElement> getFragmentElements() throws EXIException {
+		List<StartElement> fragmentElements = new ArrayList<StartElement>();
+
+		// unique qname map
+		Map<QName, List<XSElementDeclaration>> uniqueNamedElements = getUniqueNamedElements();
 
 		Iterator<Entry<QName, List<XSElementDeclaration>>> iter = uniqueNamedElements
 				.entrySet().iterator();
@@ -407,7 +423,7 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 				} else {
 					StartElement se = createStartElement(qname); // new
 																	// StartElement(qname);
-					Grammar elementFragmentGrammar = getSchemaInformedElementFragmentGrammar(uniqueNamedElements);
+					Grammar elementFragmentGrammar = getSchemaInformedElementFragmentGrammar();
 					se.setGrammar(elementFragmentGrammar);
 					fragmentElements.add(se);
 					// System.out.println("ambiguous elements " + elements +
@@ -420,10 +436,12 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 	}
 
 	// http://www.w3.org/TR/exi/#informedElementFragGrammar
-	protected Grammar getSchemaInformedElementFragmentGrammar(
-			Map<QName, List<XSElementDeclaration>> uniqueNamedElements)
+	protected SchemaInformedGrammar getSchemaInformedElementFragmentGrammar()
 			throws EXIException {
 
+		// unique qname map
+		Map<QName, List<XSElementDeclaration>> uniqueNamedElements = getUniqueNamedElements();
+		
 		if (elementFragment0 != null) {
 			return elementFragment0;
 		}
@@ -1115,7 +1133,7 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 		GrammarContext grammarContext = new GrammarContext(grammarUriContexts,
 				qNameID);
 		SchemaInformedGrammars sig = new SchemaInformedGrammars(grammarContext,
-				documentGrammar, fragmentGrammar);
+				documentGrammar, fragmentGrammar, this.getSchemaInformedElementFragmentGrammar());
 
 		return sig;
 	}
