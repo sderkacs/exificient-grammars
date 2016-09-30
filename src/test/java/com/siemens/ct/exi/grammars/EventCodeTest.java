@@ -418,6 +418,9 @@ public class EventCodeTest extends TestCase {
 		Grammars g = getGrammarFromSchemaAsString(schema);
 
 		Grammar document = g.getDocumentGrammar();
+		assertTrue(document.get1stLevelEventCodeLength(true) == 0); // withFidelityOptionsOrNonStrict
+		assertTrue(document.get1stLevelEventCodeLength(false) == 0);
+		
 		/*
 		 * Document : SD DocContent 0
 		 */
@@ -462,6 +465,10 @@ public class EventCodeTest extends TestCase {
 		Grammars g = getGrammarFromSchemaAsString(schema);
 
 		Grammar fragment = g.getFragmentGrammar();
+		assertTrue(fragment.get1stLevelEventCodeLength(true) == 0); // withFidelityOptionsOrNonStrict
+		assertTrue(fragment.get1stLevelEventCodeLength(false) == 0);
+		
+		
 		/*
 		 * Fragment : SD FragmentContent 0
 		 */
