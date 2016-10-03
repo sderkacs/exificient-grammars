@@ -418,8 +418,8 @@ public class EventCodeTest extends TestCase {
 		Grammars g = getGrammarFromSchemaAsString(schema);
 
 		Grammar document = g.getDocumentGrammar();
-		assertTrue(document.get1stLevelEventCodeLength(true) == 0); // withFidelityOptionsOrNonStrict
-		assertTrue(document.get1stLevelEventCodeLength(false) == 0);
+		assertTrue(FidelityOptions.createDefault().get1stLevelEventCodeLength(document) == 0);
+		assertTrue(FidelityOptions.createStrict().get1stLevelEventCodeLength(document) == 0);
 		
 		/*
 		 * Document : SD DocContent 0
@@ -465,8 +465,8 @@ public class EventCodeTest extends TestCase {
 		Grammars g = getGrammarFromSchemaAsString(schema);
 
 		Grammar fragment = g.getFragmentGrammar();
-		assertTrue(fragment.get1stLevelEventCodeLength(true) == 0); // withFidelityOptionsOrNonStrict
-		assertTrue(fragment.get1stLevelEventCodeLength(false) == 0);
+		assertTrue(FidelityOptions.createDefault().get1stLevelEventCodeLength(fragment) == 0);
+		assertTrue(FidelityOptions.createStrict().get1stLevelEventCodeLength(fragment) == 0);
 		
 		
 		/*
