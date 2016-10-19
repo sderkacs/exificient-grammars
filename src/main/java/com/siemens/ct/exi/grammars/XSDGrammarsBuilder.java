@@ -23,7 +23,11 @@
 
 package com.siemens.ct.exi.grammars;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,7 +42,12 @@ import java.util.TreeSet;
 import javax.xml.namespace.QName;
 
 import org.apache.xerces.impl.xpath.regex.EXIRegularExpression;
+import org.apache.xerces.impl.xs.SchemaGrammar;
+import org.apache.xerces.impl.xs.XMLSchemaLoader;
+import org.apache.xerces.xni.XNIException;
+import org.apache.xerces.xni.parser.XMLInputSource;
 import org.apache.xerces.xs.StringList;
+import org.apache.xerces.xs.XSAnnotation;
 import org.apache.xerces.xs.XSAttributeDeclaration;
 import org.apache.xerces.xs.XSAttributeUse;
 import org.apache.xerces.xs.XSComplexTypeDefinition;
@@ -1887,6 +1896,51 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 		if(baseType != null && baseType.getTypeCategory() == XSTypeDefinition.SIMPLE_TYPE) {
 			XSSimpleTypeDefinition stdBaseType = (XSSimpleTypeDefinition)baseType;
 			datatype.setBaseDatatype(this.getDatatype(stdBaseType));
+		}
+		
+		// xsd:annotations
+		XSObjectList anns = std.getAnnotations();
+		// some initial tests for pre-populated strings within an XSD annotation
+		// 
+		//		<xs:annotation exi:prepopulateValues="true" xmlns:exi="http://www.w3.org/2009/exi" xmlns:xs="http://www.w3.org/2001/XMLSchema" >
+		//		               <xs:appinfo>
+		//		                    <xs:restriction base="xs:string">
+		//		                        <xs:enumeration value="A"></xs:enumeration>
+		//		                        <xs:enumeration value="B"></xs:enumeration>
+		//		                        <xs:enumeration value="C"></xs:enumeration>
+		//		                    </xs:restriction>
+		//		                </xs:appinfo>
+		//		</xs:annotation>
+		if(false) {
+			for(int i=0; i<anns.getLength(); i++) {
+				try {
+					XSAnnotation ann = (XSAnnotation) anns.get(i);
+					String as = ann.getAnnotationString();
+					
+					if(as.contains("prepopulateValues")) {
+						as = as.replaceAll(":annotation", ":schema");
+						final String typeName = "ff";
+						as = as.replaceFirst(":appinfo", ":simpleType name=\"" + typeName + "\"");
+						as = as.replaceAll(":appinfo", ":simpleType");
+						System.out.println(" - - - ");
+						System.out.println(as);
+						
+						XMLSchemaLoader sl = new XMLSchemaLoader();
+						XMLInputSource xsdSource = new XMLInputSource(null, null, null, new ByteArrayInputStream(as.getBytes(StandardCharsets.UTF_8)), null);
+						SchemaGrammar g = (SchemaGrammar) sl.loadGrammar(xsdSource);
+						
+						XSTypeDefinition td = g.getTypeDefinition(typeName);
+						
+						// XSModel xsm = g.toXSModel();
+						// XSTypeDefinition td = xsm.getTypeDefinition(typeName, "namespace");
+						
+						System.out.println(td);
+					}
+				} catch (Exception e) {
+					System.err.println(e.getMessage());
+					// this.warning(domain, key, exception);
+				}
+			}
 		}
 		
 		datatypePool.put(std, datatype);
