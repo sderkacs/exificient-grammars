@@ -24,10 +24,7 @@
 package com.siemens.ct.exi.grammars;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -44,7 +41,6 @@ import javax.xml.namespace.QName;
 import org.apache.xerces.impl.xpath.regex.EXIRegularExpression;
 import org.apache.xerces.impl.xs.SchemaGrammar;
 import org.apache.xerces.impl.xs.XMLSchemaLoader;
-import org.apache.xerces.xni.XNIException;
 import org.apache.xerces.xni.parser.XMLInputSource;
 import org.apache.xerces.xs.StringList;
 import org.apache.xerces.xs.XSAnnotation;
@@ -1926,7 +1922,7 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 						System.out.println(as);
 						
 						XMLSchemaLoader sl = new XMLSchemaLoader();
-						XMLInputSource xsdSource = new XMLInputSource(null, null, null, new ByteArrayInputStream(as.getBytes(StandardCharsets.UTF_8)), null);
+						XMLInputSource xsdSource = new XMLInputSource(null, null, null, new ByteArrayInputStream(as.getBytes()), null); // StandardCharsets.UTF_8
 						SchemaGrammar g = (SchemaGrammar) sl.loadGrammar(xsdSource);
 						
 						XSTypeDefinition td = g.getTypeDefinition(typeName);
