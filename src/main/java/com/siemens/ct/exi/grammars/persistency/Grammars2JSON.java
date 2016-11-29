@@ -382,7 +382,7 @@ public class Grammars2JSON {
 				}
 				break;
 			case START_ELEMENT_NS:
-				PrintfUtils.printfIndLn(w, ind, "\"%\" : \"%s\" ,", GrammarsConstants.EVENT, GrammarsConstants.START_ELEMENT_NS);
+				PrintfUtils.printfIndLn(w, ind, "\"%s\" : \"%s\" ,", GrammarsConstants.EVENT, GrammarsConstants.START_ELEMENT_NS);
 				{
 					StartElementNS seNS = (StartElementNS) event;
 					PrintfUtils.printfIndLn(w, ind, "\"%s\" : %d ,", GrammarsConstants.START_ELEMENT_NAMESPACE_ID, seNS.getNamespaceUriID());
@@ -540,7 +540,8 @@ public class Grammars2JSON {
 		String grsOut = null;
 		
 		//  schema-for-json.xsd, see https://www.w3.org/TR/exi-for-json/schema-for-json.xsd
-		xsd = "../exificient.js/grammars/schema-for-json.xsd";
+		// xsd = "../exificient.js/grammars/schema-for-json.xsd";
+		xsd = "../exificient.js/grammars/exi4json.xsd";
 		// notebook
 		// xsd = "../exificient.js/grammars/notebook.xsd";
 		
