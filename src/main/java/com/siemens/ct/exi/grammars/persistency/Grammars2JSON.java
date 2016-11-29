@@ -147,7 +147,7 @@ public class Grammars2JSON {
 				GrammarUriContext guc = grammarContext.getGrammarUriContext(i);
 
 				// namespaceUri
-				PrintfUtils.printfIndLn(w, ind, "\"%s\" : \"%d\" ,", GrammarsConstants.URI_ID, guc.getNamespaceUriID()); // UriID not necessary but useful
+				PrintfUtils.printfIndLn(w, ind, "\"%s\" : %d ,", GrammarsConstants.URI_ID, guc.getNamespaceUriID()); // UriID not necessary but useful
 				PrintfUtils.printfIndLn(w, ind, "\"%s\" : \"%s\", ", GrammarsConstants.URI, guc.getNamespaceUri());
 
 				PrintfUtils.printfIndLn(w, ind, "\"%s\" : %s, ", GrammarsConstants.NUMBER_OF_LOCAL_NAMES,  guc.getNumberOfQNames());
@@ -163,6 +163,8 @@ public class Grammars2JSON {
 					{
 						PrintfUtils.printfIndLn(w, ind, "{");
 						ind++;
+						
+						PrintfUtils.printfIndLn(w, ind, "\"%s\" : %d ,", GrammarsConstants.URI_ID, qnc.getNamespaceUriID()); 
 						
 						// PrintfUtils.printfIndLn(w, ind, "\"%s\" : %d ,", GrammarsConstants.QNAME_ID, qnc.getQNameID()); // QNameID not necessary but useful
 						PrintfUtils.printfIndLn(w, ind, "\"%s\" : %d ,", GrammarsConstants.LOCAL_NAME_ID, qnc.getLocalNameID()); // LocalNameID not necessary but useful
