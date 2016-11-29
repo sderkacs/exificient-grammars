@@ -25,9 +25,9 @@ package com.siemens.ct.exi.grammars.persistency;
 
 public class GrammarsConstants {
 
-	static final String NUMBER_OF_URIS = "numberOfUris";
-	static final String NUMBER_OF_QNAMES = "numberOfQNames";
-	static final String NUMBER_OF_LOCAL_NAMES = "numberOfLocalNames";
+//	static final String NUMBER_OF_URIS = "numberOfUris";
+//	static final String NUMBER_OF_QNAMES = "numberOfQNames";
+//	static final String NUMBER_OF_LOCAL_NAMES = "numberOfLocalNames";
 	static final String NUMBER_OF_FIRST_START_TAG_GRAMMARS = "numberOfFirstStartTagGrammars";
 	static final String NUMBER_OF_START_TAG_GRAMMARS = "numberOfStartTagGrammars";
 	static final String NUMBER_OF_ELEMENT_GRAMMARS = "numberOfElementGrammars";	

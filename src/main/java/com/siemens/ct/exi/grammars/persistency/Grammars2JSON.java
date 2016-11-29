@@ -133,8 +133,8 @@ public class Grammars2JSON {
 			PrintfUtils.printfIndLn(w, ind, "\"%s\" : { ", GrammarsConstants.QNAMES);
 			
 			ind++;
-			PrintfUtils.printfIndLn(w, ind, "\"%s\" : %d, ", GrammarsConstants.NUMBER_OF_URIS, grammarContext.getNumberOfGrammarUriContexts());
-			PrintfUtils.printfIndLn(w, ind, "\"%s\" : %d, ", GrammarsConstants.NUMBER_OF_QNAMES, grammarContext.getNumberOfGrammarQNameContexts());
+//			PrintfUtils.printfIndLn(w, ind, "\"%s\" : %d, ", GrammarsConstants.NUMBER_OF_URIS, grammarContext.getNumberOfGrammarUriContexts());
+//			PrintfUtils.printfIndLn(w, ind, "\"%s\" : %d, ", GrammarsConstants.NUMBER_OF_QNAMES, grammarContext.getNumberOfGrammarQNameContexts());
 			
 			PrintfUtils.printfIndLn(w, ind, "\"%s\" : [", GrammarsConstants.NAMESPACE_CONTEXT, grammarContext.getNumberOfGrammarQNameContexts());
 			ind++;
@@ -150,7 +150,7 @@ public class Grammars2JSON {
 				PrintfUtils.printfIndLn(w, ind, "\"%s\" : %d ,", GrammarsConstants.URI_ID, guc.getNamespaceUriID()); // UriID not necessary but useful
 				PrintfUtils.printfIndLn(w, ind, "\"%s\" : \"%s\", ", GrammarsConstants.URI, guc.getNamespaceUri());
 
-				PrintfUtils.printfIndLn(w, ind, "\"%s\" : %s, ", GrammarsConstants.NUMBER_OF_LOCAL_NAMES,  guc.getNumberOfQNames());
+//				PrintfUtils.printfIndLn(w, ind, "\"%s\" : %s, ", GrammarsConstants.NUMBER_OF_LOCAL_NAMES,  guc.getNumberOfQNames());
 
 				PrintfUtils.printfIndLn(w, ind, "\"%s\" : [", GrammarsConstants.QNAME_CONTEXT);
 				ind++;
