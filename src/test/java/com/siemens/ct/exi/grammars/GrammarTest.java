@@ -34,12 +34,17 @@ import junit.framework.TestCase;
 import org.apache.xerces.xni.XMLResourceIdentifier;
 import org.apache.xerces.xni.XNIException;
 import org.apache.xerces.xni.parser.XMLInputSource;
+import org.apache.xerces.xs.XSModel;
+import org.apache.xerces.xs.XSSimpleTypeDefinition;
+import org.apache.xerces.xs.XSTypeDefinition;
 import org.custommonkey.xmlunit.XMLConstants;
 
 import com.siemens.ct.exi.FidelityOptions;
 import com.siemens.ct.exi.GrammarFactory;
 import com.siemens.ct.exi.context.GrammarContext;
 import com.siemens.ct.exi.context.QNameContext;
+import com.siemens.ct.exi.datatype.Datatype;
+import com.siemens.ct.exi.datatype.EnumerationDatatype;
 import com.siemens.ct.exi.exceptions.EXIException;
 import com.siemens.ct.exi.grammars.event.Attribute;
 import com.siemens.ct.exi.grammars.event.Event;
@@ -48,6 +53,7 @@ import com.siemens.ct.exi.grammars.event.StartElement;
 import com.siemens.ct.exi.grammars.grammar.BuiltInStartTag;
 import com.siemens.ct.exi.grammars.grammar.Grammar;
 import com.siemens.ct.exi.grammars.production.Production;
+import com.siemens.ct.exi.types.BuiltInType;
 
 public class GrammarTest extends TestCase {
 	String schema;
@@ -599,6 +605,63 @@ public class GrammarTest extends TestCase {
 
 		}
 	}
+	
+	
+	public static Datatype getSimpleDatatypeFor(String schemaAsString,
+			String typeName, String typeURI) throws EXIException {
+		XSDGrammarsBuilder xsdGB = XSDGrammarsBuilder.newInstance();
+		ByteArrayInputStream bais = new ByteArrayInputStream(
+				schemaAsString.getBytes());
+		xsdGB.loadGrammars(bais);
+		xsdGB.toGrammars();
+
+		XSModel xsModel = xsdGB.getXSModel();
+
+		XSTypeDefinition td = xsModel.getTypeDefinition(typeName, typeURI);
+
+		assertTrue("SimpleType expected",
+				td.getTypeCategory() == XSTypeDefinition.SIMPLE_TYPE);
+
+		Datatype dt = xsdGB.getDatatype((XSSimpleTypeDefinition) td);
+
+		return dt;
+	}
+	
+	public void testEnum1() throws Exception {
+		schema = "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>"
+				+ "  <xs:simpleType name='stringDerived'>"
+				+ "    <xs:restriction base='xs:string'>"
+				+ "      <xs:enumeration value='Tokyo'/>"
+				+ "      <xs:enumeration value='Osaka'/>"
+				+ "      <xs:enumeration value='Nagoya'/>"
+				+ "    </xs:restriction>"
+				+ "  </xs:simpleType>"
+				+ "  <xs:simpleType name='stringDerived2'>"
+				+ "    <xs:restriction base='stringDerived'/>"
+				+ "  </xs:simpleType>" + "</xs:schema>";
+		
+//		Grammars g = getGrammarFromSchemaAsString(schema);
+//		GrammarContext gc = g.getGrammarContext();
+//
+//		Grammar rule = gc.getGrammarUriContext("").getQNameContext("root")
+//				.getGlobalStartElement().getGrammar();
+		
+		
+		Datatype dtEnumDerived2 = getSimpleDatatypeFor(
+				schema, "stringDerived2", "");
+		assertTrue(dtEnumDerived2.getBuiltInType() == BuiltInType.ENUMERATION);
+		QName schemaTypeStringDerived2 = new QName("", "stringDerived2");
+		assertTrue(dtEnumDerived2.getSchemaType().getQName()
+				.equals(schemaTypeStringDerived2));
+		
+		EnumerationDatatype edtEnumDerived2 = (EnumerationDatatype) dtEnumDerived2;
+		assertTrue(edtEnumDerived2.getEnumValueDatatype().getBuiltInType() == BuiltInType.STRING);
+		QName schemaTypeStringDerived = new QName("", "stringDerived");
+		// assertTrue(edtEnumDerived2.getEnumValueDatatype().getSchemaType().getQName().equals(schemaTypeStringDerived));
+		assertTrue(edtEnumDerived2.getBaseDatatype().getSchemaType().getQName().equals(schemaTypeStringDerived));
+	}
+	
+
 
 	// public void testSequenceSourceForgeForum1_() throws Exception {
 	// String schema = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
