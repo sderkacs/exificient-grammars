@@ -1887,11 +1887,16 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 			datatype = getDatatypeOfType(std, schemaType);
 		}
 		
-		// base datatype
+		// simple base datatype
 		XSTypeDefinition baseType = this.getBaseType(std);
 		if(baseType != null && baseType.getTypeCategory() == XSTypeDefinition.SIMPLE_TYPE) {
 			XSSimpleTypeDefinition stdBaseType = (XSSimpleTypeDefinition)baseType;
 			datatype.setBaseDatatype(this.getDatatype(stdBaseType));
+			
+//			if(!stdBaseType.getAnonymous() && stdBaseType.getTypeCategory() == XSTypeDefinition.SIMPLE_TYPE) {
+//				QNameContext qncBaseType = getQNameContext(stdBaseType.getNamespace(), stdBaseType.getName(), this.grammarUriContexts);
+//				qncSchemaType.setSimpleBaseType(qncBaseType);
+//			}
 		}
 		
 		// xsd:annotations
