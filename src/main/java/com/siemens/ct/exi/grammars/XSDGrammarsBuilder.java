@@ -1786,64 +1786,64 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 							datatype = new StringDatatype(qncSchemaType, getWhiteSpaceFacet(stdEnum));
 						} else {
 							Datatype dtEnumValues = getDatatype(stdEnum);
-							Datatype baseType = dtEnumValues.getBaseDatatype();
-							
-							// update schema type
-							switch (dtEnumValues.getBuiltInType()) {
-							/* Binary */
-							case BINARY_BASE64:
-								dtEnumValues = new BinaryBase64Datatype(qncSchemaType);
-								break;
-							case BINARY_HEX:
-								dtEnumValues = new BinaryHexDatatype(qncSchemaType);
-								break;
-							/* Boolean */
-							case BOOLEAN:
-								dtEnumValues = new BooleanDatatype(qncSchemaType);
-								break;
-							case BOOLEAN_FACET:
-								dtEnumValues = new BooleanFacetDatatype(qncSchemaType);
-								break;
-							/* Decimal */
-							case DECIMAL:
-								dtEnumValues = new DecimalDatatype(qncSchemaType);
-								break;
-							/* Float */
-							case FLOAT:
-								dtEnumValues = new FloatDatatype(qncSchemaType);
-								break;
-							/* int */
-							case NBIT_UNSIGNED_INTEGER:
-								NBitUnsignedIntegerDatatype dtEnumValuesO = (NBitUnsignedIntegerDatatype) dtEnumValues;
-								dtEnumValues = new NBitUnsignedIntegerDatatype(dtEnumValuesO.getLowerBound(), dtEnumValuesO.getUpperBound(), qncSchemaType);
-								break;
-							case UNSIGNED_INTEGER:
-								dtEnumValues = new UnsignedIntegerDatatype(qncSchemaType);
-								break;
-							case INTEGER:
-								dtEnumValues = new IntegerDatatype(qncSchemaType);
-								break;
-							/* Datetime */
-							case DATETIME:
-								DatetimeDatatype datetimeDT = (DatetimeDatatype) dtEnumValues;
-								dtEnumValues = new DatetimeDatatype(datetimeDT.getDatetimeType(), qncSchemaType);
-								break;
-							/* List*/
-							case LIST:
-								// forbidden with errata item
-								throw new RuntimeException("Enumerated values not possible as part of a list");
-								// ListDatatype listDT = (ListDatatype) dtEnumValues;
-								// enumValue = ListValue.parse(tok, listDT.getListDatatype());
-								// break;
-							case RCS_STRING:
-								RestrictedCharacterSetDatatype datetimeRCS = (RestrictedCharacterSetDatatype) dtEnumValues;
-								dtEnumValues = new RestrictedCharacterSetDatatype(datetimeRCS.getRestrictedCharacterSet(), qncSchemaType);
-								break;
-							default:
-								dtEnumValues = new StringDatatype(qncSchemaType);
-							}
-							
-							dtEnumValues.setBaseDatatype(baseType);
+//							Datatype baseType = dtEnumValues.getBaseDatatype();
+//							
+//							// update schema type
+//							switch (dtEnumValues.getBuiltInType()) {
+//							/* Binary */
+//							case BINARY_BASE64:
+//								dtEnumValues = new BinaryBase64Datatype(qncSchemaType);
+//								break;
+//							case BINARY_HEX:
+//								dtEnumValues = new BinaryHexDatatype(qncSchemaType);
+//								break;
+//							/* Boolean */
+//							case BOOLEAN:
+//								dtEnumValues = new BooleanDatatype(qncSchemaType);
+//								break;
+//							case BOOLEAN_FACET:
+//								dtEnumValues = new BooleanFacetDatatype(qncSchemaType);
+//								break;
+//							/* Decimal */
+//							case DECIMAL:
+//								dtEnumValues = new DecimalDatatype(qncSchemaType);
+//								break;
+//							/* Float */
+//							case FLOAT:
+//								dtEnumValues = new FloatDatatype(qncSchemaType);
+//								break;
+//							/* int */
+//							case NBIT_UNSIGNED_INTEGER:
+//								NBitUnsignedIntegerDatatype dtEnumValuesO = (NBitUnsignedIntegerDatatype) dtEnumValues;
+//								dtEnumValues = new NBitUnsignedIntegerDatatype(dtEnumValuesO.getLowerBound(), dtEnumValuesO.getUpperBound(), qncSchemaType);
+//								break;
+//							case UNSIGNED_INTEGER:
+//								dtEnumValues = new UnsignedIntegerDatatype(qncSchemaType);
+//								break;
+//							case INTEGER:
+//								dtEnumValues = new IntegerDatatype(qncSchemaType);
+//								break;
+//							/* Datetime */
+//							case DATETIME:
+//								DatetimeDatatype datetimeDT = (DatetimeDatatype) dtEnumValues;
+//								dtEnumValues = new DatetimeDatatype(datetimeDT.getDatetimeType(), qncSchemaType);
+//								break;
+//							/* List*/
+//							case LIST:
+//								// forbidden with errata item
+//								throw new RuntimeException("Enumerated values not possible as part of a list");
+//								// ListDatatype listDT = (ListDatatype) dtEnumValues;
+//								// enumValue = ListValue.parse(tok, listDT.getListDatatype());
+//								// break;
+//							case RCS_STRING:
+//								RestrictedCharacterSetDatatype datetimeRCS = (RestrictedCharacterSetDatatype) dtEnumValues;
+//								dtEnumValues = new RestrictedCharacterSetDatatype(datetimeRCS.getRestrictedCharacterSet(), qncSchemaType);
+//								break;
+//							default:
+//								dtEnumValues = new StringDatatype(qncSchemaType);
+//							}
+//							
+//							dtEnumValues.setBaseDatatype(baseType);
 							
 							
 							// values
