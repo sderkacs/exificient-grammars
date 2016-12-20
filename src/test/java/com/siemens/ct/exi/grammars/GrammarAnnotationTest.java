@@ -109,7 +109,7 @@ public class GrammarAnnotationTest extends TestCase {
 				"    </xs:element>\r\n" + 
 				"</xs:schema>";
 		
-		Grammars grs = grammarFactory.createGrammars(new ByteArrayInputStream(schema.getBytes(StandardCharsets.UTF_8)));
+		Grammars grs = grammarFactory.createGrammars(new ByteArrayInputStream(schema.getBytes())); // StandardCharsets.UTF_8 not JAVa5/6
 		QNameContext qncRoot = grs.getGrammarContext().getGrammarUriContext("").getQNameContext("root");
 		
 		Event ev = qncRoot.getGlobalStartElement().getGrammar().getProduction(0).getEvent();
