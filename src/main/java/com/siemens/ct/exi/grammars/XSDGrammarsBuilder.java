@@ -24,6 +24,7 @@
 package com.siemens.ct.exi.grammars;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,9 +40,6 @@ import java.util.TreeSet;
 import javax.xml.namespace.QName;
 
 import org.apache.xerces.impl.xpath.regex.EXIRegularExpression;
-import org.apache.xerces.impl.xs.SchemaGrammar;
-import org.apache.xerces.impl.xs.XMLSchemaLoader;
-import org.apache.xerces.xni.parser.XMLInputSource;
 import org.apache.xerces.xs.StringList;
 import org.apache.xerces.xs.XSAnnotation;
 import org.apache.xerces.xs.XSAttributeDeclaration;
@@ -61,8 +59,12 @@ import org.apache.xerces.xs.XSSimpleTypeDefinition;
 import org.apache.xerces.xs.XSTerm;
 import org.apache.xerces.xs.XSTypeDefinition;
 import org.apache.xerces.xs.XSWildcard;
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
 
 import com.siemens.ct.exi.Constants;
+import com.siemens.ct.exi.GrammarFactory;
 import com.siemens.ct.exi.context.GrammarContext;
 import com.siemens.ct.exi.context.GrammarUriContext;
 import com.siemens.ct.exi.context.QNameContext;
@@ -89,7 +91,9 @@ import com.siemens.ct.exi.exceptions.EXIException;
 import com.siemens.ct.exi.grammars.event.Attribute;
 import com.siemens.ct.exi.grammars.event.AttributeNS;
 import com.siemens.ct.exi.grammars.event.Characters;
+import com.siemens.ct.exi.grammars.event.DatatypeEvent;
 import com.siemens.ct.exi.grammars.event.EndDocument;
+import com.siemens.ct.exi.grammars.event.Event;
 import com.siemens.ct.exi.grammars.event.EventType;
 import com.siemens.ct.exi.grammars.event.StartDocument;
 import com.siemens.ct.exi.grammars.event.StartElement;
@@ -1974,35 +1978,36 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 		//		                    </xs:restriction>
 		//		                </xs:appinfo>
 		//		</xs:annotation>
-		if(false) {
-			for(int i=0; i<anns.getLength(); i++) {
-				try {
+		if(anns != null && anns.getLength() > 0) {
+			try {
+				for(int i=0; i<anns.getLength(); i++) {
 					XSAnnotation ann = (XSAnnotation) anns.get(i);
 					String as = ann.getAnnotationString();
 					
-					if(as.contains("prepopulateValues")) {
-						as = as.replaceAll(":annotation", ":schema");
-						final String typeName = "ff";
-						as = as.replaceFirst(":appinfo", ":simpleType name=\"" + typeName + "\"");
-						as = as.replaceAll(":appinfo", ":simpleType");
-						System.out.println(" - - - ");
-						System.out.println(as);
-						
-						XMLSchemaLoader sl = new XMLSchemaLoader();
-						XMLInputSource xsdSource = new XMLInputSource(null, null, null, new ByteArrayInputStream(as.getBytes()), null); // StandardCharsets.UTF_8
-						SchemaGrammar g = (SchemaGrammar) sl.loadGrammar(xsdSource);
-						
-						XSTypeDefinition td = g.getTypeDefinition(typeName);
-						
-						// XSModel xsm = g.toXSModel();
-						// XSTypeDefinition td = xsm.getTypeDefinition(typeName, "namespace");
-						
-						System.out.println(td);
+					XMLReader reader = XMLReaderFactory.createXMLReader();
+					ByteArrayOutputStream baos = new ByteArrayOutputStream();
+					
+					String enumTypeName = "grammarEnumerationType";
+					
+					GrammarAnnotationFilter xmlS = new GrammarAnnotationFilter(baos, enumTypeName);
+					reader.setContentHandler(xmlS);
+					
+					reader.parse(new InputSource(new ByteArrayInputStream(as.getBytes())));
+					
+					Grammars grs = GrammarFactory.newInstance().createGrammars(new ByteArrayInputStream(baos.toByteArray()));
+					SchemaInformedFirstStartTagGrammar tg = grs.getGrammarContext().getGrammarUriContext("").getQNameContext(enumTypeName).getTypeGrammar();
+					System.out.println(tg);
+					Event ev = tg.getProduction(0).getEvent();
+					DatatypeEvent dev = (DatatypeEvent) ev;
+					System.out.println(dev);
+					Datatype dt = dev.getDatatype();
+					if(dt.getBuiltInType() == BuiltInType.ENUMERATION) {
+						EnumerationDatatype edt = (EnumerationDatatype) dt;
+						datatype.setGrammarEnumeration(edt);
 					}
-				} catch (Exception e) {
-					System.err.println(e.getMessage());
-					// this.warning(domain, key, exception);
 				}
+			} catch (Exception e) {
+				// issues
 			}
 		}
 		
