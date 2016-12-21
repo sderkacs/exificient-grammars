@@ -140,24 +140,25 @@ public class GrammarAnnotationFilter implements ContentHandler {
 
 		if (this.rootElement && XMLConstants.W3C_XML_SCHEMA_NS_URI.equals(uri)
 				&& "annotation".equals(localName)) {
-			// yes, it is an annotation --> check for attribute
-			int indexAt;
-			if (atts != null
-					&& (indexAt = atts.getIndex(
-							com.siemens.ct.exi.Constants.W3C_EXI_NS_URI,
-							"prepopulateValues")) != -1 && "true".equals(atts.getValue(indexAt))) {
-				// ok, right annotation --> change to
-				ch.startElement(uri, "schema", fixQName(qName, "schema"), null);
-			} else {
-				throw new SAXException(
-						"No prepopulateValues attribute in annotation element");
-			}
+			// yes, it is an annotation
+			ch.startElement(uri, "schema", fixQName(qName, "schema"), null);
 		} else if(this.rootElement) {
 			throw new SAXException("No annotation element as root element");
 		} else {
 			if(XMLConstants.W3C_XML_SCHEMA_NS_URI.equals(uri)
 					&& "appinfo".equals(localName)) {
-				ch.startElement(uri, "simpleType", fixQName(qName, "simpleType"), typeNameAtts);
+				// --> check for attribute
+				int indexAt;
+				if (atts != null
+						&& (indexAt = atts.getIndex(
+								com.siemens.ct.exi.Constants.W3C_EXI_NS_URI,
+								"prepopulateValues")) != -1 && "true".equals(atts.getValue(indexAt))) {
+					// ok, right annotation --> change to
+					ch.startElement(uri, "simpleType", fixQName(qName, "simpleType"), typeNameAtts);
+				} else {
+					throw new SAXException(
+							"No prepopulateValues attribute in annotation element");
+				}
 			} else {
 				ch.startElement(uri, localName, qName, atts);
 			}
