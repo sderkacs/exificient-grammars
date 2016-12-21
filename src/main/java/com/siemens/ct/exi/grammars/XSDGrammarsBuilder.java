@@ -1996,10 +1996,8 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 					
 					Grammars grs = GrammarFactory.newInstance().createGrammars(new ByteArrayInputStream(baos.toByteArray()));
 					SchemaInformedFirstStartTagGrammar tg = grs.getGrammarContext().getGrammarUriContext("").getQNameContext(enumTypeName).getTypeGrammar();
-					System.out.println(tg);
 					Event ev = tg.getProduction(0).getEvent();
 					DatatypeEvent dev = (DatatypeEvent) ev;
-					System.out.println(dev);
 					Datatype dt = dev.getDatatype();
 					if(dt.getBuiltInType() == BuiltInType.ENUMERATION) {
 						EnumerationDatatype edt = (EnumerationDatatype) dt;
