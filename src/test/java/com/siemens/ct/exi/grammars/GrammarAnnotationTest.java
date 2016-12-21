@@ -57,8 +57,8 @@ public class GrammarAnnotationTest extends TestCase {
 		String schema = "<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\r\n" + 
 				"    <xs:element name=\"root\">\r\n" + 
 				"        <xs:simpleType>\r\n" + 
-				"            <xs:annotation exi:prepopulateValues=\"true\" xmlns:exi=\"http://www.w3.org/2009/exi\">\r\n" + 
-				"                <xs:appinfo>\r\n" + 
+				"            <xs:annotation>\r\n" + 
+				"                <xs:appinfo exi:prepopulateValues=\"true\" xmlns:exi=\"http://www.w3.org/2009/exi\">\r\n" + 
 				"                    <xs:restriction base=\"xs:string\">\r\n" + 
 				"                        <xs:enumeration value=\"A\"/>\r\n" + 
 				"                        <xs:enumeration value=\"B\"/>\r\n" + 
