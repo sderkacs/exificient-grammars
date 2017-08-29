@@ -543,9 +543,13 @@ public class Grammars2JSON {
 		
 		//  schema-for-json.xsd, see https://www.w3.org/TR/exi-for-json/schema-for-json.xsd
 		// xsd = "../exificient.js/grammars/schema-for-json.xsd";
-		xsd = "../exificient.js/grammars/exi4json.xsd";
+		// xsd = "../exificient.js/grammars/exi4json.xsd";
 		// notebook
 		// xsd = "../exificient.js/grammars/notebook.xsd";
+		// xsd = "../exificient.js/test/data/xml/any0.xsd";
+		xsd = "../exificient.js/test/data/xml/basic_rdf_query_v02.xsd";
+		// xsd = "D:\\Projects\\EXI\\EXIficient\\exificient.js\\test\\data\\xml\\unsignedInteger.xsd";
+		// xsd = "D:\\Projects\\EXI\\EXIficient\\exificient.js\\test\\data\\xml\\test1.xsd";
 		
 		grsOut = xsd + ".grs";
 

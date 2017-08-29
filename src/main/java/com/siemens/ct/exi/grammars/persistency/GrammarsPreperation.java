@@ -203,7 +203,8 @@ public class GrammarsPreperation {
 			prepareGrammar(ei.getNextGrammar());
 		}
 
-		// TODO prepare element content rule?
+		// prepare element content rule?
+		prepareGrammar(r.getElementContentGrammar());
 		
 	}
 
