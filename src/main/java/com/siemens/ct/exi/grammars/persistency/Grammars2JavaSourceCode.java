@@ -2,6 +2,7 @@ package com.siemens.ct.exi.grammars.persistency;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -640,8 +641,12 @@ public class Grammars2JavaSourceCode {
 	}
 
 	public static void main(String[] args) throws EXIException, IOException {
-		String className = "Notebook";
-		String xsd = "./data/W3C/PrimerNotebook/notebook.xsd";
+//		String className = "Notebook";
+//		String xsd = "./data/W3C/PrimerNotebook/notebook.xsd";
+		
+		String className = "ISO15118_2_2013";
+		String xsd = "..\\V2G_CI_MsgDef.xsd";
+		
 		// String xsd =
 		// "D:/Projects/EXI/EXIficient/exificient/data/EXIOptionsHeader/EXIOptionsHeader.xsd";
 
@@ -659,6 +664,14 @@ public class Grammars2JavaSourceCode {
 				Grammars2JavaSourceCodeTemplate.class.getPackage().toString(),
 				className);
 		System.out.println(sf);
+		
+		if(true) {
+			File f = File.createTempFile(className, ".java");
+			FileOutputStream fos = new FileOutputStream(f);
+			fos.write(sf.getBytes());
+			fos.close();
+			System.out.println("Written to file: " + f);
+		}
 
 		// String filename = "C:\\Users\\mchn4310\\Desktop\\gr.xml";
 		// XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(

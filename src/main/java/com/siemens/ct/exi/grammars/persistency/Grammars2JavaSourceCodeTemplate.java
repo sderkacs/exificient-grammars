@@ -173,16 +173,19 @@ public class Grammars2JavaSourceCodeTemplate implements Grammars {
 	protected String schemaId; 
 	
 	
-	public Grammars2JavaSourceCodeTemplate() {
-		
+	void initGlobalElements() {
 		/* BEGIN GlobalElements ----- */
 		qnc5.setGlobalStartElement(globalSE5);
-		/* END GlobalElements ----- */
-
+		/* END GlobalElements ----- */	
+	}
+	
+	void initGlobalAttributes() {
 		/* BEGIN GlobalAttributes ----- */
 		qnc3.setGlobalAttribute(globalAT3);
 		/* END GlobalAttributes ----- */
-		
+	}
+	
+	void initTypeGrammars() {
 		/* BEGIN TypeGrammar ----- */
 		qnc0.setTypeGrammar(g4);
 		qnc13.setTypeGrammar(g18);
@@ -231,8 +234,11 @@ public class Grammars2JavaSourceCodeTemplate implements Grammars {
 		qnc56.setTypeGrammar(g51);
 		qnc57.setTypeGrammar(g51);
 		qnc58.setTypeGrammar(g51);
-		/* END TypeGrammar ----- */
-		
+		/* END TypeGrammar ----- */	
+	}
+	
+	
+	void initGrammarEvents() {
 		/* BEGIN Grammar Events ----- */
 		g0.addProduction(new com.siemens.ct.exi.grammars.event.StartDocument(), g1);
 		g1.addProduction(globalSE5, g15);
@@ -305,8 +311,9 @@ public class Grammars2JavaSourceCodeTemplate implements Grammars {
 		g55.addProduction(new com.siemens.ct.exi.grammars.event.Characters(new com.siemens.ct.exi.datatype.NBitUnsignedIntegerDatatype(com.siemens.ct.exi.values.IntegerValue.valueOf(0), com.siemens.ct.exi.values.IntegerValue.valueOf(255), qnc55)), g8);
 		g56.addProduction(new com.siemens.ct.exi.grammars.event.Characters(new com.siemens.ct.exi.datatype.NBitUnsignedIntegerDatatype(com.siemens.ct.exi.values.IntegerValue.valueOf(0), com.siemens.ct.exi.values.IntegerValue.valueOf(255), qnc55)), g8);
 		/* END Grammar Events ----- */
-		
-		
+	}
+	
+	void initFirstStartGrammars() {
 		/* BEGIN FirstStartGrammar ----- */
 		g2.setElementContentGrammar(g14);
 		g2.setTypeCastable(false);
@@ -378,6 +385,14 @@ public class Grammars2JavaSourceCodeTemplate implements Grammars {
 		g55.setTypeCastable(false);
 		g55.setNillable(false);
 		/* END FirstStartGrammar ----- */
+	}
+	
+	public Grammars2JavaSourceCodeTemplate() {
+		initGlobalElements();
+		initGlobalAttributes();
+		initTypeGrammars();
+		initGrammarEvents();
+		initFirstStartGrammars();
 	}
 	
 
