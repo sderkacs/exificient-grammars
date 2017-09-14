@@ -81,10 +81,11 @@ public class Grammars2JavaSourceCode {
 	protected static final String TOKEN_PACKAGE = Grammars2JavaSourceCode.class
 			.getPackage().toString();
 	// public class StaticSampleGrammar
+	protected static final String TOKEN_CLASS_SUFFIX = "Template";
 	protected static final String TOKEN_CLASS = "public class "
-			+ Grammars2JavaSourceCode.class.getSimpleName();
+			+ Grammars2JavaSourceCode.class.getSimpleName() + TOKEN_CLASS_SUFFIX;
 	protected static final String TOKEN_CLASS_CONSTRUCTOR = "public "
-			+ Grammars2JavaSourceCode.class.getSimpleName();
+			+ Grammars2JavaSourceCode.class.getSimpleName() + TOKEN_CLASS_SUFFIX;
 
 	static final String STATIC_SAMPLE_GRAMMAR = "./com/siemens/ct/exi/grammars/persistency/Grammars2JavaSourceCodeTemplate.java";
 
