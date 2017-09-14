@@ -78,15 +78,15 @@ public class Grammars2JavaSourceCode {
 	protected static final String TOKEN_FRAGMENT_GRAMMAR_END = "/* END Fragment Grammar ----- */";
 
 	// package com.siemens.ct.exi.codegen;
-	protected static final String TOKEN_PACKAGE = Grammars2JavaSourceCodeTemplate.class
+	protected static final String TOKEN_PACKAGE = Grammars2JavaSourceCode.class
 			.getPackage().toString();
 	// public class StaticSampleGrammar
 	protected static final String TOKEN_CLASS = "public class "
-			+ Grammars2JavaSourceCodeTemplate.class.getSimpleName();
+			+ Grammars2JavaSourceCode.class.getSimpleName();
 	protected static final String TOKEN_CLASS_CONSTRUCTOR = "public "
-			+ Grammars2JavaSourceCodeTemplate.class.getSimpleName();
+			+ Grammars2JavaSourceCode.class.getSimpleName();
 
-	static final String STATIC_SAMPLE_GRAMMAR = "./src/main/java/com/siemens/ct/exi/grammars/persistency/Grammars2JavaSourceCodeTemplate.java";
+	static final String STATIC_SAMPLE_GRAMMAR = "./com/siemens/ct/exi/grammars/persistency/Grammars2JavaSourceCodeTemplate.java";
 
 	GrammarsPreperation gpreps = new GrammarsPreperation();
 
@@ -495,7 +495,10 @@ public class Grammars2JavaSourceCode {
 	// packageName: is the string "package " and the package name
 	public String getGrammars(String packageName, String className)
 			throws IOException {
-		File staticSimpleGrammar = new File(STATIC_SAMPLE_GRAMMAR);
+		// File staticSimpleGrammar = new File(STATIC_SAMPLE_GRAMMAR);
+		ClassLoader classLoader = getClass().getClassLoader();
+		File staticSimpleGrammar = new File(classLoader.getResource(STATIC_SAMPLE_GRAMMAR).getFile());
+		
 		StringBuilder sStaticSimpleGrammar = new StringBuilder(
 				readFileToString(staticSimpleGrammar));
 
@@ -641,11 +644,11 @@ public class Grammars2JavaSourceCode {
 	}
 
 	public static void main(String[] args) throws EXIException, IOException {
-//		String className = "Notebook";
-//		String xsd = "./data/W3C/PrimerNotebook/notebook.xsd";
+		String className = "Notebook";
+		String xsd = "./data/W3C/PrimerNotebook/notebook.xsd";
 		
-		String className = "ISO15118_2_2013";
-		String xsd = "..\\V2G_CI_MsgDef.xsd";
+//		String className = "ISO15118_2_2013";
+//		String xsd = "..\\V2G_CI_MsgDef.xsd";
 		
 		// String xsd =
 		// "D:/Projects/EXI/EXIficient/exificient/data/EXIOptionsHeader/EXIOptionsHeader.xsd";
@@ -661,7 +664,7 @@ public class Grammars2JavaSourceCode {
 		grammar2Java.generateCode();
 
 		String sf = grammar2Java.getGrammars(
-				Grammars2JavaSourceCodeTemplate.class.getPackage().toString(),
+				Grammars2JavaSourceCode.class.getPackage().toString(),
 				className);
 		System.out.println(sf);
 		
