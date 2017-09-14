@@ -353,7 +353,7 @@ public class GrammarIdDispenser {
 			}
 			for(int i=0; i<e1.getEnumerationSize(); i++) {
 				Value v1 = e1.getEnumValue(i);
-				Value v2 = e1.getEnumValue(i);
+				Value v2 = e2.getEnumValue(i);
 				if( !v1.equals(v2) ) {
 					return false;
 				}
