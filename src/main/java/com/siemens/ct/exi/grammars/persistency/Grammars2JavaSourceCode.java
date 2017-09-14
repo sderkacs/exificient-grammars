@@ -496,6 +496,12 @@ public class Grammars2JavaSourceCode {
 	// packageName: is the string "package " and the package name
 	public String getGrammars(String packageName, String className)
 			throws IOException {
+		// check whether it contains the needed package prefix
+		packageName = packageName.trim();
+		if(packageName.length() > 0 && !packageName.startsWith("package ")) {
+			packageName = "package " + packageName;
+		}
+		
 		// File staticSimpleGrammar = new File(STATIC_SAMPLE_GRAMMAR);
 		ClassLoader classLoader = getClass().getClassLoader();
 		File staticSimpleGrammar = new File(classLoader.getResource(STATIC_SAMPLE_GRAMMAR).getFile());
