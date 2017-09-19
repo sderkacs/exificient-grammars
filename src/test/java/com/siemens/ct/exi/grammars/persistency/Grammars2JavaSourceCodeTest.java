@@ -1,6 +1,5 @@
 package com.siemens.ct.exi.grammars.persistency;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import junit.framework.TestCase;
