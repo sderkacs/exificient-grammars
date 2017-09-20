@@ -38,7 +38,7 @@ public class Grammars2JSONTest extends TestCase {
 	
 	@Test
 	public void testEXIForJSON() throws EXIException, IOException {
-		String xsd = "data/W3C/EXIforJSON/schema-for-json.xsd";
+		String xsd = "data/W3C/EXIforJSON/exi4json.xsd";
 		_test(xsd);
 	}
 

@@ -1,0 +1,389 @@
+<!-- 
+    * Copyright (C) 2017 Siemens AG
+    *
+    * DISCLAIMER
+    *
+    * THIS XML SCHEMA DEFINITION IS PROVIDED "AS IS" AND ANY EXPRESSED
+    * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+    * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+    * ARE DISCLAIMED. IN NO EVENT SHALL SIEMENS AG OR ANY OF THEIR
+    * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+    * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+    * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+    * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+    * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+    * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+    * IN ANY WAY OUT OF THE USE OF THIS XML SCHEMA, EVEN IF ADVISED OF
+    * THE POSSIBILITY OF SUCH DAMAGE.
+    *
+-->
+<xs:schema targetNamespace="http://www.ct.siemens.com/exi/2017/SchemaForGrammars"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:exi="http://www.ct.siemens.com/exi/2017/SchemaForGrammars" elementFormDefault="qualified">
+
+    <!-- ********************************************** -->
+    <!-- GENERAL COMMENTS & IDEAS -->
+    <!-- ********************************************** -->
+    <!-- * what about offering a way to pre-populate string value tables ? -->
+
+    <!-- ********************************************** -->
+    <!-- Datatype -->
+    <!-- ********************************************** -->
+    <xs:complexType name="DatatypeBasics">
+        <xs:choice>
+            <xs:element name="base64Binary">
+                <xs:complexType/>
+            </xs:element>
+            <xs:element name="hexBinary">
+                <xs:complexType/>
+            </xs:element>
+            <xs:element name="boolean">
+                <xs:complexType>
+                    <xs:choice minOccurs="0">
+                        <xs:element name="patternFacet">
+                            <xs:complexType/>
+                        </xs:element>
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="dateAndTime">
+                <xs:complexType>
+                    <xs:choice>
+                        <xs:element name="dateTime">
+                            <xs:complexType/>
+                        </xs:element>
+                        <xs:element name="time">
+                            <xs:complexType/>
+                        </xs:element>
+                        <xs:element name="date">
+                            <xs:complexType/>
+                        </xs:element>
+                        <xs:element name="gYearMonth">
+                            <xs:complexType/>
+                        </xs:element>
+                        <xs:element name="gYear">
+                            <xs:complexType/>
+                        </xs:element>
+                        <xs:element name="gMonthDay">
+                            <xs:complexType/>
+                        </xs:element>
+                        <xs:element name="gDay">
+                            <xs:complexType/>
+                        </xs:element>
+                        <xs:element name="gMonth">
+                            <xs:complexType/>
+                        </xs:element>
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="decimal">
+                <xs:complexType/>
+            </xs:element>
+            <xs:element name="double">
+                <xs:complexType/>
+            </xs:element>
+            <xs:element name="integer">
+                <xs:complexType>
+                    <xs:choice minOccurs="0">
+                        <xs:element name="unsignedInteger">
+                            <xs:complexType/>
+                        </xs:element>
+                        <xs:element name="nBitUnsignedInteger">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="lowerBound" type="xs:integer"/>
+                                    <xs:element name="upperBound" type="xs:integer"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="string">
+                <xs:complexType>
+                    <xs:choice minOccurs="0">
+                        <xs:element name="restrictedCharSet">
+                            <xs:simpleType>
+                                <xs:list itemType="xs:unsignedInt"/>
+                            </xs:simpleType>
+                        </xs:element>
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:complexType name="Datatype">
+        <xs:complexContent>
+            <xs:extension base="exi:DatatypeBasics">
+                <xs:sequence>
+                    <xs:choice minOccurs="0">
+                        <xs:element name="list" minOccurs="0">
+                            <xs:complexType/>
+                        </xs:element>
+                        <xs:element name="enumeration">
+                            <xs:complexType>
+                                <xs:choice>
+                                    <!-- Binary -->
+                                    <xs:element name="base64BinaryValue" type="xs:base64Binary"
+                                        minOccurs="0" maxOccurs="unbounded"/>
+                                    <xs:element name="hexBinaryValue" type="xs:hexBinary"
+                                        minOccurs="0" maxOccurs="unbounded"/>
+                                    <!-- Boolean -->
+                                    <xs:element name="booleanValue" type="xs:boolean" minOccurs="0"
+                                        maxOccurs="unbounded"/>
+                                    <!-- Date-times -->
+                                    <xs:element name="gYearValue" type="xs:gYear" minOccurs="0"
+                                        maxOccurs="unbounded"/>
+                                    <xs:element name="gYearMonthValue" type="xs:gYearMonth"
+                                        minOccurs="0" maxOccurs="unbounded"/>
+                                    <xs:element name="dateValue" type="xs:date" minOccurs="0"
+                                        maxOccurs="unbounded"/>
+                                    <xs:element name="dateTimeValue" type="xs:dateTime"
+                                        minOccurs="0" maxOccurs="unbounded"/>
+                                    <xs:element name="gMonthValue" type="xs:gMonth" minOccurs="0"
+                                        maxOccurs="unbounded"/>
+                                    <xs:element name="gMonthDayValue" type="xs:gMonthDay"
+                                        minOccurs="0" maxOccurs="unbounded"/>
+                                    <xs:element name="gDayValue" type="xs:gDay" minOccurs="0"
+                                        maxOccurs="unbounded"/>
+                                    <xs:element name="timeValue" type="xs:time" minOccurs="0"
+                                        maxOccurs="unbounded"/>
+                                    <!-- Decimal -->
+                                    <xs:element name="decimalValue" type="xs:decimal" minOccurs="0"
+                                        maxOccurs="unbounded"/>
+                                    <!-- Float/Double -->
+                                    <xs:element name="floatValue" type="xs:float" minOccurs="0"
+                                        maxOccurs="unbounded"/>
+                                    <!-- Integer -->
+                                    <xs:element name="integerValue" type="xs:integer" minOccurs="0"
+                                        maxOccurs="unbounded"/>
+                                    <!-- Strings -->
+                                    <xs:element name="stringValue" type="xs:string" minOccurs="0"
+                                        maxOccurs="unbounded"/>
+                                </xs:choice>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:choice>
+                    <!-- The following elements MUST be present only for DTR maps -->
+                    <xs:element name="schemaTypeNamespaceID" type="xs:unsignedInt"/>
+                    <xs:element name="schemaTypeLocalNameID" type="xs:unsignedInt"/>
+                    <xs:element name="baseDatatypeID" type="xs:unsignedInt" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+
+    <!-- ********************************************** -->
+    <!-- NAMESPACE CONTEXT -->
+    <!-- ********************************************** -->
+    <xs:complexType name="NamespaceContext">
+        <xs:sequence>
+            <!-- namespace URI-->
+            <!--<xs:any processContents="skip"/>-->
+            <!--<xs:element name="namespaceURI" type="xs:string"/>-->
+
+            <!-- FIXTURE MUST match the values according the EXI specification -->
+            <!-- "" [empty string] : none -->
+            <!-- "http://www.w3.org/XML/1998/namespace" : 4 entries (base, ..., space) -->
+            <!-- "http://www.w3.org/2001/XMLSchema-instance" : 2 entries (nil, type) -->
+            <!-- "http://www.w3.org/2001/XMLSchema" : 46 entries (ENTITIES, ...,  unsignedShort) -->
+            <!-- TODO: how to deal best with XSD1.1 extensions ?!? -->
+            <!--
+            <xs:element name="fixture" minOccurs="0">
+                <xs:complexType/>
+            </xs:element>
+            -->
+            
+            <!-- QName Context  -->
+            <xs:element name="qnameContext" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <!-- global grammar -->
+                        <xs:choice minOccurs="0">
+                            <!-- global simple-type grammar (if any) -->
+                            <xs:element name="globalSimpleTypeDatatypeID" type="xs:unsignedInt">
+                                <!-- Note: Simple Type grammars always look the same -->
+                                <!-- SimpleType0 : CH(schema-types) SimpleType1  -->
+                                <!-- SimpleType1 : EE  -->
+                            </xs:element>
+                            <!-- global complex-type grammar (if any) -->
+                            <xs:element name="globalComplexTypeGrammarID" type="xs:unsignedInt"/>
+                        </xs:choice>
+                        <!-- global element (if any) -->
+                        <xs:element name="globalElementGrammarID" type="xs:unsignedInt"
+                            minOccurs="0"/>
+                        <!-- global attribute (if any) -->
+                        <xs:element name="globalAttributeDatatypeID" type="xs:unsignedInt"
+                            minOccurs="0"/>
+                    </xs:sequence>
+                    <xs:attribute name="localName" type="xs:string"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="namespaceURI" type="xs:string"/>
+    </xs:complexType>
+
+
+
+    <!-- ********************************************** -->
+    <!-- GRAMMAR PRODUCTION -->
+    <!-- ********************************************** -->
+    <xs:complexType name="Production">
+        <xs:sequence>
+            <!-- ********************************************** -->
+            <!-- EXI Events -->
+            <!-- ********************************************** -->
+            <xs:choice>
+                <xs:element name="startDocument">
+                    <xs:complexType/>
+                </xs:element>
+                <xs:element name="endDocument">
+                    <xs:complexType/>
+                </xs:element>
+
+                <!-- StartTagContent events -->
+                <xs:element name="attribute" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <!-- attribute qname -->
+                            <xs:element name="attributeNamespaceID" type="xs:unsignedInt"/>
+                            <xs:element name="attributeLocalNameID" type="xs:unsignedInt"/>
+                            <!-- attribute datatype -->
+                            <xs:element name="attributeDatatypeID" type="xs:unsignedInt"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="attributeNS" type="xs:unsignedInt" minOccurs="0">
+                    <!-- namespaceURI ID -->
+                </xs:element>
+                <xs:element name="attributeGeneric">
+                    <xs:complexType/>
+                </xs:element>
+
+                <!-- ElementContent events -->
+                <xs:element name="startElement">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <!-- element qname -->
+                            <xs:element name="startElementNamespaceID" type="xs:unsignedInt"/>
+                            <xs:element name="startElementLocalNameID" type="xs:unsignedInt"/>
+                            <!-- element rule -->
+                            <xs:element name="startElementGrammarID" type="xs:unsignedInt"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="startElementNS" type="xs:unsignedInt">
+                    <!-- namespaceURI ID -->
+                </xs:element>
+                <xs:element name="startElementGeneric">
+                    <xs:complexType/>
+                </xs:element>
+                <xs:element name="endElement">
+                    <xs:complexType/>
+                </xs:element>
+                <xs:element name="characters">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <!-- datatype -->
+                            <xs:element name="charactersDatatypeID" type="xs:unsignedInt"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="charactersGeneric">
+                    <xs:complexType/>
+                </xs:element>
+            </xs:choice>
+
+            <!-- No nextRule for ED and EE -->
+            <xs:element name="nextGrammarID" type="xs:unsignedInt" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:simpleType name="grammarType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Document"/>
+            <xs:enumeration value="DocContent"/>
+            <xs:enumeration value="DocEnd"/>
+            <xs:enumeration value="Fragment"/>
+            <xs:enumeration value="FragmentContent"/>
+            <xs:enumeration value="FirstStartTagContent"/>
+            <xs:enumeration value="StartTagContent"/>
+            <xs:enumeration value="ElementContent"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <!-- ********************************************** -->
+    <!-- EXI Grammars (root element) -->
+    <!-- ********************************************** -->
+    <xs:element name="exiGrammars">
+        <xs:complexType>
+            <xs:sequence>
+                <!-- ********************************************** -->
+                <!-- QNAMES -->
+                <!-- ********************************************** -->
+                <xs:element name="qnames">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <!-- NamespaceUri's, prefixes and localNames (QName)  -->
+                            <xs:element name="namespaceContext" minOccurs="0" maxOccurs="unbounded"
+                                type="exi:NamespaceContext"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+
+                <!-- ********************************************** -->
+                <!-- SIMPLE DATATYPES -->
+                <!-- ********************************************** -->
+                <xs:element name="simpleDatatypes" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="simpleDatatype" type="exi:Datatype" minOccurs="0"
+                                maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+
+                <!-- ********************************************** -->
+                <!-- GRAMMAR RULES -->
+                <!-- ********************************************** -->
+                <xs:element name="grammars">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="isBuiltInXMLSchemaTypesOnly">
+                                <xs:complexType/>
+                            </xs:element>
+                            <xs:element name="grammar" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <!-- first StartTagContent events -->
+                                        <xs:element name="isTypeCastable" minOccurs="0">
+                                            <xs:complexType/>
+                                        </xs:element>
+                                        <xs:element name="isNillable" minOccurs="0">
+                                            <xs:complexType/>
+                                        </xs:element>
+                                        <!-- general productions -->
+                                        <xs:element name="production" type="exi:Production"
+                                            minOccurs="0" maxOccurs="unbounded"/>
+                                    </xs:sequence>
+                                    <xs:attribute name="grammarType" type="exi:grammarType"
+                                        use="required"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="documentGrammarID" type="xs:unsignedInt" use="required"/>
+                        <xs:attribute name="fragmentGrammarID" type="xs:unsignedInt" use="required"/>
+                        <xs:attribute name="elementFragmentGrammarID" type="xs:unsignedInt" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+</xs:schema>

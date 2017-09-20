@@ -33,6 +33,7 @@ import com.siemens.ct.exi.context.GrammarContext;
 import com.siemens.ct.exi.context.GrammarUriContext;
 import com.siemens.ct.exi.context.QNameContext;
 import com.siemens.ct.exi.grammars.Grammars;
+import com.siemens.ct.exi.grammars.SchemaInformedGrammars;
 import com.siemens.ct.exi.grammars.event.StartElement;
 import com.siemens.ct.exi.grammars.grammar.DocEnd;
 import com.siemens.ct.exi.grammars.grammar.Document;
@@ -43,6 +44,7 @@ import com.siemens.ct.exi.grammars.grammar.SchemaInformedElement;
 import com.siemens.ct.exi.grammars.grammar.SchemaInformedFirstStartTag;
 import com.siemens.ct.exi.grammars.grammar.SchemaInformedFirstStartTagGrammar;
 import com.siemens.ct.exi.grammars.grammar.SchemaInformedFragmentContent;
+import com.siemens.ct.exi.grammars.grammar.SchemaInformedGrammar;
 import com.siemens.ct.exi.grammars.grammar.SchemaInformedStartTag;
 import com.siemens.ct.exi.grammars.production.Production;
 
@@ -82,7 +84,12 @@ public class GrammarsPreperation {
 		// fragment
 		Grammar frag = grammar.getFragmentGrammar();
 		prepareGrammar(frag);
-
+		
+		// element fragment grammar
+		if(grammar instanceof SchemaInformedGrammars) {
+			SchemaInformedGrammar elFragGr = ((SchemaInformedGrammars)grammar).getSchemaInformedElementFragmentGrammar();
+			prepareGrammar(elFragGr);
+		}
 
 		// global type grammars
 		GrammarContext gc = grammar.getGrammarContext();

@@ -28,6 +28,7 @@ import com.siemens.ct.exi.grammars.event.EndElement;
 import com.siemens.ct.exi.grammars.event.StartDocument;
 import com.siemens.ct.exi.grammars.event.StartElement;
 import com.siemens.ct.exi.grammars.event.StartElementGeneric;
+import com.siemens.ct.exi.grammars.event.StartElementNS;
 import com.siemens.ct.exi.grammars.grammar.DocEnd;
 import com.siemens.ct.exi.grammars.grammar.Document;
 import com.siemens.ct.exi.grammars.grammar.Fragment;
@@ -419,6 +420,12 @@ public class Grammars2JavaSourceCode {
 								+ ", g" + gpreps.getGrammarID(se.getGrammar())
 								+ ")";
 					}
+					break;
+				case START_ELEMENT_NS:
+					StartElementNS seNS = (StartElementNS) ei
+							.getEvent();
+					sConstructor = "new " + StartElementNS.class.getName()
+							+ "(" + seNS.getNamespaceUriID() + ", \"" + seNS.getNamespaceURI() + "\")";
 					break;
 				case START_ELEMENT_GENERIC:
 					@SuppressWarnings("unused")
