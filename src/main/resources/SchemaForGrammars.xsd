@@ -20,12 +20,10 @@
 <xs:schema targetNamespace="http://www.ct.siemens.com/exi/2017/SchemaForGrammars"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:exi="http://www.ct.siemens.com/exi/2017/SchemaForGrammars" elementFormDefault="qualified">
-
     <!-- ********************************************** -->
     <!-- GENERAL COMMENTS & IDEAS -->
     <!-- ********************************************** -->
     <!-- * what about offering a way to pre-populate string value tables ? -->
-
     <!-- ********************************************** -->
     <!-- Datatype -->
     <!-- ********************************************** -->
@@ -112,7 +110,6 @@
             </xs:element>
         </xs:choice>
     </xs:complexType>
-
     <xs:complexType name="Datatype">
         <xs:complexContent>
             <xs:extension base="exi:DatatypeBasics">
@@ -173,8 +170,6 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
-
-
     <!-- ********************************************** -->
     <!-- NAMESPACE CONTEXT -->
     <!-- ********************************************** -->
@@ -183,7 +178,6 @@
             <!-- namespace URI-->
             <!--<xs:any processContents="skip"/>-->
             <!--<xs:element name="namespaceURI" type="xs:string"/>-->
-
             <!-- FIXTURE MUST match the values according the EXI specification -->
             <!-- "" [empty string] : none -->
             <!-- "http://www.w3.org/XML/1998/namespace" : 4 entries (base, ..., space) -->
@@ -195,7 +189,6 @@
                 <xs:complexType/>
             </xs:element>
             -->
-            
             <!-- QName Context  -->
             <xs:element name="qnameContext" minOccurs="0" maxOccurs="unbounded">
                 <xs:complexType>
@@ -224,9 +217,6 @@
         </xs:sequence>
         <xs:attribute name="namespaceURI" type="xs:string"/>
     </xs:complexType>
-
-
-
     <!-- ********************************************** -->
     <!-- GRAMMAR PRODUCTION -->
     <!-- ********************************************** -->
@@ -242,7 +232,6 @@
                 <xs:element name="endDocument">
                     <xs:complexType/>
                 </xs:element>
-
                 <!-- StartTagContent events -->
                 <xs:element name="attribute" minOccurs="0">
                     <xs:complexType>
@@ -261,7 +250,6 @@
                 <xs:element name="attributeGeneric">
                     <xs:complexType/>
                 </xs:element>
-
                 <!-- ElementContent events -->
                 <xs:element name="startElement">
                     <xs:complexType>
@@ -295,13 +283,10 @@
                     <xs:complexType/>
                 </xs:element>
             </xs:choice>
-
             <!-- No nextRule for ED and EE -->
             <xs:element name="nextGrammarID" type="xs:unsignedInt" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
-
-
     <xs:simpleType name="grammarType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="Document"/>
@@ -314,8 +299,6 @@
             <xs:enumeration value="ElementContent"/>
         </xs:restriction>
     </xs:simpleType>
-
-
     <!-- ********************************************** -->
     <!-- EXI Grammars (root element) -->
     <!-- ********************************************** -->
@@ -334,7 +317,6 @@
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
-
                 <!-- ********************************************** -->
                 <!-- SIMPLE DATATYPES -->
                 <!-- ********************************************** -->
@@ -346,7 +328,6 @@
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
-
                 <!-- ********************************************** -->
                 <!-- GRAMMAR RULES -->
                 <!-- ********************************************** -->
@@ -367,6 +348,8 @@
                                             <xs:complexType/>
                                         </xs:element>
                                         <!-- general productions -->
+                                        <xs:element minOccurs="0" name="elementContentGrammarID"
+                                            type="xs:unsignedInt"/>
                                         <xs:element name="production" type="exi:Production"
                                             minOccurs="0" maxOccurs="unbounded"/>
                                     </xs:sequence>
@@ -377,13 +360,11 @@
                         </xs:sequence>
                         <xs:attribute name="documentGrammarID" type="xs:unsignedInt" use="required"/>
                         <xs:attribute name="fragmentGrammarID" type="xs:unsignedInt" use="required"/>
-                        <xs:attribute name="elementFragmentGrammarID" type="xs:unsignedInt" use="required"/>
+                        <xs:attribute name="elementFragmentGrammarID" type="xs:unsignedInt"
+                            use="required"/>
                     </xs:complexType>
                 </xs:element>
-
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-
-
 </xs:schema>

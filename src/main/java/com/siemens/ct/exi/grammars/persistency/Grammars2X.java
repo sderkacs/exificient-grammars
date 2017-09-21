@@ -471,6 +471,7 @@ public class Grammars2X {
 			SchemaInformedFirstStartTagGrammar fst = (SchemaInformedFirstStartTagGrammar) sir;
 
 			g.setGrammarType(GrammarType.FIRST_START_TAG_CONTENT);
+			g.setElementContentGrammarID(Long.valueOf(gpreps.getGrammarID(fst.getElementContentGrammar())));
 			if (fst.isTypeCastable()) {
 				g.setIsTypeCastable(of
 						.createExiGrammarsGrammarsGrammarIsTypeCastable());
@@ -479,7 +480,9 @@ public class Grammars2X {
 				g.setIsNillable(of.createExiGrammarsGrammarsGrammarIsNillable());
 			}
 		} else if (sir instanceof SchemaInformedStartTagGrammar) {
+			SchemaInformedStartTagGrammar st = (SchemaInformedStartTagGrammar) sir;
 			g.setGrammarType(GrammarType.START_TAG_CONTENT);
+			g.setElementContentGrammarID(Long.valueOf(gpreps.getGrammarID(st.getElementContentGrammar())));
 		} else if (sir instanceof SchemaInformedElement) {
 			g.setGrammarType(GrammarType.ELEMENT_CONTENT);
 		} else if (sir instanceof Document) {
@@ -765,10 +768,23 @@ public class Grammars2X {
 			
 			grs[i] = g;
 		}
-		// 2. Walk over all productions to add productions and link next grammars
+
+		// 2. Walk over all productions to set the ElementContentGrammar
+        // and add productions and link next grammars
 		for(int i=0;i<grammars.getGrammar().size(); i++) {
 			ExiGrammars.Grammars.Grammar grammar = grammars.getGrammar().get(i);
-			
+
+            switch(grammar.getGrammarType()) {
+                case FIRST_START_TAG_CONTENT:
+                    SchemaInformedFirstStartTag fst = (SchemaInformedFirstStartTag) grs[i];
+                    fst.setElementContentGrammar(grs[(int)(long)grammar.getElementContentGrammarID()]);
+                    break;
+                case START_TAG_CONTENT:
+                    SchemaInformedStartTag st = (SchemaInformedStartTag) grs[i];
+                    st.setElementContentGrammar(grs[(int)(long)grammar.getElementContentGrammarID()]);
+                    break;
+            }
+
 			for(com.siemens.ct.exi._2017.schemaforgrammars.Production prod : grammar.getProduction()) {
 				Event event;
 				if(prod.getStartDocument() != null) {
