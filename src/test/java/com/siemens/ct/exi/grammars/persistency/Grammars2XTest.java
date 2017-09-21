@@ -92,5 +92,12 @@ public class Grammars2XTest extends TestCase {
 		String xml = "data/W3C/EXIforJSON/fstab1.json.xml";
 		_test(xsd, xml);
 	}
+	
+	@Test
+	public void testDatatypes() throws Exception {
+		String xsd = "data/general/datatypes.xsd";
+		String xml = "data/general/datatypes.xsd";
+		_test(xsd, xml);
+	}
 
 }
