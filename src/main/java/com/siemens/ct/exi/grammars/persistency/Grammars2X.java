@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -37,6 +39,9 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -44,6 +49,7 @@ import com.siemens.ct.exi.Constants;
 import com.siemens.ct.exi._2017.schemaforgrammars.Datatype.Enumeration;
 import com.siemens.ct.exi._2017.schemaforgrammars.DatatypeBasics.DateAndTime;
 import com.siemens.ct.exi._2017.schemaforgrammars.DatatypeBasics.Integer.NBitUnsignedInteger;
+import com.siemens.ct.exi._2017.schemaforgrammars.DatatypeBasics;
 import com.siemens.ct.exi._2017.schemaforgrammars.ExiGrammars;
 import com.siemens.ct.exi._2017.schemaforgrammars.GrammarType;
 import com.siemens.ct.exi._2017.schemaforgrammars.NamespaceContext;
@@ -101,7 +107,14 @@ import com.siemens.ct.exi.grammars.grammar.SchemaInformedStartTagGrammar;
 import com.siemens.ct.exi.grammars.production.Production;
 import com.siemens.ct.exi.types.BuiltIn;
 import com.siemens.ct.exi.types.DateTimeType;
+import com.siemens.ct.exi.values.AbstractBinaryValue;
+import com.siemens.ct.exi.values.BooleanValue;
+import com.siemens.ct.exi.values.DateTimeValue;
+import com.siemens.ct.exi.values.DecimalValue;
+import com.siemens.ct.exi.values.FloatValue;
 import com.siemens.ct.exi.values.IntegerValue;
+import com.siemens.ct.exi.values.StringValue;
+import com.siemens.ct.exi.values.Value;
 
 public class Grammars2X {
 
@@ -159,7 +172,7 @@ public class Grammars2X {
 	
 
 	public ExiGrammars toGrammarsX(SchemaInformedGrammars grammars)
-			throws IOException, EXIException, ParserConfigurationException {
+			throws IOException, EXIException, ParserConfigurationException, DatatypeConfigurationException {
 
 		ExiGrammars exiGrammars = of.createExiGrammars();
 
@@ -358,7 +371,7 @@ public class Grammars2X {
 	}
 
 	private static void setDatatype(
-			com.siemens.ct.exi._2017.schemaforgrammars.Datatype d, Datatype dt) {
+			com.siemens.ct.exi._2017.schemaforgrammars.Datatype d, Datatype dt) throws DatatypeConfigurationException {
 
 		switch (dt.getBuiltInType()) {
 		case BINARY_BASE64:
@@ -439,15 +452,154 @@ public class Grammars2X {
 			d.setString(of.createDatatypeBasicsString());
 			break;
 		case RCS_STRING:
+			RestrictedCharacterSetDatatype rcsdt = (RestrictedCharacterSetDatatype) dt;
 			com.siemens.ct.exi._2017.schemaforgrammars.DatatypeBasics.String s = of
 					.createDatatypeBasicsString();
-			// TODO RCS
+			// RCS
+			RestrictedCharacterSet rcs = rcsdt.getRestrictedCharacterSet();
+			for(int i=0; i<rcs.size(); i++) {
+				int cp = rcs.getCodePoint(i);
+				s.getRestrictedCharSet().add((long) cp);
+			}
+			
 			d.setString(s);
 			break;
 		case ENUMERATION:
 			EnumerationDatatype endt = (EnumerationDatatype) dt;
 			Enumeration en = of.createDatatypeEnumeration();
-			// TODO enum type
+			// enum type
+			Datatype enumDT = endt.getEnumValueDatatype();
+			switch (enumDT.getBuiltInType()) {
+			case BINARY_BASE64:
+				for(int i=0; i<endt.getEnumerationSize(); i++) {
+					AbstractBinaryValue v = (AbstractBinaryValue) endt.getEnumValue(i);
+					en.getBase64BinaryValue().add(v.toBytes());
+				}
+				break;
+			case BINARY_HEX:
+				for(int i=0; i<endt.getEnumerationSize(); i++) {
+					AbstractBinaryValue v = (AbstractBinaryValue) endt.getEnumValue(i);
+					en.getBase64BinaryValue().add(v.toBytes());
+				}
+				break;
+			case BOOLEAN:
+			case BOOLEAN_FACET:
+				for(int i=0; i<endt.getEnumerationSize(); i++) {
+					@SuppressWarnings("unused")
+					BooleanValue v = (BooleanValue) endt.getEnumValue(i);
+					// TODO JAXB binding seems to be somewhat broken here !?!
+					DatatypeBasics.Boolean dbb = of.createDatatypeBasicsBoolean();
+					DatatypeBasics.Boolean.PatternFacet dbpf = of.createDatatypeBasicsBooleanPatternFacet();
+					dbb.setPatternFacet(dbpf);
+					en.getBooleanValue().add(dbb);
+				}
+				break;
+			case DATETIME:
+				DatetimeDatatype ddt = (DatetimeDatatype) enumDT;
+				switch (ddt.getDatetimeType()) {
+				case gYear:
+					for(int i=0; i<endt.getEnumerationSize(); i++) {
+						DateTimeValue v = (DateTimeValue) endt.getEnumValue(i);
+						GregorianCalendar gc = new GregorianCalendar();
+						gc.setTime(v.toCalendar().getTime());
+						en.getGYearValue().add(DatatypeFactory.newInstance().newXMLGregorianCalendar(gc));
+					}
+					break;
+				case gYearMonth:
+					for(int i=0; i<endt.getEnumerationSize(); i++) {
+						DateTimeValue v = (DateTimeValue) endt.getEnumValue(i);
+						GregorianCalendar gc = new GregorianCalendar();
+						gc.setTime(v.toCalendar().getTime());
+						en.getGYearMonthValue().add(DatatypeFactory.newInstance().newXMLGregorianCalendar(gc));
+					}
+					break;
+				case date:
+					for(int i=0; i<endt.getEnumerationSize(); i++) {
+						DateTimeValue v = (DateTimeValue) endt.getEnumValue(i);
+						GregorianCalendar gc = new GregorianCalendar();
+						gc.setTime(v.toCalendar().getTime());
+						en.getDateValue().add(DatatypeFactory.newInstance().newXMLGregorianCalendar(gc));
+					}
+					break;
+				case dateTime:
+					for(int i=0; i<endt.getEnumerationSize(); i++) {
+						DateTimeValue v = (DateTimeValue) endt.getEnumValue(i);
+						GregorianCalendar gc = new GregorianCalendar();
+						gc.setTime(v.toCalendar().getTime());
+						en.getDateTimeValue().add(DatatypeFactory.newInstance().newXMLGregorianCalendar(gc));
+					}
+					break;
+				case gMonth:
+					for(int i=0; i<endt.getEnumerationSize(); i++) {
+						DateTimeValue v = (DateTimeValue) endt.getEnumValue(i);
+						GregorianCalendar gc = new GregorianCalendar();
+						gc.setTime(v.toCalendar().getTime());
+						en.getGMonthValue().add(DatatypeFactory.newInstance().newXMLGregorianCalendar(gc));
+					}
+					break;
+				case gMonthDay:
+					for(int i=0; i<endt.getEnumerationSize(); i++) {
+						DateTimeValue v = (DateTimeValue) endt.getEnumValue(i);
+						GregorianCalendar gc = new GregorianCalendar();
+						gc.setTime(v.toCalendar().getTime());
+						en.getGMonthDayValue().add(DatatypeFactory.newInstance().newXMLGregorianCalendar(gc));
+					}
+					break;
+				case gDay:
+					for(int i=0; i<endt.getEnumerationSize(); i++) {
+						DateTimeValue v = (DateTimeValue) endt.getEnumValue(i);
+						GregorianCalendar gc = new GregorianCalendar();
+						gc.setTime(v.toCalendar().getTime());
+						en.getGDayValue().add(DatatypeFactory.newInstance().newXMLGregorianCalendar(gc));
+					}
+					break;
+				case time:
+					for(int i=0; i<endt.getEnumerationSize(); i++) {
+						DateTimeValue v = (DateTimeValue) endt.getEnumValue(i);
+						GregorianCalendar gc = new GregorianCalendar();
+						gc.setTime(v.toCalendar().getTime());
+						en.getTimeValue().add(DatatypeFactory.newInstance().newXMLGregorianCalendar(gc));
+					}
+					break;
+				}
+				break;
+			case DECIMAL:
+				for(int i=0; i<endt.getEnumerationSize(); i++) {
+					DecimalValue v = (DecimalValue) endt.getEnumValue(i);
+					en.getDecimalValue().add(v.toBigDecimal());
+				}
+				break;
+			case FLOAT:
+				for(int i=0; i<endt.getEnumerationSize(); i++) {
+					FloatValue v = (FloatValue) endt.getEnumValue(i);
+					Double.valueOf(v.toDouble());
+					// TODO JAXB binding seems to be somewhat broken here !?!
+					DatatypeBasics.Double bv = of.createDatatypeBasicsDouble();
+					en.getFloatValue().add(bv);
+				}
+				break;
+			case INTEGER:
+			case UNSIGNED_INTEGER:
+			case NBIT_UNSIGNED_INTEGER:
+				for(int i=0; i<endt.getEnumerationSize(); i++) {
+					IntegerValue v = (IntegerValue) endt.getEnumValue(i);
+					en.getIntegerValue().add(v.bigIntegerValue());
+				}
+				break;
+			case STRING:
+				for(int i=0; i<endt.getEnumerationSize(); i++) {
+					StringValue v = (StringValue) endt.getEnumValue(i);
+					DatatypeBasics.String sv = of.createDatatypeBasicsString();
+					// TODO JAXB binding seems to be somewhat broken here !?!
+					en.getStringValue().add(sv);
+				}
+				break;
+			default:
+				throw new RuntimeException("Datatype "+ enumDT.getBuiltInType() + " for Enumeration not supported");
+			}
+			
+			endt.getEnumValueDatatype();
+			
 			d.setEnumeration(en);
 			break;
 		case LIST:
@@ -777,12 +929,15 @@ public class Grammars2X {
             switch(grammar.getGrammarType()) {
                 case FIRST_START_TAG_CONTENT:
                     SchemaInformedFirstStartTag fst = (SchemaInformedFirstStartTag) grs[i];
-                    fst.setElementContentGrammar(grs[(int)(long)grammar.getElementContentGrammarID()]);
+                    fst.setElementContentGrammar(grs[grammar.getElementContentGrammarID().intValue()]);
                     break;
                 case START_TAG_CONTENT:
                     SchemaInformedStartTag st = (SchemaInformedStartTag) grs[i];
-                    st.setElementContentGrammar(grs[(int)(long)grammar.getElementContentGrammarID()]);
+                    st.setElementContentGrammar(grs[grammar.getElementContentGrammarID().intValue()]);
                     break;
+                default:
+                	/* no element content grammar */
+                	break;
             }
 
 			for(com.siemens.ct.exi._2017.schemaforgrammars.Production prod : grammar.getProduction()) {

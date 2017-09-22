@@ -150,7 +150,7 @@
                                     <xs:element name="decimalValue" type="xs:decimal" minOccurs="0"
                                         maxOccurs="unbounded"/>
                                     <!-- Float/Double -->
-                                    <xs:element name="floatValue" type="xs:float" minOccurs="0"
+                                    <xs:element name="floatValue" type="xs:double" minOccurs="0"
                                         maxOccurs="unbounded"/>
                                     <!-- Integer -->
                                     <xs:element name="integerValue" type="xs:integer" minOccurs="0"
