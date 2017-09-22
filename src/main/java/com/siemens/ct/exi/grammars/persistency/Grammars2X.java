@@ -269,9 +269,7 @@ public class Grammars2X {
 								// simple type grammar
 								Characters chev = (Characters) typeGrammar
 										.getProduction(0).getEvent();
-								long l = listOfSimpleDatatypes.indexOf(chev
-										.getDatatype());
-								qnameContext.setGlobalSimpleTypeDatatypeID(l);
+								qnameContext.setGlobalSimpleTypeDatatypeID(getDatatypeIndex(chev.getDatatype(), false));
 							} else {
 								// complex type grammar
 								long gid = gpreps.getGrammarID(qnc
@@ -290,9 +288,7 @@ public class Grammars2X {
 						// global attribute
 						if (qnc.getGlobalAttribute() != null) {
 							Attribute at = qnc.getGlobalAttribute();
-							long l = listOfSimpleDatatypes.indexOf(at
-									.getDatatype());
-							qnameContext.setGlobalAttributeDatatypeID(l);
+							qnameContext.setGlobalAttributeDatatypeID(getDatatypeIndex(at.getDatatype(), false));
 						}
 
 					}
@@ -629,7 +625,7 @@ public class Grammars2X {
 	}
 
 	protected void printGrammar(SchemaInformedGrammar sir,
-			ExiGrammars.Grammars grs) throws IOException {
+			ExiGrammars.Grammars grs) throws IOException, EXIException {
 
 		com.siemens.ct.exi._2017.schemaforgrammars.ExiGrammars.Grammars.Grammar g = new com.siemens.ct.exi._2017.schemaforgrammars.ExiGrammars.Grammars.Grammar();
 		grs.getGrammar().add(g);
@@ -673,8 +669,46 @@ public class Grammars2X {
 		printGrammarProduction(sir, g.getProduction());
 	}
 
+	/**
+	 * Get a datatype index from a Datatype instance using the listOfSimpleDatatypes,
+	 * or null if this is the default datatype and {@code useNullAsDefaultDatatype} is true.
+	 * @param datatype The datatype to get the index from.
+	 * @param useNullAsDefaultDatatype Tells is it should return null for the built-in default datatype.
+	 * @return The index of the datatype.
+	 * @throws EXIException if the datatype can't be found in listOfSimpleDatatypes.
+	 */
+	private Long getDatatypeIndex(Datatype datatype, boolean useNullAsDefaultDatatype) throws EXIException {
+        if (datatype == BuiltIn.DEFAULT_DATATYPE && useNullAsDefaultDatatype) {
+            return null;
+        }
+        int datatypeIndex = listOfSimpleDatatypes.indexOf(datatype);
+        if (datatypeIndex < 0){
+            throw new EXIException("Can't find datatype: " + datatype);
+        }
+        return Long.valueOf(datatypeIndex);
+    }
+
+	/**
+	 * Get the datatype instance from an index in the datatypes array,
+	 * or get the built-in default datatype if the {@code index} is null and {@code useNullAsDefaultDatatype} is true.
+	 * @param index The index of the datatype.
+	 * @param datatypes The array of datatypes.
+	 * @param useNullAsDefaultDatatype Tells is it should return null for the built-in default parameter.
+	 * @return The datatype instance.
+	 * @throws EXIException if the index is out of bounds from the datatypes array.
+	 */
+    private static Datatype getDatatype(Long index, Datatype[] datatypes, boolean useNullAsDefaultDatatype) throws EXIException {
+	    if (index == null && useNullAsDefaultDatatype) {
+	        return BuiltIn.DEFAULT_DATATYPE;
+        }
+        if (index == null || index >= datatypes.length || index < 0) {
+            throw new EXIException("Can't find datatype of index: " + index);
+        }
+        return datatypes[index.intValue()];
+    }
+
 	protected void printGrammarProduction(SchemaInformedGrammar sir, List<com.siemens.ct.exi._2017.schemaforgrammars.Production> productions)
-			throws IOException {
+            throws IOException, EXIException {
 
 		for (int i = 0; i < sir.getNumberOfEvents(); i++) {
 			if (STATS_ON) {
@@ -717,7 +751,8 @@ public class Grammars2X {
 				QNameContext atqname = at.getQNameContext();
 				
 				p.setAttribute(of.createProductionAttribute());
-				p.getAttribute().setAttributeDatatypeID(listOfSimpleDatatypes.indexOf(at.getDatatype()));
+
+                p.getAttribute().setAttributeDatatypeID(getDatatypeIndex(at.getDatatype(), true));
 				p.getAttribute().setAttributeNamespaceID(atqname.getNamespaceUriID());
 				p.getAttribute().setAttributeLocalNameID(atqname.getLocalNameID());
 				break;
@@ -729,7 +764,7 @@ public class Grammars2X {
 			case CHARACTERS:
 				Characters ch = (Characters) event;
 				p.setCharacters(of.createProductionCharacters());
-				p.getCharacters().setCharactersDatatypeID(listOfSimpleDatatypes.indexOf(ch.getDatatype()));
+				p.getCharacters().setCharactersDatatypeID(getDatatypeIndex(ch.getDatatype(), false));
 				break;
 			case START_ELEMENT_GENERIC:
 				p.setStartElementGeneric(of.createProductionStartElementGeneric());
@@ -996,7 +1031,7 @@ public class Grammars2X {
 			com.siemens.ct.exi._2017.schemaforgrammars.Datatype dt = exiGrammars.getSimpleDatatypes().getSimpleDatatype().get(i);
 			
 			QNameContext qnc = grammarUriContexts[(int)dt.getSchemaTypeNamespaceID()].getQNameContext((int)dt.getSchemaTypeLocalNameID());
-			
+			 
 			if (dt.getList() != null) {
 				// list MUST be first (there can be a list of enums!)
 				Datatype listDatatype;
@@ -1020,7 +1055,7 @@ public class Grammars2X {
 			com.siemens.ct.exi._2017.schemaforgrammars.Datatype dt = exiGrammars.getSimpleDatatypes().getSimpleDatatype().get(i);
 			
 			if(dt.getBaseDatatypeID() != null) {
-				datatypes[i].setBaseDatatype(datatypes[dt.getBaseDatatypeID().intValue()]);
+				datatypes[i].setBaseDatatype(getDatatype(dt.getBaseDatatypeID(), datatypes, false));
 			}
 		}
 
@@ -1107,7 +1142,7 @@ public class Grammars2X {
 					event = new EndElement();
 				} else if(prod.getAttribute() != null) {
 					QNameContext qnc = grammarUriContexts[(int)prod.getAttribute().getAttributeNamespaceID()].getQNameContext((int)prod.getAttribute().getAttributeLocalNameID());
-					Datatype datatype = datatypes[(int)prod.getAttribute().getAttributeDatatypeID()];
+					Datatype datatype = getDatatype(prod.getAttribute().getAttributeDatatypeID(), datatypes, true);
 					event = new Attribute(qnc, datatype);
 				} else if(prod.getAttributeNS() != null) {
 					GrammarUriContext guc = grammarUriContexts[prod.getStartElementNS().intValue()];
@@ -1115,7 +1150,7 @@ public class Grammars2X {
 				} else if(prod.getAttributeGeneric() != null) {
 					event = new AttributeGeneric();
 				} else if(prod.getCharacters() != null) {
-					Datatype datatype = datatypes[(int)prod.getCharacters().getCharactersDatatypeID()];
+					Datatype datatype = getDatatype(prod.getCharacters().getCharactersDatatypeID(), datatypes, false);
 					event = new Characters(datatype);
 				} else if(prod.getCharactersGeneric() != null) {
 					event = new CharactersGeneric();
@@ -1150,7 +1185,7 @@ public class Grammars2X {
 				// global attribute
 				if(qnc.getGlobalAttributeDatatypeID() != null) {
 					QNameContext qncAT = grammarUriContexts[i].getQNameContext(k);
-					Datatype dt = datatypes[qnc.getGlobalAttributeDatatypeID().intValue()];
+					Datatype dt = getDatatype(qnc.getGlobalAttributeDatatypeID(), datatypes, false);
 					Attribute at = new Attribute(qncAT, dt);
 					grammarUriContexts[i].getQNameContext(k).setGlobalAttribute(at);
 				}
@@ -1163,7 +1198,7 @@ public class Grammars2X {
                     // Note: Simple Type grammars always look the same
                     // SimpleType0 : CH(schema-types) SimpleType1
                     // SimpleType1 : EE 
-					Datatype dt = datatypes[qnc.getGlobalSimpleTypeDatatypeID().intValue()];
+					Datatype dt = getDatatype(qnc.getGlobalSimpleTypeDatatypeID(), datatypes, false);
 					SchemaInformedFirstStartTagGrammar sistg = new SchemaInformedFirstStartTag();
 					SchemaInformedElement elementContent = new SchemaInformedElement();
 					SchemaInformedElement sie = new SchemaInformedElement();
