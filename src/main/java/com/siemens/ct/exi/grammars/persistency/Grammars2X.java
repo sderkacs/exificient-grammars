@@ -704,7 +704,7 @@ public class Grammars2X {
 				p.setAttribute(of.createProductionAttribute());
 				p.getAttribute().setAttributeDatatypeID(listOfSimpleDatatypes.indexOf(at.getDatatype()));
 				p.getAttribute().setAttributeNamespaceID(atqname.getNamespaceUriID());
-				p.getAttribute().setAttributeNamespaceID(atqname.getLocalNameID());
+				p.getAttribute().setAttributeLocalNameID(atqname.getLocalNameID());
 				break;
 			case ATTRIBUTE_NS:
 				AttributeNS atNS = (AttributeNS) event;
