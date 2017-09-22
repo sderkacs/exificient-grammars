@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -46,10 +45,10 @@ import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
 
 import com.siemens.ct.exi.Constants;
-import com.siemens.ct.exi._2017.schemaforgrammars.Datatype.Enumeration;
+import com.siemens.ct.exi._2017.schemaforgrammars.DatatypeBasics;
 import com.siemens.ct.exi._2017.schemaforgrammars.DatatypeBasics.DateAndTime;
 import com.siemens.ct.exi._2017.schemaforgrammars.DatatypeBasics.Integer.NBitUnsignedInteger;
-import com.siemens.ct.exi._2017.schemaforgrammars.DatatypeBasics;
+import com.siemens.ct.exi._2017.schemaforgrammars.Enumeration;
 import com.siemens.ct.exi._2017.schemaforgrammars.ExiGrammars;
 import com.siemens.ct.exi._2017.schemaforgrammars.GrammarType;
 import com.siemens.ct.exi._2017.schemaforgrammars.NamespaceContext;
@@ -108,6 +107,8 @@ import com.siemens.ct.exi.grammars.production.Production;
 import com.siemens.ct.exi.types.BuiltIn;
 import com.siemens.ct.exi.types.DateTimeType;
 import com.siemens.ct.exi.values.AbstractBinaryValue;
+import com.siemens.ct.exi.values.BinaryBase64Value;
+import com.siemens.ct.exi.values.BinaryHexValue;
 import com.siemens.ct.exi.values.BooleanValue;
 import com.siemens.ct.exi.values.DateTimeValue;
 import com.siemens.ct.exi.values.DecimalValue;
@@ -370,9 +371,8 @@ public class Grammars2X {
 		return exiGrammars;
 	}
 
-	private static void setDatatype(
-			com.siemens.ct.exi._2017.schemaforgrammars.Datatype d, Datatype dt) throws DatatypeConfigurationException {
-
+	
+	private static void setDatatypeBasics(DatatypeBasics d, Datatype dt) {
 		switch (dt.getBuiltInType()) {
 		case BINARY_BASE64:
 			d.setBase64Binary(of.createDatatypeBasicsBase64Binary());
@@ -464,11 +464,36 @@ public class Grammars2X {
 			
 			d.setString(s);
 			break;
+		default:
+			throw new RuntimeException("Unsupported basic datatype: " + dt.getBuiltInType());
+		}
+	}
+	
+	private static void setDatatype(
+			com.siemens.ct.exi._2017.schemaforgrammars.Datatype d, Datatype dt) throws DatatypeConfigurationException {
+		switch (dt.getBuiltInType()) {
+		case BINARY_BASE64:
+		case BINARY_HEX:
+		case BOOLEAN:
+		case BOOLEAN_FACET:
+		case DECIMAL:
+		case FLOAT:
+		case NBIT_UNSIGNED_INTEGER:
+		case UNSIGNED_INTEGER:
+		case INTEGER:
+		case DATETIME:
+		case STRING:
+		case RCS_STRING:
+			setDatatypeBasics(d, dt);
+			break;
 		case ENUMERATION:
 			EnumerationDatatype endt = (EnumerationDatatype) dt;
-			Enumeration en = of.createDatatypeEnumeration();
-			// enum type
+			com.siemens.ct.exi._2017.schemaforgrammars.Enumeration en = of.createEnumeration();
+			// enum value type
 			Datatype enumDT = endt.getEnumValueDatatype();
+			DatatypeBasics enumdb = of.createDatatypeBasics();
+			setDatatypeBasics(enumdb, enumDT);
+			en.setEnumerationValueDatatype(enumdb);
 			switch (enumDT.getBuiltInType()) {
 			case BINARY_BASE64:
 				for(int i=0; i<endt.getEnumerationSize(); i++) {
@@ -485,13 +510,8 @@ public class Grammars2X {
 			case BOOLEAN:
 			case BOOLEAN_FACET:
 				for(int i=0; i<endt.getEnumerationSize(); i++) {
-					@SuppressWarnings("unused")
 					BooleanValue v = (BooleanValue) endt.getEnumValue(i);
-					// TODO JAXB binding seems to be somewhat broken here !?!
-					DatatypeBasics.Boolean dbb = of.createDatatypeBasicsBoolean();
-					DatatypeBasics.Boolean.PatternFacet dbpf = of.createDatatypeBasicsBooleanPatternFacet();
-					dbb.setPatternFacet(dbpf);
-					en.getBooleanValue().add(dbb);
+					en.getBooleanValue().add(v.toBoolean());
 				}
 				break;
 			case DATETIME:
@@ -572,10 +592,7 @@ public class Grammars2X {
 			case FLOAT:
 				for(int i=0; i<endt.getEnumerationSize(); i++) {
 					FloatValue v = (FloatValue) endt.getEnumValue(i);
-					Double.valueOf(v.toDouble());
-					// TODO JAXB binding seems to be somewhat broken here !?!
-					DatatypeBasics.Double bv = of.createDatatypeBasicsDouble();
-					en.getFloatValue().add(bv);
+					en.getFloatValue().add(Double.valueOf(v.toDouble()));
 				}
 				break;
 			case INTEGER:
@@ -589,9 +606,7 @@ public class Grammars2X {
 			case STRING:
 				for(int i=0; i<endt.getEnumerationSize(); i++) {
 					StringValue v = (StringValue) endt.getEnumValue(i);
-					DatatypeBasics.String sv = of.createDatatypeBasicsString();
-					// TODO JAXB binding seems to be somewhat broken here !?!
-					en.getStringValue().add(sv);
+					en.getStringValue().add(v.toString());
 				}
 				break;
 			default:
@@ -608,8 +623,8 @@ public class Grammars2X {
 			setDatatype(d, ldt.getBaseDatatype());
 			d.setList(of.createDatatypeList());
 			break;
-		case QNAME:
-			break;
+		default:
+			throw new RuntimeException("Unsupported datatype: " + dt.getBuiltInType());
 		}
 	}
 
@@ -858,7 +873,128 @@ public class Grammars2X {
 			QNameContext qnc = grammarUriContexts[(int)dt.getSchemaTypeNamespaceID()].getQNameContext((int)dt.getSchemaTypeLocalNameID());
 			
 			if(dt.getEnumeration() != null) {
-				throw new EXIException("Unsupported Enumeration");
+				Value[] enumValues;
+				Datatype dtEnumValues;
+				com.siemens.ct.exi._2017.schemaforgrammars.Enumeration en = dt.getEnumeration();
+				DatatypeBasics enumDT = en.getEnumerationValueDatatype();
+				if (enumDT.getBase64Binary() != null) {
+					dtEnumValues = new BinaryBase64Datatype(qnc);
+					enumValues = new BinaryBase64Value[en.getBase64BinaryValue().size()];
+					for(int k=0; k<en.getBase64BinaryValue().size(); k++) {
+						enumValues[k] =  new BinaryBase64Value(en.getBase64BinaryValue().get(k));
+					}
+				} else if (enumDT.getHexBinary() != null) {
+					dtEnumValues = new BinaryHexDatatype(qnc);
+					enumValues = new BinaryHexValue[en.getHexBinaryValue().size()];
+					for(int k=0; k<en.getHexBinaryValue().size(); k++) {
+						enumValues[k] =  new BinaryHexValue(en.getHexBinaryValue().get(k));
+					}
+				} else if (enumDT.getBoolean() != null) {
+					dtEnumValues = new BooleanDatatype(qnc);
+					enumValues = new BooleanValue[en.getBooleanValue().size()];
+					for(int k=0; k<en.getBooleanValue().size(); k++) {
+						enumValues[k] = en.getBooleanValue().get(k) ? BooleanValue.BOOLEAN_VALUE_TRUE : BooleanValue.BOOLEAN_VALUE_FALSE;
+					}
+				} else if (enumDT.getDateAndTime() != null) {
+					DateTimeType dateType;
+					if(enumDT.getDateAndTime().getDateTime() != null) {
+						dateType = DateTimeType.dateTime;
+						enumValues = new DateTimeValue[en.getDateTimeValue().size()];
+						for(int k=0; k<en.getDateTimeValue().size(); k++) {
+							XMLGregorianCalendar xmlgc = en.getDateTimeValue().get(k);
+							DateTimeValue dtv = DateTimeValue.parse(xmlgc.toGregorianCalendar(), dateType);
+							enumValues[k] = dtv;
+						}
+					} else if(enumDT.getDateAndTime().getTime() != null) {
+						dateType = DateTimeType.time;
+						enumValues = new DateTimeValue[en.getTimeValue().size()];
+						for(int k=0; k<en.getTimeValue().size(); k++) {
+							XMLGregorianCalendar xmlgc = en.getTimeValue().get(k);
+							DateTimeValue dtv = DateTimeValue.parse(xmlgc.toGregorianCalendar(), dateType);
+							enumValues[k] = dtv;
+						}
+					} else if(enumDT.getDateAndTime().getDate() != null) {
+						dateType = DateTimeType.date;
+						enumValues = new DateTimeValue[en.getDateValue().size()];
+						for(int k=0; k<en.getDateValue().size(); k++) {
+							XMLGregorianCalendar xmlgc = en.getDateValue().get(k);
+							DateTimeValue dtv = DateTimeValue.parse(xmlgc.toGregorianCalendar(), dateType);
+							enumValues[k] = dtv;
+						}
+					} else if(enumDT.getDateAndTime().getGYearMonth() != null) {
+						dateType = DateTimeType.gYearMonth;
+						enumValues = new DateTimeValue[en.getGYearMonthValue().size()];
+						for(int k=0; k<en.getGYearMonthValue().size(); k++) {
+							XMLGregorianCalendar xmlgc = en.getGYearMonthValue().get(k);
+							DateTimeValue dtv = DateTimeValue.parse(xmlgc.toGregorianCalendar(), dateType);
+							enumValues[k] = dtv;
+						}
+					} else if(enumDT.getDateAndTime().getGYear() != null) {
+						dateType = DateTimeType.gYear;
+						enumValues = new DateTimeValue[en.getGYearValue().size()];
+						for(int k=0; k<en.getGYearValue().size(); k++) {
+							XMLGregorianCalendar xmlgc = en.getGYearValue().get(k);
+							DateTimeValue dtv = DateTimeValue.parse(xmlgc.toGregorianCalendar(), dateType);
+							enumValues[k] = dtv;
+						}
+					} else if(enumDT.getDateAndTime().getGMonthDay() != null) {
+						dateType = DateTimeType.gMonthDay;
+						enumValues = new DateTimeValue[en.getGMonthDayValue().size()];
+						for(int k=0; k<en.getGMonthDayValue().size(); k++) {
+							XMLGregorianCalendar xmlgc = en.getGMonthDayValue().get(k);
+							DateTimeValue dtv = DateTimeValue.parse(xmlgc.toGregorianCalendar(), dateType);
+							enumValues[k] = dtv;
+						}
+					} else if(enumDT.getDateAndTime().getGDay() != null) {
+						dateType = DateTimeType.gDay;
+						enumValues = new DateTimeValue[en.getGDayValue().size()];
+						for(int k=0; k<en.getGDayValue().size(); k++) {
+							XMLGregorianCalendar xmlgc = en.getGDayValue().get(k);
+							DateTimeValue dtv = DateTimeValue.parse(xmlgc.toGregorianCalendar(), dateType);
+							enumValues[k] = dtv;
+						}
+					} else if(enumDT.getDateAndTime().getGMonth() != null) {
+						dateType = DateTimeType.gMonth;
+						enumValues = new DateTimeValue[en.getGMonthValue().size()];
+						for(int k=0; k<en.getGMonthValue().size(); k++) {
+							XMLGregorianCalendar xmlgc = en.getGMonthValue().get(k);
+							DateTimeValue dtv = DateTimeValue.parse(xmlgc.toGregorianCalendar(), dateType);
+							enumValues[k] = dtv;
+						}
+					} else {
+						throw new EXIException("Unsupported DateAndTime datatype: " + dt.getDateAndTime());
+					}
+					dtEnumValues = new DatetimeDatatype(dateType, qnc);
+				} else if (enumDT.getDecimal() != null) {
+					dtEnumValues = new DecimalDatatype(qnc);
+					enumValues = new DecimalValue[en.getDecimalValue().size()];
+					for(int k=0; k<en.getDecimalValue().size(); k++) {
+						enumValues[k] = DecimalValue.parse(en.getDecimalValue().get(k));
+					}
+				} else if (enumDT.getDouble() != null) {
+					dtEnumValues = new FloatDatatype(qnc);
+					enumValues = new FloatValue[en.getFloatValue().size()];
+					for(int k=0; k<en.getFloatValue().size(); k++) {
+						enumValues[k] = FloatValue.parse(en.getFloatValue().get(k));
+					}
+				} else if (enumDT.getInteger() != null) {
+					dtEnumValues = new IntegerDatatype(qnc);
+					enumValues = new IntegerValue[en.getIntegerValue().size()];
+					for(int k=0; k<en.getIntegerValue().size(); k++) {
+						enumValues[k] = IntegerValue.valueOf(en.getIntegerValue().get(k));
+					}
+				} else if (enumDT.getString() != null) {
+					dtEnumValues = new StringDatatype(qnc);
+					enumValues = new StringValue[en.getStringValue().size()];
+					for(int k=0; k<en.getStringValue().size(); k++) {
+						enumValues[k] = new StringValue(en.getStringValue().get(k));
+					}
+				} else {
+					throw new EXIException("Unsupported Enumeration type for " + enumDT);
+				}
+				
+				EnumerationDatatype endt = new EnumerationDatatype(enumValues, dtEnumValues, qnc);
+				datatypes[i] = endt;
 			} else if (dt.getList() != null) {
 				Datatype listDatatype = getBasicDatatype(dt, qnc);
 				datatypes[i] = new ListDatatype(listDatatype, qnc);

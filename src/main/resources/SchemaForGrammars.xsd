@@ -110,6 +110,50 @@
             </xs:element>
         </xs:choice>
     </xs:complexType>
+    <xs:complexType name="Enumeration">
+        <xs:sequence>
+            <xs:element name="enumerationValueDatatype" type="exi:DatatypeBasics"/>
+            <xs:choice>
+                <!-- Binary -->
+                <xs:element name="base64BinaryValue" type="xs:base64Binary"
+                    minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="hexBinaryValue" type="xs:hexBinary"
+                    minOccurs="0" maxOccurs="unbounded"/>
+                <!-- Boolean -->
+                <xs:element name="booleanValue" type="xs:boolean" minOccurs="0"
+                    maxOccurs="unbounded"/>
+                <!-- Date-times -->
+                <xs:element name="gYearValue" type="xs:gYear" minOccurs="0"
+                    maxOccurs="unbounded"/>
+                <xs:element name="gYearMonthValue" type="xs:gYearMonth"
+                    minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="dateValue" type="xs:date" minOccurs="0"
+                    maxOccurs="unbounded"/>
+                <xs:element name="dateTimeValue" type="xs:dateTime"
+                    minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="gMonthValue" type="xs:gMonth" minOccurs="0"
+                    maxOccurs="unbounded"/>
+                <xs:element name="gMonthDayValue" type="xs:gMonthDay"
+                    minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="gDayValue" type="xs:gDay" minOccurs="0"
+                    maxOccurs="unbounded"/>
+                <xs:element name="timeValue" type="xs:time" minOccurs="0"
+                    maxOccurs="unbounded"/>
+                <!-- Decimal -->
+                <xs:element name="decimalValue" type="xs:decimal" minOccurs="0"
+                    maxOccurs="unbounded"/>
+                <!-- Float/Double -->
+                <xs:element name="floatValue" type="xs:double" minOccurs="0"
+                    maxOccurs="unbounded"/>
+                <!-- Integer -->
+                <xs:element name="integerValue" type="xs:integer" minOccurs="0"
+                    maxOccurs="unbounded"/>
+                <!-- Strings -->
+                <xs:element name="stringValue" type="xs:string" minOccurs="0"
+                    maxOccurs="unbounded"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
     <xs:complexType name="Datatype">
         <xs:complexContent>
             <xs:extension base="exi:DatatypeBasics">
@@ -118,49 +162,7 @@
                         <xs:element name="list" minOccurs="0">
                             <xs:complexType/>
                         </xs:element>
-                        <xs:element name="enumeration">
-                            <xs:complexType>
-                                <xs:choice>
-                                    <!-- Binary -->
-                                    <xs:element name="base64BinaryValue" type="xs:base64Binary"
-                                        minOccurs="0" maxOccurs="unbounded"/>
-                                    <xs:element name="hexBinaryValue" type="xs:hexBinary"
-                                        minOccurs="0" maxOccurs="unbounded"/>
-                                    <!-- Boolean -->
-                                    <xs:element name="booleanValue" type="xs:boolean" minOccurs="0"
-                                        maxOccurs="unbounded"/>
-                                    <!-- Date-times -->
-                                    <xs:element name="gYearValue" type="xs:gYear" minOccurs="0"
-                                        maxOccurs="unbounded"/>
-                                    <xs:element name="gYearMonthValue" type="xs:gYearMonth"
-                                        minOccurs="0" maxOccurs="unbounded"/>
-                                    <xs:element name="dateValue" type="xs:date" minOccurs="0"
-                                        maxOccurs="unbounded"/>
-                                    <xs:element name="dateTimeValue" type="xs:dateTime"
-                                        minOccurs="0" maxOccurs="unbounded"/>
-                                    <xs:element name="gMonthValue" type="xs:gMonth" minOccurs="0"
-                                        maxOccurs="unbounded"/>
-                                    <xs:element name="gMonthDayValue" type="xs:gMonthDay"
-                                        minOccurs="0" maxOccurs="unbounded"/>
-                                    <xs:element name="gDayValue" type="xs:gDay" minOccurs="0"
-                                        maxOccurs="unbounded"/>
-                                    <xs:element name="timeValue" type="xs:time" minOccurs="0"
-                                        maxOccurs="unbounded"/>
-                                    <!-- Decimal -->
-                                    <xs:element name="decimalValue" type="xs:decimal" minOccurs="0"
-                                        maxOccurs="unbounded"/>
-                                    <!-- Float/Double -->
-                                    <xs:element name="floatValue" type="xs:double" minOccurs="0"
-                                        maxOccurs="unbounded"/>
-                                    <!-- Integer -->
-                                    <xs:element name="integerValue" type="xs:integer" minOccurs="0"
-                                        maxOccurs="unbounded"/>
-                                    <!-- Strings -->
-                                    <xs:element name="stringValue" type="xs:string" minOccurs="0"
-                                        maxOccurs="unbounded"/>
-                                </xs:choice>
-                            </xs:complexType>
-                        </xs:element>
+                        <xs:element name="enumeration" type="exi:Enumeration"/>
                     </xs:choice>
                     <!-- The following elements MUST be present only for DTR maps -->
                     <xs:element name="schemaTypeNamespaceID" type="xs:unsignedInt"/>
