@@ -207,12 +207,14 @@ public class GrammarsPreperation {
 				// no further event to prepare
 			}
 
-			prepareGrammar(ei.getNextGrammar());
+			if(ei.getNextGrammar() != null) {
+				prepareGrammar(ei.getNextGrammar());
+			}
 		}
 
 		// prepare element content rule?
 		prepareGrammar(r.getElementContentGrammar());
-		
+
 	}
 
 	// note: returns "sorted" id

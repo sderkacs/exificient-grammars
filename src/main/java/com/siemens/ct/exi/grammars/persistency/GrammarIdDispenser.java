@@ -169,7 +169,13 @@ public class GrammarIdDispenser {
 	
 	
 	private boolean isEqualGrammar(Grammar gr, Grammar gx, List<Grammar> handled) {
-		if( gr == gx) {
+		if(gr == gx) {
+			return true;
+		}
+		if(gr == null && gx != null && gx.getNumberOfEvents() == 0) {
+			return true;
+		}
+		if(gx == null && gr != null && gr.getNumberOfEvents() == 0) {
 			return true;
 		}
 		
