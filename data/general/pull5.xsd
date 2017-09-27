@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="message" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:message="message">
+  <xs:element name="Message">
+  </xs:element>
+  <xs:complexType abstract="true" name="mType">
+    <xs:attribute name="context" type="xs:string" use="required">
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType abstract="true" name="oType">
+    <xs:attribute name="context" type="message:stoType">
+    </xs:attribute>
+  </xs:complexType>
+  <xs:simpleType name="stoType">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="20"/>
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
