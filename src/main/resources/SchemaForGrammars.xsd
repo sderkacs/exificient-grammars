@@ -242,7 +242,8 @@
                             <xs:element name="attributeNamespaceID" type="xs:unsignedInt"/>
                             <xs:element name="attributeLocalNameID" type="xs:unsignedInt"/>
                             <!-- attribute datatype -->
-                            <xs:element name="attributeDatatypeID" type="xs:unsignedInt"/>
+                            <xs:element name="attributeDatatypeID" type="xs:unsignedInt"
+                                minOccurs="0"/>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
