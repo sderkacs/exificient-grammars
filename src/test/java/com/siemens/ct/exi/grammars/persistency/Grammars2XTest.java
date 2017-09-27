@@ -104,6 +104,14 @@ public class Grammars2XTest extends TestCase {
 		String xml = "data/general/datatypes.xml";
 		_test(xsd, xml);
 	}
+	
+	@Test
+	public void testPull5() throws Exception {
+		// very special case: same attribute with different type --> represented as a String (default string)
+		String xsd = "data/general/pull5.xsd";
+		String xml = "data/general/pull5.xml";
+		_test(xsd, xml);
+	}
 
     protected void testRoundTripExiGrammarsXml(String xsd) throws Exception {
 		grammarBuilder.loadGrammars(xsd);
