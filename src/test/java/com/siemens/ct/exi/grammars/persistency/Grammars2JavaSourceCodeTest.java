@@ -45,5 +45,12 @@ public class Grammars2JavaSourceCodeTest extends TestCase {
 		String xsd = "data/W3C/EXIforJSON/exi4json.xsd";
 		_test(xsd);
 	}
+	
+	@Test
+	public void testPull5() throws Exception {
+		// very special case: same attribute with different type --> represented as a String (default string)
+		String xsd = "data/general/pull5.xsd";
+		_test(xsd);
+	}
 
 }

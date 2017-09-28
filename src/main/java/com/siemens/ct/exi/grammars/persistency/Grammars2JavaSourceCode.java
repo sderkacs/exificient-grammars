@@ -1,10 +1,13 @@
 package com.siemens.ct.exi.grammars.persistency;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.math.BigInteger;
 
@@ -40,6 +43,7 @@ import com.siemens.ct.exi.grammars.grammar.SchemaInformedFirstStartTagGrammar;
 import com.siemens.ct.exi.grammars.grammar.SchemaInformedFragmentContent;
 import com.siemens.ct.exi.grammars.grammar.SchemaInformedStartTag;
 import com.siemens.ct.exi.grammars.production.Production;
+import com.siemens.ct.exi.types.BuiltIn;
 import com.siemens.ct.exi.types.BuiltInType;
 import com.siemens.ct.exi.util.PrintfUtils;
 import com.siemens.ct.exi.values.IntegerValue;
@@ -511,10 +515,23 @@ public class Grammars2JavaSourceCode {
 		
 		// File staticSimpleGrammar = new File(STATIC_SAMPLE_GRAMMAR);
 		ClassLoader classLoader = getClass().getClassLoader();
-		File staticSimpleGrammar = new File(classLoader.getResource(STATIC_SAMPLE_GRAMMAR).getFile());
+		InputStream inputStream= classLoader.getResource(STATIC_SAMPLE_GRAMMAR).openStream();
 		
-		StringBuilder sStaticSimpleGrammar = new StringBuilder(
-				readFileToString(staticSimpleGrammar));
+		BufferedInputStream bis = new BufferedInputStream(inputStream);
+		ByteArrayOutputStream buf = new ByteArrayOutputStream();
+		int result = bis.read();
+		while(result != -1) {
+		    buf.write((byte) result);
+		    result = bis.read();
+		}
+		// StandardCharsets.UTF_8.name() > JDK 7
+		StringBuilder sStaticSimpleGrammar =  new StringBuilder(buf.toString("UTF-8"));
+		
+		
+//		File staticSimpleGrammar = new File(classLoader.getResource(STATIC_SAMPLE_GRAMMAR).getFile());
+//		
+//		StringBuilder sStaticSimpleGrammar = new StringBuilder(
+//				readFileToString(staticSimpleGrammar));
 
 		// System.out.println(sStaticSimpleGrammar.length());
 
@@ -628,8 +645,17 @@ public class Grammars2JavaSourceCode {
 			// edt.getEnumValueDatatype(), null);
 		}
 
-		String s = "new " + dt.getClass().getName() + "(" + addP + "qnc"
-				+ getQNameID(dt.getSchemaType()) + ")";
+//		BuiltIn.DEFAULT_DATATYPE;
+		
+		int qnameID = getQNameID(dt.getSchemaType());
+		String s;
+		if(qnameID < 0) {
+			s = BuiltIn.class.getName() + ".DEFAULT_DATATYPE"; // .getClass().getName();
+		} else {
+			s = "new " + dt.getClass().getName() + "(" + addP + "qnc"
+					+ qnameID + ")";
+		}
+
 
 		return s;
 	}
