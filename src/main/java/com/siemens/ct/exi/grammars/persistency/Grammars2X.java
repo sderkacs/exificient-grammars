@@ -145,22 +145,25 @@ public class Grammars2X {
 	
 	private static JAXBContext getJAXBContext() throws JAXBException {
 		if(jc == null) {
-			String packageName = CLASS.getPackage().getName();
-			jc = JAXBContext.newInstance(packageName);
+			jc = JAXBContext.newInstance(CLASS);
 		}
 		return jc;
 	}
 
-	public static void marshall(ExiGrammars exiGrammar,
-			OutputStream outputStream) throws JAXBException {
-		// TODO EXI serialization
+	public static void marshal(ExiGrammars exiGrammars,
+							   OutputStream outputStream) throws JAXBException {
 		Marshaller m = getJAXBContext().createMarshaller();
 		m.setProperty("jaxb.formatted.output", Boolean.TRUE);
-		m.marshal(exiGrammar, outputStream);
+		m.marshal(exiGrammars, outputStream);
+	}
+
+	public static void marshal(ExiGrammars exiGrammars,
+								org.xml.sax.ContentHandler handler) throws JAXBException {
+		Marshaller m = getJAXBContext().createMarshaller();
+		m.marshal(exiGrammars, handler);
 	}
 	
-	public static ExiGrammars unmarshall(InputStream inputStream) throws JAXBException {
-		// TODO EXI deserialization
+	public static ExiGrammars unmarshal(InputStream inputStream) throws JAXBException {
 		Unmarshaller u = getJAXBContext().createUnmarshaller();
 		Object o = u.unmarshal(inputStream);
 		if(o instanceof ExiGrammars) {
@@ -168,8 +171,24 @@ public class Grammars2X {
 		}
 		throw new JAXBException("Unmarshalled object not of instance " + CLASS + ". Instead " + o.getClass());
 	}
-	
-	
+
+	public static ExiGrammars unmarshal(javax.xml.transform.Source source) throws JAXBException {
+		Unmarshaller u = getJAXBContext().createUnmarshaller();
+		Object o = u.unmarshal(source);
+		if(o instanceof ExiGrammars) {
+			return (ExiGrammars)o;
+		}
+		throw new JAXBException("Unmarshalled object not of instance " + CLASS + ". Instead " + o.getClass());
+	}
+
+	public static ExiGrammars unmarshal(javax.xml.stream.XMLStreamReader reader) throws JAXBException {
+		Unmarshaller u = getJAXBContext().createUnmarshaller();
+		Object o = u.unmarshal(reader);
+		if(o instanceof ExiGrammars) {
+			return (ExiGrammars)o;
+		}
+		throw new JAXBException("Unmarshalled object not of instance " + CLASS + ". Instead " + o.getClass());
+	}
 
 	public ExiGrammars toGrammarsX(SchemaInformedGrammars grammars)
 			throws IOException, EXIException, ParserConfigurationException, DatatypeConfigurationException {
@@ -1145,7 +1164,7 @@ public class Grammars2X {
 					Datatype datatype = getDatatype(prod.getAttribute().getAttributeDatatypeID(), datatypes, true);
 					event = new Attribute(qnc, datatype);
 				} else if(prod.getAttributeNS() != null) {
-					GrammarUriContext guc = grammarUriContexts[prod.getStartElementNS().intValue()];
+					GrammarUriContext guc = grammarUriContexts[prod.getAttributeNS().intValue()];
 					event = new AttributeNS(guc.getNamespaceUriID(), guc.getNamespaceUri());
 				} else if(prod.getAttributeGeneric() != null) {
 					event = new AttributeGeneric();
@@ -1265,7 +1284,7 @@ public class Grammars2X {
 		 */
 		ExiGrammars exiGrammar = g2j.toGrammarsX(grammarIn);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		marshall(exiGrammar, baos);
+		marshal(exiGrammar, baos);
 		System.out.println(new String(baos.toByteArray()));
 
 		/*

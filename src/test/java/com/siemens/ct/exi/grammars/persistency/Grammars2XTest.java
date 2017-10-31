@@ -42,10 +42,10 @@ public class Grammars2XTest extends TestCase {
 		ExiGrammars exiGrammarIn = g2X.toGrammarsX(grammarsIn);
 		
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		Grammars2X.marshall(exiGrammarIn, baos);
+		Grammars2X.marshal(exiGrammarIn, baos);
 		// System.out.println(new String(baos.toByteArray()));
 		
-		ExiGrammars exiGrammarOut = Grammars2X.unmarshall(new ByteArrayInputStream(baos.toByteArray()));
+		ExiGrammars exiGrammarOut = Grammars2X.unmarshal(new ByteArrayInputStream(baos.toByteArray()));
 		
 		// further validation	
 		SchemaInformedGrammars grammarsOut = Grammars2X.toGrammars(exiGrammarOut);
@@ -121,16 +121,16 @@ public class Grammars2XTest extends TestCase {
         ExiGrammars exiGrammars = grammars2X.toGrammarsX(grammarsIn);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Grammars2X.marshall(exiGrammars, baos);
+        Grammars2X.marshal(exiGrammars, baos);
         String exiGrammarsXml = baos.toString();
 
-        ExiGrammars exiGrammarOut = Grammars2X.unmarshall(new ByteArrayInputStream(baos.toByteArray()));
+        ExiGrammars exiGrammarOut = Grammars2X.unmarshal(new ByteArrayInputStream(baos.toByteArray()));
         SchemaInformedGrammars grammarsOut = Grammars2X.toGrammars(exiGrammarOut);
 
         grammars2X.clear();
         ExiGrammars exiGrammarsRoundTrip = grammars2X.toGrammarsX(grammarsOut);
         ByteArrayOutputStream baosRoundTrip = new ByteArrayOutputStream();
-        Grammars2X.marshall(exiGrammarsRoundTrip, baosRoundTrip);
+        Grammars2X.marshal(exiGrammarsRoundTrip, baosRoundTrip);
         String exiGrammarsXmlRoundTrip = baosRoundTrip.toString();
 
         XMLAssert.assertXMLEqual(exiGrammarsXml, exiGrammarsXmlRoundTrip);
