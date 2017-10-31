@@ -7,16 +7,12 @@ import com.siemens.ct.exi.context.GrammarUriContext;
 import com.siemens.ct.exi.context.QNameContext;
 import com.siemens.ct.exi.exceptions.UnsupportedOption;
 import com.siemens.ct.exi.grammars.Grammars;
+import com.siemens.ct.exi.grammars.SchemaInformedGrammars;
 import com.siemens.ct.exi.grammars.event.EndDocument;
 import com.siemens.ct.exi.grammars.event.Event;
 import com.siemens.ct.exi.grammars.event.StartDocument;
 import com.siemens.ct.exi.grammars.event.StartElement;
-import com.siemens.ct.exi.grammars.grammar.DocEnd;
-import com.siemens.ct.exi.grammars.grammar.Document;
-import com.siemens.ct.exi.grammars.grammar.Fragment;
-import com.siemens.ct.exi.grammars.grammar.Grammar;
-import com.siemens.ct.exi.grammars.grammar.SchemaInformedDocContent;
-import com.siemens.ct.exi.grammars.grammar.SchemaInformedFirstStartTagGrammar;
+import com.siemens.ct.exi.grammars.grammar.*;
 
 @SuppressWarnings("unused")
 public class Grammars2JavaSourceCodeTemplate implements Grammars {
@@ -164,15 +160,19 @@ public class Grammars2JavaSourceCodeTemplate implements Grammars {
 	com.siemens.ct.exi.grammars.grammar.SchemaInformedFirstStartTag g55 = new com.siemens.ct.exi.grammars.grammar.SchemaInformedFirstStartTag();
 	com.siemens.ct.exi.grammars.grammar.SchemaInformedElement g56 = new com.siemens.ct.exi.grammars.grammar.SchemaInformedElement();
 	/* END Grammars ----- */
+
+	/* BEGIN Grammars with element content ----- */
+	/* END Grammars with element content ----- */
 	
 	/* BEGIN Globals ----- */
 	com.siemens.ct.exi.grammars.event.Attribute globalAT3 = new com.siemens.ct.exi.grammars.event.Attribute(qnc3, new com.siemens.ct.exi.datatype.DatetimeDatatype(com.siemens.ct.exi.types.DateTimeType.date, qnc30));
 	com.siemens.ct.exi.grammars.event.StartElement globalSE5 = new com.siemens.ct.exi.grammars.event.StartElement(qnc5, g2);
 	/* END Globals ----- */
 
+	/* BEGIN SchemaId ----- */
 	protected String schemaId; 
-	
-	
+	/* END SchemaId ----- */
+
 	void initGlobalElements() {
 		/* BEGIN GlobalElements ----- */
 		qnc5.setGlobalStartElement(globalSE5);
@@ -428,6 +428,14 @@ public class Grammars2JavaSourceCodeTemplate implements Grammars {
 	
 	public GrammarContext getGrammarContext() {
 		return gc;
+	}
+
+	public SchemaInformedGrammars GetSchemaInformedGrammars() throws UnsupportedOption {
+		/* BEGIN SchemaInformedGrammars ----- */
+		SchemaInformedGrammars grammars = new SchemaInformedGrammars(gc, g0, g3, null);
+		/* END SchemaInformedGrammars ----- */
+		grammars.setSchemaId(schemaId);
+		return grammars;
 	}
 
 }
