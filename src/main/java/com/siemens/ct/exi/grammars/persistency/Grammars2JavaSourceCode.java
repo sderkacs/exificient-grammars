@@ -58,11 +58,17 @@ public class Grammars2JavaSourceCode {
 	protected static final String TOKEN_GRAMMARS_BEGIN = "/* BEGIN Grammars ----- */";
 	protected static final String TOKEN_GRAMMARS_END = "/* END Grammars ----- */";
 
+	protected static final String TOKEN_GRAMMARS_WITH_ELEMENT_CONTENT_BEGIN = "/* BEGIN Grammars with element content ----- */";
+	protected static final String TOKEN_GRAMMARS_WITH_ELEMENT_CONTENT_END = "/* END Grammars with element content ----- */";
+
 	protected static final String TOKEN_GRAMMAR_EVENTS_BEGIN = "/* BEGIN Grammar Events ----- */";
 	protected static final String TOKEN_GRAMMAR_EVENTS_END = "/* END Grammar Events ----- */";
 
 	protected static final String TOKEN_GLOBALS_BEGIN = "/* BEGIN Globals ----- */";
 	protected static final String TOKEN_GLOBALS_END = "/* END Globals ----- */";
+
+	protected static final String TOKEN_SCHEMA_ID_BEGIN = "/* BEGIN SchemaId ----- */";
+	protected static final String TOKEN_SCHEMA_ID_END = "/* END SchemaId ----- */";
 
 	protected static final String TOKEN_GLOBAL_ELEMENTS_BEGIN = "/* BEGIN GlobalElements ----- */";
 	protected static final String TOKEN_GLOBAL_ELEMENTS_END = "/* END GlobalElements ----- */";
@@ -81,6 +87,10 @@ public class Grammars2JavaSourceCode {
 
 	protected static final String TOKEN_FRAGMENT_GRAMMAR_BEGIN = "/* BEGIN Fragment Grammar ----- */";
 	protected static final String TOKEN_FRAGMENT_GRAMMAR_END = "/* END Fragment Grammar ----- */";
+
+	protected static final String TOKEN_SCHEMA_INFORMED_GRAMMARS_BEGIN = "/* BEGIN SchemaInformedGrammars ----- */";
+	protected static final String TOKEN_SCHEMA_INFORMED_GRAMMARS_END = "/* END SchemaInformedGrammars ----- */";
+
 
 	// package com.siemens.ct.exi.codegen;
 	protected static final String TOKEN_PACKAGE = Grammars2JavaSourceCode.class
@@ -104,15 +114,22 @@ public class Grammars2JavaSourceCode {
 	StringWriter swFirstStartGrammar;
 
 	StringWriter swGrammars;
+	StringWriter swGrammarsWithElementContent;
 	StringWriter swEvents;
 
 	int documentGrammarID;
 	int fragmentGrammarID;
+
+	String schemaId;
 	
 	SchemaInformedGrammars grammars;
 
 	public Grammars2JavaSourceCode(SchemaInformedGrammars grammars) {
 		this.grammars = grammars;
+	}
+
+	public void setSchemaId(String schemaId){
+		this.schemaId = schemaId;
 	}
 
 	protected int getQNameID(QNameContext qnc) {
@@ -303,9 +320,11 @@ public class Grammars2JavaSourceCode {
 		PrintfUtils.printfIndLn(swTypeGrammar, 1, "%s", TOKEN_TYPE_GRAMMAR_END);
 
 		swGrammars = new StringWriter();
+		swGrammarsWithElementContent = new StringWriter();
 		swEvents = new StringWriter();
 
 		PrintfUtils.printfIndLn(swGrammars, 1, "%s", TOKEN_GRAMMARS_BEGIN);
+		PrintfUtils.printfIndLn(swGrammarsWithElementContent, 1, "%s", TOKEN_GRAMMARS_WITH_ELEMENT_CONTENT_BEGIN);
 		PrintfUtils.printfIndLn(swEvents, 1, "%s", TOKEN_GRAMMAR_EVENTS_BEGIN);
 
 		// walk-over all rules
@@ -325,31 +344,30 @@ public class Grammars2JavaSourceCode {
 			switch (r.getGrammarType()) {
 			/* Root grammars */
 			case DOCUMENT:
-				sConstructor = "new " + Document.class.getName() + "()";
 				documentGrammarID = currentID;
+				PrintfUtils.printfIndLn(swGrammars, 1, "%s g%d = new %s();",
+						r.getClass().getName(), currentID, r.getClass().getName());
 				break;
 			case FRAGMENT:
-				sConstructor = "new " + Fragment.class.getName() + "()";
 				fragmentGrammarID = currentID;
+				PrintfUtils.printfIndLn(swGrammars, 1, "%s g%d = new %s();",
+						r.getClass().getName(), currentID, r.getClass().getName());
 				break;
 			case DOC_END:
-				sConstructor = "new " + DocEnd.class.getName() + "()";
-				break;
 			/* Schema-informed Document and Fragment Grammars */
 			case SCHEMA_INFORMED_DOC_CONTENT:
-				sConstructor = "new "
-						+ SchemaInformedDocContent.class.getName() + "()";
-				break;
 			case SCHEMA_INFORMED_FRAGMENT_CONTENT:
-				sConstructor = "new "
-						+ SchemaInformedFragmentContent.class.getName() + "()";
+			case SCHEMA_INFORMED_ELEMENT_CONTENT:
+				PrintfUtils.printfIndLn(swGrammars, 1, "%s g%d = new %s();",
+						r.getClass().getName(), currentID, r.getClass().getName());
 				break;
 			/* Schema-informed Element and Type Grammars */
-			case SCHEMA_INFORMED_FIRST_START_TAG_CONTENT:
-				sConstructor = "new "
-						+ SchemaInformedFirstStartTag.class.getName() + "()";
+			case SCHEMA_INFORMED_FIRST_START_TAG_CONTENT: {
 				SchemaInformedFirstStartTag sifst = (SchemaInformedFirstStartTag) r;
-
+				Grammar elementContentGrammar = sifst.getElementContentGrammar();
+				int elementContentGrammarID = gpreps.getGrammarID(elementContentGrammar);
+				PrintfUtils.printfIndLn(swGrammarsWithElementContent, 1, "%s g%d = new %s(g%d);",
+						r.getClass().getName(), currentID, r.getClass().getName(), elementContentGrammarID);
 				/*
 				 * g2.setElementContentGrammar(null); g2.setTypeCastable(false);
 				 * g2.setNillable(false); g2.setTypeEmpty(null);
@@ -362,7 +380,7 @@ public class Grammars2JavaSourceCode {
 						currentID,
 						"g"
 								+ gpreps.getGrammarID(sifst
-										.getElementContentGrammar()));
+								.getElementContentGrammar()));
 				if (sifst.isTypeCastable()) {
 					PrintfUtils.printfIndLn(swFirstStartGrammar, 1,
 							"g%d.setTypeCastable(%s);", currentID,
@@ -374,14 +392,15 @@ public class Grammars2JavaSourceCode {
 							sifst.isNillable());
 				}
 				break;
-			case SCHEMA_INFORMED_START_TAG_CONTENT:
-				sConstructor = "new " + SchemaInformedStartTag.class.getName()
-						+ "()";
+			}
+			case SCHEMA_INFORMED_START_TAG_CONTENT: {
+				SchemaInformedStartTag sist = (SchemaInformedStartTag) r;
+				Grammar elementContentGrammar = sist.getElementContentGrammar();
+				int elementContentGrammarID = gpreps.getGrammarID(elementContentGrammar);
+				PrintfUtils.printfIndLn(swGrammarsWithElementContent, 1, "%s g%d = new %s(g%d);",
+						r.getClass().getName(), currentID, r.getClass().getName(), elementContentGrammarID);
 				break;
-			case SCHEMA_INFORMED_ELEMENT_CONTENT:
-				sConstructor = "new " + SchemaInformedElement.class.getName()
-						+ "()";
-				break;
+			}
 			/* Built-in Document and Fragment Grammars */
 			case BUILT_IN_DOC_CONTENT:
 			case BUILT_IN_FRAGMENT_CONTENT:
@@ -393,13 +412,9 @@ public class Grammars2JavaSourceCode {
 				/* break; */
 			}
 
-			PrintfUtils.printfIndLn(swGrammars, 1, "%s g%d = %s;", r.getClass()
-					.getName(), currentID, sConstructor);
-
 			/*
 			 * Specific Events (encode and decode)
 			 */
-			sConstructor = null;
 			for (int eventCode = 0; eventCode < numberOfEvents; eventCode++) {
 				Production ei = r.getProduction(eventCode);
 				int nextID = gpreps.getGrammarID(ei.getNextGrammar());
@@ -489,6 +504,8 @@ public class Grammars2JavaSourceCode {
 		PrintfUtils.printfIndLn(swGrammars, 1, "%s", TOKEN_GRAMMARS_END);
 		PrintfUtils.printfIndLn(swFirstStartGrammar, 1, "%s",
 				TOKEN_FIRST_STARTTAG_GRAMMAR_END);
+
+
 	}
 
 	public static String readFileToString(File file) throws IOException {
@@ -541,9 +558,17 @@ public class Grammars2JavaSourceCode {
 		// grammars
 		this.replace(sStaticSimpleGrammar, TOKEN_GRAMMARS_BEGIN,
 				TOKEN_GRAMMARS_END, swGrammars.toString());
+		// grammars
+		this.replace(sStaticSimpleGrammar, TOKEN_GRAMMARS_WITH_ELEMENT_CONTENT_BEGIN,
+				TOKEN_GRAMMARS_WITH_ELEMENT_CONTENT_END, swGrammarsWithElementContent.toString());
 		// globals (ATs, SEs)
 		this.replace(sStaticSimpleGrammar, TOKEN_GLOBALS_BEGIN,
 				TOKEN_GLOBALS_END, swGlobals.toString());
+		// schemaId
+		if (schemaId != null) {
+			this.replace(sStaticSimpleGrammar, TOKEN_SCHEMA_ID_BEGIN,
+					TOKEN_SCHEMA_ID_END, "protected String schemaId = \"" + schemaId + "\";");
+		}
 		// globals elements
 		this.replace(sStaticSimpleGrammar, TOKEN_GLOBAL_ELEMENTS_BEGIN,
 				TOKEN_GLOBAL_ELEMENTS_END, swGlobalElements.toString());
@@ -582,6 +607,11 @@ public class Grammars2JavaSourceCode {
 				"public class " + className);
 		this.replace(sStaticSimpleGrammar, TOKEN_CLASS_CONSTRUCTOR,
 				TOKEN_CLASS_CONSTRUCTOR, "public " + className );
+
+		int siefGrammarID = gpreps.getGrammarID(grammars.getSchemaInformedElementFragmentGrammar());
+		this.replace(sStaticSimpleGrammar, TOKEN_SCHEMA_INFORMED_GRAMMARS_BEGIN,
+				TOKEN_SCHEMA_INFORMED_GRAMMARS_END,
+				"SchemaInformedGrammars grammars = new SchemaInformedGrammars(gc, g" + documentGrammarID + ", g" + fragmentGrammarID  + ", g" + siefGrammarID + ");");
 
 		return sStaticSimpleGrammar.toString();
 	}
@@ -684,8 +714,8 @@ public class Grammars2JavaSourceCode {
 	}
 
 	public static void main(String[] args) throws EXIException, IOException {
-		String className = "Notebook";
-		String xsd = "./data/W3C/PrimerNotebook/notebook.xsd";
+		String className = "GrammarsForGrammars";
+		String xsd = "./src/main/resources/SchemaForGrammars.xsd";
 		
 //		String className = "ISO15118_2_2013";
 //		String xsd = "..\\V2G_CI_MsgDef.xsd";
@@ -700,7 +730,7 @@ public class Grammars2JavaSourceCode {
 		SchemaInformedGrammars grammarIn = grammarBuilder.toGrammars();
 
 		Grammars2JavaSourceCode grammar2Java = new Grammars2JavaSourceCode(grammarIn);
-
+		grammar2Java.setSchemaId("http://www.ct.siemens.com/exi/2017/SchemaForGrammars");
 		grammar2Java.generateCode();
 
 		String sf = grammar2Java.getGrammars(
