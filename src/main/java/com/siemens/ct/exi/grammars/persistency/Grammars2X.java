@@ -43,6 +43,8 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Result;
+import javax.xml.transform.stream.StreamResult;
 
 import com.siemens.ct.exi.Constants;
 import com.siemens.ct.exi._2017.schemaforgrammars.DatatypeBasics;
@@ -150,11 +152,10 @@ public class Grammars2X {
 		return jc;
 	}
 
-	public static void marshal(ExiGrammars exiGrammars,
-							   OutputStream outputStream) throws JAXBException {
+	public static void marshal(ExiGrammars exiGrammars, Result result) throws JAXBException {
 		Marshaller m = getJAXBContext().createMarshaller();
-		m.setProperty("jaxb.formatted.output", Boolean.TRUE);
-		m.marshal(exiGrammars, outputStream);
+		// m.setProperty("jaxb.formatted.output", Boolean.TRUE);
+		m.marshal(exiGrammars, result);
 	}
 
 	public static void marshal(ExiGrammars exiGrammars,
@@ -1284,7 +1285,7 @@ public class Grammars2X {
 		 */
 		ExiGrammars exiGrammar = g2j.toGrammarsX(grammarIn);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		marshal(exiGrammar, baos);
+		marshal(exiGrammar, new StreamResult(baos));
 		System.out.println(new String(baos.toByteArray()));
 
 		/*
