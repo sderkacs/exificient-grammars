@@ -396,6 +396,9 @@ public class Grammars2JavaSourceCode {
 			case SCHEMA_INFORMED_START_TAG_CONTENT: {
 				SchemaInformedStartTag sist = (SchemaInformedStartTag) r;
 				Grammar elementContentGrammar = sist.getElementContentGrammar();
+				if(elementContentGrammar instanceof SchemaInformedStartTag) {
+					System.err.println("Error for " + sist + " and " + elementContentGrammar);
+				}
 				int elementContentGrammarID = gpreps.getGrammarID(elementContentGrammar);
 				PrintfUtils.printfIndLn(swGrammarsWithElementContent, 1, "%s g%d = new %s(g%d);",
 						r.getClass().getName(), currentID, r.getClass().getName(), elementContentGrammarID);

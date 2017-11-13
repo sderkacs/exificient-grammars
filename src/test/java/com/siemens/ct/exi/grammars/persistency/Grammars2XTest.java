@@ -140,4 +140,9 @@ public class Grammars2XTest extends TestCase {
     public void testRoundTripExiGrammarsXmlNotebook() throws Exception {
         testRoundTripExiGrammarsXml("data/W3C/PrimerNotebook/notebook.xsd");
     }
+    
+    @Test
+    public void testRoundTripExiGrammarsGaml100() throws Exception {
+        testRoundTripExiGrammarsXml("data/Gaml/gaml100.xsd");
+    }
 }
