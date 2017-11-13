@@ -73,6 +73,7 @@ public class Grammars2JavaSourceCodeTest extends TestCase {
 			if (inpMsg != null) {
 				errMsg += "\nCompilerMsg:\n" + inpMsg;
 			}
+			System.err.println(errMsg);
 			fail(errMsg);
 		}
 	}
