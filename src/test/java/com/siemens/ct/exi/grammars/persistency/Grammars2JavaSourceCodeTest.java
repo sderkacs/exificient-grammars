@@ -67,13 +67,13 @@ public class Grammars2JavaSourceCodeTest extends TestCase {
 	    String errMsg = getMsg(process.getErrorStream());
 		String inpMsg = getMsg(process.getInputStream());
 		
-		if (errMsg == null) {
+		if (errMsg == null || errMsg.startsWith("Picked up _JAVA_OPTIONS")) {
 			// NO Error
+			// Travis seems to report always "Picked up _JAVA_OPTIONS: -Xmx2048m -Xms512m"
 		} else {
 			if (inpMsg != null) {
 				errMsg += "\nCompilerMsg:\n" + inpMsg;
 			}
-			System.out.println("Error: " + errMsg);
 			fail(errMsg);
 		}
 	}
