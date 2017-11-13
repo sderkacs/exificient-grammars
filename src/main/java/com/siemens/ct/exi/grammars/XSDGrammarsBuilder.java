@@ -1685,6 +1685,15 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 		// (used for content schema-deviations in start-tags, direct
 		// jumps)
 		SchemaInformedGrammar ruleContent2 = ruleContent.duplicate();
+		if(ruleContent2 instanceof SchemaInformedStartTagGrammar) {
+			// --> copy to schema informed elements grammar
+			SchemaInformedElement sie = new SchemaInformedElement();
+			for(int i=0; i<ruleContent2.getNumberOfEvents(); i++) {
+				Production p = ruleContent2.getProduction(i);
+				sie.addProduction(p.getEvent(), p.getNextGrammar());
+			}
+			ruleContent2 = sie;
+		}
 
 		// attributes
 		XSObjectList attributes = ctd.getAttributeUses();
