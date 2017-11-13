@@ -125,12 +125,11 @@ public class Grammars2JavaSourceCodeTest extends TestCase {
 	
 	
 	String getTemporaryFolder(String prefix) throws IOException {
-
-		
-		String dirName = WORKSPACE_DIR != null  ? WORKSPACE_DIR + FILE_SEPARATOR : TMP_DIR; // + FILE_SEPARATOR; // System.getProperty("java.io.tmpdir");
+		String dirName = TMP_DIR; // + FILE_SEPARATOR; // System.getProperty("java.io.tmpdir");
 		// String dirName = "D:" + FILE_SEPARATOR + "EXI_TMP" ;
-		dirName += prefix + + System.currentTimeMillis()
-				+ FILE_SEPARATOR;
+		dirName += FILE_SEPARATOR + prefix + System.currentTimeMillis()
+//				+ FILE_SEPARATOR
+				;
 
 		File f = new File(dirName);
 
