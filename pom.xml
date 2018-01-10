@@ -69,13 +69,13 @@
 			<version>1.6</version>
 			<scope>test</scope>
 		</dependency>
-		<!--<dependency>
-			<!- - to allows persistency checking - ->
+		<dependency>
+			<!-- to allows persistency checking -->
 			<groupId>com.siemens.ct.exi</groupId>
 			<artifactId>exificient</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 			<scope>test</scope>
-		</dependency>-->
+		</dependency>
 	</dependencies>
 
 	<properties>
