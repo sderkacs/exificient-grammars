@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007-2016 Siemens AG
+ * Copyright (c) 2007-2018 Siemens AG
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,15 +27,15 @@ import java.io.ByteArrayInputStream;
 
 import junit.framework.TestCase;
 
-import com.siemens.ct.exi.GrammarFactory;
-import com.siemens.ct.exi.context.QNameContext;
-import com.siemens.ct.exi.datatype.Datatype;
-import com.siemens.ct.exi.datatype.EnumDatatype;
-import com.siemens.ct.exi.datatype.EnumerationDatatype;
-import com.siemens.ct.exi.grammars.event.Characters;
-import com.siemens.ct.exi.grammars.event.Event;
-import com.siemens.ct.exi.grammars.event.EventType;
-import com.siemens.ct.exi.types.BuiltInType;
+import com.siemens.ct.exi.core.context.QNameContext;
+import com.siemens.ct.exi.core.datatype.Datatype;
+import com.siemens.ct.exi.core.datatype.EnumDatatype;
+import com.siemens.ct.exi.core.datatype.EnumerationDatatype;
+import com.siemens.ct.exi.core.grammars.Grammars;
+import com.siemens.ct.exi.core.grammars.event.Characters;
+import com.siemens.ct.exi.core.grammars.event.Event;
+import com.siemens.ct.exi.core.grammars.event.EventType;
+import com.siemens.ct.exi.core.types.BuiltInType;
 
 public class GrammarAnnotationTest extends TestCase {
 	

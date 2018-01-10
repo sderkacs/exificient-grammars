@@ -17,9 +17,9 @@
     * THE POSSIBILITY OF SUCH DAMAGE.
     *
 -->
-<xs:schema targetNamespace="http://www.ct.siemens.com/exi/2017/SchemaForGrammars"
+<xs:schema targetNamespace="http://www.ct.siemens.com/exi/grammars/2017/SchemaForGrammars"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:exi="http://www.ct.siemens.com/exi/2017/SchemaForGrammars" elementFormDefault="qualified">
+    xmlns:exi="http://www.ct.siemens.com/exi/grammars/2017/SchemaForGrammars" elementFormDefault="qualified">
     <!-- ********************************************** -->
     <!-- GENERAL COMMENTS & IDEAS -->
     <!-- ********************************************** -->

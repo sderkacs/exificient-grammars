@@ -5,7 +5,7 @@
 	<artifactId>exificient-grammars</artifactId>
 	<name>EXIficient-Grammars</name>
 	<url>http://exificient.github.io/</url>
-	<version>0.9.7-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<description>EXIficient is an open source implementation of the W3C Efficient XML Interchange
     (EXI) format specification written in the Java programming language. The EXI format is a very
@@ -48,7 +48,7 @@
 		<dependency>
 			<groupId>com.siemens.ct.exi</groupId>
 			<artifactId>exificient-core</artifactId>
-			<version>0.9.7-SNAPSHOT</version>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<!-- Runtime Dependencies (schema-informed mode) -->
 		<dependency>
@@ -69,19 +69,20 @@
 			<version>1.6</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<!-- to allows persistency checking -->
+		<!--<dependency>
+			<!- - to allows persistency checking - ->
 			<groupId>com.siemens.ct.exi</groupId>
 			<artifactId>exificient</artifactId>
-			<version>0.9.7-SNAPSHOT</version>
+			<version>1.0.0-SNAPSHOT</version>
 			<scope>test</scope>
-		</dependency>
+		</dependency>-->
 	</dependencies>
 
 	<properties>
 		<!-- maven-compiler-plugin configuration -->
 		<maven.compiler.source>1.5</maven.compiler.source>
 		<maven.compiler.target>1.5</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 
@@ -172,7 +173,7 @@
 							<sources>
 								<source>src/main/resources/SchemaForGrammars.xsd</source>
 							</sources>
-							<packageName>com.siemens.ct.exi._2017.schemaforgrammars</packageName>
+							<packageName>com.siemens.ct.exi.grammars._2017.schemaforgrammars</packageName>
 						</configuration>
 					</execution>
 				</executions>

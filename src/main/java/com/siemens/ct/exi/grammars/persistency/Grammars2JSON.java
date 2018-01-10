@@ -1,7 +1,7 @@
 package com.siemens.ct.exi.grammars.persistency;
 
 /*
- * Copyright (c) 2007-2016 Siemens AG
+ * Copyright (c) 2007-2018 Siemens AG
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,43 +31,43 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.siemens.ct.exi.context.GrammarContext;
-import com.siemens.ct.exi.context.GrammarUriContext;
-import com.siemens.ct.exi.context.QNameContext;
-import com.siemens.ct.exi.datatype.Datatype;
-import com.siemens.ct.exi.datatype.DatetimeDatatype;
-import com.siemens.ct.exi.datatype.EnumerationDatatype;
-import com.siemens.ct.exi.datatype.ListDatatype;
-import com.siemens.ct.exi.datatype.NBitUnsignedIntegerDatatype;
-import com.siemens.ct.exi.datatype.RestrictedCharacterSetDatatype;
-import com.siemens.ct.exi.datatype.charset.RestrictedCharacterSet;
-import com.siemens.ct.exi.exceptions.EXIException;
-import com.siemens.ct.exi.grammars.SchemaInformedGrammars;
+import com.siemens.ct.exi.core.context.GrammarContext;
+import com.siemens.ct.exi.core.context.GrammarUriContext;
+import com.siemens.ct.exi.core.context.QNameContext;
+import com.siemens.ct.exi.core.datatype.Datatype;
+import com.siemens.ct.exi.core.datatype.DatetimeDatatype;
+import com.siemens.ct.exi.core.datatype.EnumerationDatatype;
+import com.siemens.ct.exi.core.datatype.ListDatatype;
+import com.siemens.ct.exi.core.datatype.NBitUnsignedIntegerDatatype;
+import com.siemens.ct.exi.core.datatype.RestrictedCharacterSetDatatype;
+import com.siemens.ct.exi.core.datatype.charset.RestrictedCharacterSet;
+import com.siemens.ct.exi.core.exceptions.EXIException;
+import com.siemens.ct.exi.core.grammars.SchemaInformedGrammars;
 import com.siemens.ct.exi.grammars.XSDGrammarsBuilder;
-import com.siemens.ct.exi.grammars.event.Attribute;
-import com.siemens.ct.exi.grammars.event.AttributeNS;
-import com.siemens.ct.exi.grammars.event.Characters;
-import com.siemens.ct.exi.grammars.event.DatatypeEvent;
-import com.siemens.ct.exi.grammars.event.Event;
-import com.siemens.ct.exi.grammars.event.EventType;
-import com.siemens.ct.exi.grammars.event.StartElement;
-import com.siemens.ct.exi.grammars.event.StartElementNS;
-import com.siemens.ct.exi.grammars.grammar.DocEnd;
-import com.siemens.ct.exi.grammars.grammar.Document;
-import com.siemens.ct.exi.grammars.grammar.Fragment;
-import com.siemens.ct.exi.grammars.grammar.Grammar;
-import com.siemens.ct.exi.grammars.grammar.SchemaInformedDocContent;
-import com.siemens.ct.exi.grammars.grammar.SchemaInformedElement;
-import com.siemens.ct.exi.grammars.grammar.SchemaInformedFirstStartTagGrammar;
-import com.siemens.ct.exi.grammars.grammar.SchemaInformedFragmentContent;
-import com.siemens.ct.exi.grammars.grammar.SchemaInformedGrammar;
-import com.siemens.ct.exi.grammars.grammar.SchemaInformedStartTagGrammar;
-import com.siemens.ct.exi.grammars.production.Production;
-import com.siemens.ct.exi.types.BuiltIn;
-import com.siemens.ct.exi.types.BuiltInType;
-import com.siemens.ct.exi.util.PrintfUtils;
-import com.siemens.ct.exi.values.IntegerValue;
-import com.siemens.ct.exi.values.Value;
+import com.siemens.ct.exi.grammars.util.PrintfUtils;
+import com.siemens.ct.exi.core.grammars.event.Attribute;
+import com.siemens.ct.exi.core.grammars.event.AttributeNS;
+import com.siemens.ct.exi.core.grammars.event.Characters;
+import com.siemens.ct.exi.core.grammars.event.DatatypeEvent;
+import com.siemens.ct.exi.core.grammars.event.Event;
+import com.siemens.ct.exi.core.grammars.event.EventType;
+import com.siemens.ct.exi.core.grammars.event.StartElement;
+import com.siemens.ct.exi.core.grammars.event.StartElementNS;
+import com.siemens.ct.exi.core.grammars.grammar.DocEnd;
+import com.siemens.ct.exi.core.grammars.grammar.Document;
+import com.siemens.ct.exi.core.grammars.grammar.Fragment;
+import com.siemens.ct.exi.core.grammars.grammar.Grammar;
+import com.siemens.ct.exi.core.grammars.grammar.SchemaInformedDocContent;
+import com.siemens.ct.exi.core.grammars.grammar.SchemaInformedElement;
+import com.siemens.ct.exi.core.grammars.grammar.SchemaInformedFirstStartTagGrammar;
+import com.siemens.ct.exi.core.grammars.grammar.SchemaInformedFragmentContent;
+import com.siemens.ct.exi.core.grammars.grammar.SchemaInformedGrammar;
+import com.siemens.ct.exi.core.grammars.grammar.SchemaInformedStartTagGrammar;
+import com.siemens.ct.exi.core.grammars.production.Production;
+import com.siemens.ct.exi.core.types.BuiltIn;
+import com.siemens.ct.exi.core.types.BuiltInType;
+import com.siemens.ct.exi.core.values.IntegerValue;
+import com.siemens.ct.exi.core.values.Value;
 
 public class Grammars2JSON {
 	
