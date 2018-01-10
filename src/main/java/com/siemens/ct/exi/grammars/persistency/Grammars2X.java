@@ -26,7 +26,6 @@ package com.siemens.ct.exi.grammars.persistency;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
@@ -47,14 +46,6 @@ import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamResult;
 
 import com.siemens.ct.exi.core.Constants;
-import com.siemens.ct.exi.grammars._2017.schemaforgrammars.DatatypeBasics;
-import com.siemens.ct.exi.grammars._2017.schemaforgrammars.DatatypeBasics.DateAndTime;
-import com.siemens.ct.exi.grammars._2017.schemaforgrammars.DatatypeBasics.Integer.NBitUnsignedInteger;
-import com.siemens.ct.exi.grammars._2017.schemaforgrammars.ExiGrammars;
-import com.siemens.ct.exi.grammars._2017.schemaforgrammars.GrammarType;
-import com.siemens.ct.exi.grammars._2017.schemaforgrammars.NamespaceContext;
-import com.siemens.ct.exi.grammars._2017.schemaforgrammars.NamespaceContext.QnameContext;
-import com.siemens.ct.exi.grammars._2017.schemaforgrammars.ObjectFactory;
 import com.siemens.ct.exi.core.context.GrammarContext;
 import com.siemens.ct.exi.core.context.GrammarUriContext;
 import com.siemens.ct.exi.core.context.QNameContext;
@@ -77,7 +68,6 @@ import com.siemens.ct.exi.core.datatype.charset.CodePointCharacterSet;
 import com.siemens.ct.exi.core.datatype.charset.RestrictedCharacterSet;
 import com.siemens.ct.exi.core.exceptions.EXIException;
 import com.siemens.ct.exi.core.grammars.SchemaInformedGrammars;
-import com.siemens.ct.exi.grammars.XSDGrammarsBuilder;
 import com.siemens.ct.exi.core.grammars.event.Attribute;
 import com.siemens.ct.exi.core.grammars.event.AttributeGeneric;
 import com.siemens.ct.exi.core.grammars.event.AttributeNS;
@@ -117,6 +107,15 @@ import com.siemens.ct.exi.core.values.FloatValue;
 import com.siemens.ct.exi.core.values.IntegerValue;
 import com.siemens.ct.exi.core.values.StringValue;
 import com.siemens.ct.exi.core.values.Value;
+import com.siemens.ct.exi.grammars.XSDGrammarsBuilder;
+import com.siemens.ct.exi.grammars._2017.schemaforgrammars.DatatypeBasics;
+import com.siemens.ct.exi.grammars._2017.schemaforgrammars.DatatypeBasics.DateAndTime;
+import com.siemens.ct.exi.grammars._2017.schemaforgrammars.DatatypeBasics.Integer.NBitUnsignedInteger;
+import com.siemens.ct.exi.grammars._2017.schemaforgrammars.ExiGrammars;
+import com.siemens.ct.exi.grammars._2017.schemaforgrammars.GrammarType;
+import com.siemens.ct.exi.grammars._2017.schemaforgrammars.NamespaceContext;
+import com.siemens.ct.exi.grammars._2017.schemaforgrammars.NamespaceContext.QnameContext;
+import com.siemens.ct.exi.grammars._2017.schemaforgrammars.ObjectFactory;
 
 public class Grammars2X {
 

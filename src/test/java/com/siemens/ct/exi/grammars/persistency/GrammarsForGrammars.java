@@ -8,13 +8,8 @@ import com.siemens.ct.exi.core.context.QNameContext;
 import com.siemens.ct.exi.core.exceptions.UnsupportedOption;
 import com.siemens.ct.exi.core.grammars.Grammars;
 import com.siemens.ct.exi.core.grammars.SchemaInformedGrammars;
-import com.siemens.ct.exi.core.grammars.event.EndDocument;
-import com.siemens.ct.exi.core.grammars.event.Event;
-import com.siemens.ct.exi.core.grammars.event.StartDocument;
-import com.siemens.ct.exi.core.grammars.event.StartElement;
-import com.siemens.ct.exi.core.grammars.grammar.*;
+import com.siemens.ct.exi.core.grammars.grammar.Grammar;
 
-@SuppressWarnings("unused")
 public class GrammarsForGrammars implements Grammars {
 
     /* BEGIN GrammarContext ----- */

@@ -1,18 +1,10 @@
 package com.siemens.ct.exi.grammars.persistency;
 
-import com.siemens.ct.exi.core.CodingMode;
-import com.siemens.ct.exi.core.EXIFactory;
-import com.siemens.ct.exi.core.EncodingOptions;
-import com.siemens.ct.exi.core.SchemaIdResolver;
-import com.siemens.ct.exi.grammars._2017.schemaforgrammars.ExiGrammars;
-import com.siemens.ct.exi.main.api.sax.EXIResult;
-import com.siemens.ct.exi.main.api.sax.SAXFactory;
-import com.siemens.ct.exi.core.exceptions.EXIException;
-import com.siemens.ct.exi.core.exceptions.UnsupportedOption;
-import com.siemens.ct.exi.core.grammars.Grammars;
-import com.siemens.ct.exi.core.grammars.SchemaInformedGrammars;
-import com.siemens.ct.exi.grammars.XSDGrammarsBuilder;
-import com.siemens.ct.exi.core.helpers.DefaultEXIFactory;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+
+import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.stream.StreamResult;
 
 import junit.framework.TestCase;
 
@@ -22,11 +14,19 @@ import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-
-import javax.xml.transform.sax.SAXSource;
-import javax.xml.transform.stream.StreamResult;
+import com.siemens.ct.exi.core.CodingMode;
+import com.siemens.ct.exi.core.EXIFactory;
+import com.siemens.ct.exi.core.EncodingOptions;
+import com.siemens.ct.exi.core.SchemaIdResolver;
+import com.siemens.ct.exi.core.exceptions.EXIException;
+import com.siemens.ct.exi.core.exceptions.UnsupportedOption;
+import com.siemens.ct.exi.core.grammars.Grammars;
+import com.siemens.ct.exi.core.grammars.SchemaInformedGrammars;
+import com.siemens.ct.exi.core.helpers.DefaultEXIFactory;
+import com.siemens.ct.exi.grammars.XSDGrammarsBuilder;
+import com.siemens.ct.exi.grammars._2017.schemaforgrammars.ExiGrammars;
+import com.siemens.ct.exi.main.api.sax.EXIResult;
+import com.siemens.ct.exi.main.api.sax.SAXFactory;
 
 public class Grammars2ExiTest extends TestCase {
     XSDGrammarsBuilder grammarBuilder = XSDGrammarsBuilder.newInstance();

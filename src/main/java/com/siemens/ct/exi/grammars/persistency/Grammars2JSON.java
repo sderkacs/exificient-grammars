@@ -43,8 +43,6 @@ import com.siemens.ct.exi.core.datatype.RestrictedCharacterSetDatatype;
 import com.siemens.ct.exi.core.datatype.charset.RestrictedCharacterSet;
 import com.siemens.ct.exi.core.exceptions.EXIException;
 import com.siemens.ct.exi.core.grammars.SchemaInformedGrammars;
-import com.siemens.ct.exi.grammars.XSDGrammarsBuilder;
-import com.siemens.ct.exi.grammars.util.PrintfUtils;
 import com.siemens.ct.exi.core.grammars.event.Attribute;
 import com.siemens.ct.exi.core.grammars.event.AttributeNS;
 import com.siemens.ct.exi.core.grammars.event.Characters;
@@ -68,6 +66,8 @@ import com.siemens.ct.exi.core.types.BuiltIn;
 import com.siemens.ct.exi.core.types.BuiltInType;
 import com.siemens.ct.exi.core.values.IntegerValue;
 import com.siemens.ct.exi.core.values.Value;
+import com.siemens.ct.exi.grammars.XSDGrammarsBuilder;
+import com.siemens.ct.exi.grammars.util.PrintfUtils;
 
 public class Grammars2JSON {
 	

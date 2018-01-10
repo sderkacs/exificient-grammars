@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.siemens.ct.exi.grammars.persistency.GrammarIdDispenser;
 import com.siemens.ct.exi.core.context.GrammarContext;
 import com.siemens.ct.exi.core.context.GrammarUriContext;
 import com.siemens.ct.exi.core.context.QNameContext;

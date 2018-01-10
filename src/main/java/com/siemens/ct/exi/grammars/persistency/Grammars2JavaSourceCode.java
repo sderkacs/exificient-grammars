@@ -21,8 +21,6 @@ import com.siemens.ct.exi.core.datatype.ListDatatype;
 import com.siemens.ct.exi.core.datatype.NBitUnsignedIntegerDatatype;
 import com.siemens.ct.exi.core.exceptions.EXIException;
 import com.siemens.ct.exi.core.grammars.SchemaInformedGrammars;
-import com.siemens.ct.exi.grammars.XSDGrammarsBuilder;
-import com.siemens.ct.exi.grammars.util.PrintfUtils;
 import com.siemens.ct.exi.core.grammars.event.Attribute;
 import com.siemens.ct.exi.core.grammars.event.AttributeGeneric;
 import com.siemens.ct.exi.core.grammars.event.Characters;
@@ -33,15 +31,9 @@ import com.siemens.ct.exi.core.grammars.event.StartDocument;
 import com.siemens.ct.exi.core.grammars.event.StartElement;
 import com.siemens.ct.exi.core.grammars.event.StartElementGeneric;
 import com.siemens.ct.exi.core.grammars.event.StartElementNS;
-import com.siemens.ct.exi.core.grammars.grammar.DocEnd;
-import com.siemens.ct.exi.core.grammars.grammar.Document;
-import com.siemens.ct.exi.core.grammars.grammar.Fragment;
 import com.siemens.ct.exi.core.grammars.grammar.Grammar;
-import com.siemens.ct.exi.core.grammars.grammar.SchemaInformedDocContent;
-import com.siemens.ct.exi.core.grammars.grammar.SchemaInformedElement;
 import com.siemens.ct.exi.core.grammars.grammar.SchemaInformedFirstStartTag;
 import com.siemens.ct.exi.core.grammars.grammar.SchemaInformedFirstStartTagGrammar;
-import com.siemens.ct.exi.core.grammars.grammar.SchemaInformedFragmentContent;
 import com.siemens.ct.exi.core.grammars.grammar.SchemaInformedStartTag;
 import com.siemens.ct.exi.core.grammars.production.Production;
 import com.siemens.ct.exi.core.types.BuiltIn;
@@ -49,6 +41,8 @@ import com.siemens.ct.exi.core.types.BuiltInType;
 import com.siemens.ct.exi.core.values.IntegerValue;
 import com.siemens.ct.exi.core.values.StringValue;
 import com.siemens.ct.exi.core.values.Value;
+import com.siemens.ct.exi.grammars.XSDGrammarsBuilder;
+import com.siemens.ct.exi.grammars.util.PrintfUtils;
 
 public class Grammars2JavaSourceCode {
 

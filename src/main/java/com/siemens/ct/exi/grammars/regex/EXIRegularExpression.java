@@ -29,6 +29,12 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.siemens.ct.exi.grammars.regex.Token.CharToken;
+import com.siemens.ct.exi.grammars.regex.Token.ClosureToken;
+import com.siemens.ct.exi.grammars.regex.Token.ConcatToken;
+import com.siemens.ct.exi.grammars.regex.Token.ParenToken;
+import com.siemens.ct.exi.grammars.regex.Token.StringToken;
+import com.siemens.ct.exi.grammars.regex.Token.UnionToken;
 //import org.apache.xerces.impl.xpath.regex.RangeToken;
 //import org.apache.xerces.impl.xpath.regex.Token;
 //import org.apache.xerces.impl.xpath.regex.Token.CharToken;
@@ -37,21 +43,6 @@ import java.util.regex.Pattern;
 //import org.apache.xerces.impl.xpath.regex.Token.ParenToken;
 //import org.apache.xerces.impl.xpath.regex.Token.StringToken;
 //import org.apache.xerces.impl.xpath.regex.Token.UnionToken;
-
-
-
-
-
-
-
-
-import com.siemens.ct.exi.grammars.regex.RegularExpression;
-import com.siemens.ct.exi.grammars.regex.Token.CharToken;
-import com.siemens.ct.exi.grammars.regex.Token.ClosureToken;
-import com.siemens.ct.exi.grammars.regex.Token.ConcatToken;
-import com.siemens.ct.exi.grammars.regex.Token.ParenToken;
-import com.siemens.ct.exi.grammars.regex.Token.StringToken;
-import com.siemens.ct.exi.grammars.regex.Token.UnionToken;
 
 /**
  * XML Schema - Regular Expression parser <br>
