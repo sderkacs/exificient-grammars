@@ -7,8 +7,8 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import com.siemens.ct.exi.exceptions.EXIException;
-import com.siemens.ct.exi.grammars.SchemaInformedGrammars;
+import com.siemens.ct.exi.core.exceptions.EXIException;
+import com.siemens.ct.exi.core.grammars.SchemaInformedGrammars;
 import com.siemens.ct.exi.grammars.XSDGrammarsBuilder;
 
 public class Grammars2JSONTest extends TestCase {

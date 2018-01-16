@@ -2,17 +2,17 @@ package com.siemens.ct.exi.grammars.persistency;
 
 import javax.xml.namespace.QName;
 
-import com.siemens.ct.exi.context.GrammarContext;
-import com.siemens.ct.exi.context.GrammarUriContext;
-import com.siemens.ct.exi.context.QNameContext;
-import com.siemens.ct.exi.exceptions.UnsupportedOption;
-import com.siemens.ct.exi.grammars.Grammars;
-import com.siemens.ct.exi.grammars.SchemaInformedGrammars;
-import com.siemens.ct.exi.grammars.event.EndDocument;
-import com.siemens.ct.exi.grammars.event.Event;
-import com.siemens.ct.exi.grammars.event.StartDocument;
-import com.siemens.ct.exi.grammars.event.StartElement;
-import com.siemens.ct.exi.grammars.grammar.*;
+import com.siemens.ct.exi.core.context.GrammarContext;
+import com.siemens.ct.exi.core.context.GrammarUriContext;
+import com.siemens.ct.exi.core.context.QNameContext;
+import com.siemens.ct.exi.core.exceptions.UnsupportedOption;
+import com.siemens.ct.exi.core.grammars.Grammars;
+import com.siemens.ct.exi.core.grammars.SchemaInformedGrammars;
+import com.siemens.ct.exi.core.grammars.event.EndDocument;
+import com.siemens.ct.exi.core.grammars.event.Event;
+import com.siemens.ct.exi.core.grammars.event.StartDocument;
+import com.siemens.ct.exi.core.grammars.event.StartElement;
+import com.siemens.ct.exi.core.grammars.grammar.*;
 
 @SuppressWarnings("unused")
 public class Grammars2JavaSourceCodeTemplate implements Grammars {

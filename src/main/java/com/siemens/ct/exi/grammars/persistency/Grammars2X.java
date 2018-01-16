@@ -26,7 +26,6 @@ package com.siemens.ct.exi.grammars.persistency;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
@@ -46,77 +45,77 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamResult;
 
-import com.siemens.ct.exi.Constants;
-import com.siemens.ct.exi._2017.schemaforgrammars.DatatypeBasics;
-import com.siemens.ct.exi._2017.schemaforgrammars.DatatypeBasics.DateAndTime;
-import com.siemens.ct.exi._2017.schemaforgrammars.DatatypeBasics.Integer.NBitUnsignedInteger;
-import com.siemens.ct.exi._2017.schemaforgrammars.ExiGrammars;
-import com.siemens.ct.exi._2017.schemaforgrammars.GrammarType;
-import com.siemens.ct.exi._2017.schemaforgrammars.NamespaceContext;
-import com.siemens.ct.exi._2017.schemaforgrammars.NamespaceContext.QnameContext;
-import com.siemens.ct.exi._2017.schemaforgrammars.ObjectFactory;
-import com.siemens.ct.exi.context.GrammarContext;
-import com.siemens.ct.exi.context.GrammarUriContext;
-import com.siemens.ct.exi.context.QNameContext;
-import com.siemens.ct.exi.datatype.BinaryBase64Datatype;
-import com.siemens.ct.exi.datatype.BinaryHexDatatype;
-import com.siemens.ct.exi.datatype.BooleanDatatype;
-import com.siemens.ct.exi.datatype.BooleanFacetDatatype;
-import com.siemens.ct.exi.datatype.Datatype;
-import com.siemens.ct.exi.datatype.DatetimeDatatype;
-import com.siemens.ct.exi.datatype.DecimalDatatype;
-import com.siemens.ct.exi.datatype.EnumerationDatatype;
-import com.siemens.ct.exi.datatype.FloatDatatype;
-import com.siemens.ct.exi.datatype.IntegerDatatype;
-import com.siemens.ct.exi.datatype.ListDatatype;
-import com.siemens.ct.exi.datatype.NBitUnsignedIntegerDatatype;
-import com.siemens.ct.exi.datatype.RestrictedCharacterSetDatatype;
-import com.siemens.ct.exi.datatype.StringDatatype;
-import com.siemens.ct.exi.datatype.UnsignedIntegerDatatype;
-import com.siemens.ct.exi.datatype.charset.CodePointCharacterSet;
-import com.siemens.ct.exi.datatype.charset.RestrictedCharacterSet;
-import com.siemens.ct.exi.exceptions.EXIException;
-import com.siemens.ct.exi.grammars.SchemaInformedGrammars;
+import com.siemens.ct.exi.core.Constants;
+import com.siemens.ct.exi.core.context.GrammarContext;
+import com.siemens.ct.exi.core.context.GrammarUriContext;
+import com.siemens.ct.exi.core.context.QNameContext;
+import com.siemens.ct.exi.core.datatype.BinaryBase64Datatype;
+import com.siemens.ct.exi.core.datatype.BinaryHexDatatype;
+import com.siemens.ct.exi.core.datatype.BooleanDatatype;
+import com.siemens.ct.exi.core.datatype.BooleanFacetDatatype;
+import com.siemens.ct.exi.core.datatype.Datatype;
+import com.siemens.ct.exi.core.datatype.DatetimeDatatype;
+import com.siemens.ct.exi.core.datatype.DecimalDatatype;
+import com.siemens.ct.exi.core.datatype.EnumerationDatatype;
+import com.siemens.ct.exi.core.datatype.FloatDatatype;
+import com.siemens.ct.exi.core.datatype.IntegerDatatype;
+import com.siemens.ct.exi.core.datatype.ListDatatype;
+import com.siemens.ct.exi.core.datatype.NBitUnsignedIntegerDatatype;
+import com.siemens.ct.exi.core.datatype.RestrictedCharacterSetDatatype;
+import com.siemens.ct.exi.core.datatype.StringDatatype;
+import com.siemens.ct.exi.core.datatype.UnsignedIntegerDatatype;
+import com.siemens.ct.exi.core.datatype.charset.CodePointCharacterSet;
+import com.siemens.ct.exi.core.datatype.charset.RestrictedCharacterSet;
+import com.siemens.ct.exi.core.exceptions.EXIException;
+import com.siemens.ct.exi.core.grammars.SchemaInformedGrammars;
+import com.siemens.ct.exi.core.grammars.event.Attribute;
+import com.siemens.ct.exi.core.grammars.event.AttributeGeneric;
+import com.siemens.ct.exi.core.grammars.event.AttributeNS;
+import com.siemens.ct.exi.core.grammars.event.Characters;
+import com.siemens.ct.exi.core.grammars.event.CharactersGeneric;
+import com.siemens.ct.exi.core.grammars.event.DatatypeEvent;
+import com.siemens.ct.exi.core.grammars.event.EndDocument;
+import com.siemens.ct.exi.core.grammars.event.EndElement;
+import com.siemens.ct.exi.core.grammars.event.Event;
+import com.siemens.ct.exi.core.grammars.event.EventType;
+import com.siemens.ct.exi.core.grammars.event.StartDocument;
+import com.siemens.ct.exi.core.grammars.event.StartElement;
+import com.siemens.ct.exi.core.grammars.event.StartElementGeneric;
+import com.siemens.ct.exi.core.grammars.event.StartElementNS;
+import com.siemens.ct.exi.core.grammars.grammar.DocEnd;
+import com.siemens.ct.exi.core.grammars.grammar.Document;
+import com.siemens.ct.exi.core.grammars.grammar.Fragment;
+import com.siemens.ct.exi.core.grammars.grammar.Grammar;
+import com.siemens.ct.exi.core.grammars.grammar.SchemaInformedDocContent;
+import com.siemens.ct.exi.core.grammars.grammar.SchemaInformedElement;
+import com.siemens.ct.exi.core.grammars.grammar.SchemaInformedFirstStartTag;
+import com.siemens.ct.exi.core.grammars.grammar.SchemaInformedFirstStartTagGrammar;
+import com.siemens.ct.exi.core.grammars.grammar.SchemaInformedFragmentContent;
+import com.siemens.ct.exi.core.grammars.grammar.SchemaInformedGrammar;
+import com.siemens.ct.exi.core.grammars.grammar.SchemaInformedStartTag;
+import com.siemens.ct.exi.core.grammars.grammar.SchemaInformedStartTagGrammar;
+import com.siemens.ct.exi.core.grammars.production.Production;
+import com.siemens.ct.exi.core.types.BuiltIn;
+import com.siemens.ct.exi.core.types.DateTimeType;
+import com.siemens.ct.exi.core.values.AbstractBinaryValue;
+import com.siemens.ct.exi.core.values.BinaryBase64Value;
+import com.siemens.ct.exi.core.values.BinaryHexValue;
+import com.siemens.ct.exi.core.values.BooleanValue;
+import com.siemens.ct.exi.core.values.DateTimeValue;
+import com.siemens.ct.exi.core.values.DecimalValue;
+import com.siemens.ct.exi.core.values.FloatValue;
+import com.siemens.ct.exi.core.values.IntegerValue;
+import com.siemens.ct.exi.core.values.StringValue;
+import com.siemens.ct.exi.core.values.Value;
 import com.siemens.ct.exi.grammars.XSDGrammarsBuilder;
-import com.siemens.ct.exi.grammars.event.Attribute;
-import com.siemens.ct.exi.grammars.event.AttributeGeneric;
-import com.siemens.ct.exi.grammars.event.AttributeNS;
-import com.siemens.ct.exi.grammars.event.Characters;
-import com.siemens.ct.exi.grammars.event.CharactersGeneric;
-import com.siemens.ct.exi.grammars.event.DatatypeEvent;
-import com.siemens.ct.exi.grammars.event.EndDocument;
-import com.siemens.ct.exi.grammars.event.EndElement;
-import com.siemens.ct.exi.grammars.event.Event;
-import com.siemens.ct.exi.grammars.event.EventType;
-import com.siemens.ct.exi.grammars.event.StartDocument;
-import com.siemens.ct.exi.grammars.event.StartElement;
-import com.siemens.ct.exi.grammars.event.StartElementGeneric;
-import com.siemens.ct.exi.grammars.event.StartElementNS;
-import com.siemens.ct.exi.grammars.grammar.DocEnd;
-import com.siemens.ct.exi.grammars.grammar.Document;
-import com.siemens.ct.exi.grammars.grammar.Fragment;
-import com.siemens.ct.exi.grammars.grammar.Grammar;
-import com.siemens.ct.exi.grammars.grammar.SchemaInformedDocContent;
-import com.siemens.ct.exi.grammars.grammar.SchemaInformedElement;
-import com.siemens.ct.exi.grammars.grammar.SchemaInformedFirstStartTag;
-import com.siemens.ct.exi.grammars.grammar.SchemaInformedFirstStartTagGrammar;
-import com.siemens.ct.exi.grammars.grammar.SchemaInformedFragmentContent;
-import com.siemens.ct.exi.grammars.grammar.SchemaInformedGrammar;
-import com.siemens.ct.exi.grammars.grammar.SchemaInformedStartTag;
-import com.siemens.ct.exi.grammars.grammar.SchemaInformedStartTagGrammar;
-import com.siemens.ct.exi.grammars.production.Production;
-import com.siemens.ct.exi.types.BuiltIn;
-import com.siemens.ct.exi.types.DateTimeType;
-import com.siemens.ct.exi.values.AbstractBinaryValue;
-import com.siemens.ct.exi.values.BinaryBase64Value;
-import com.siemens.ct.exi.values.BinaryHexValue;
-import com.siemens.ct.exi.values.BooleanValue;
-import com.siemens.ct.exi.values.DateTimeValue;
-import com.siemens.ct.exi.values.DecimalValue;
-import com.siemens.ct.exi.values.FloatValue;
-import com.siemens.ct.exi.values.IntegerValue;
-import com.siemens.ct.exi.values.StringValue;
-import com.siemens.ct.exi.values.Value;
+import com.siemens.ct.exi.grammars._2017.schemaforgrammars.DatatypeBasics;
+import com.siemens.ct.exi.grammars._2017.schemaforgrammars.DatatypeBasics.DateAndTime;
+import com.siemens.ct.exi.grammars._2017.schemaforgrammars.DatatypeBasics.Integer.NBitUnsignedInteger;
+import com.siemens.ct.exi.grammars._2017.schemaforgrammars.ExiGrammars;
+import com.siemens.ct.exi.grammars._2017.schemaforgrammars.GrammarType;
+import com.siemens.ct.exi.grammars._2017.schemaforgrammars.NamespaceContext;
+import com.siemens.ct.exi.grammars._2017.schemaforgrammars.NamespaceContext.QnameContext;
+import com.siemens.ct.exi.grammars._2017.schemaforgrammars.ObjectFactory;
 
 public class Grammars2X {
 
@@ -327,7 +326,7 @@ public class Grammars2X {
 				// simpleDatatype
 				{
 					// datatype
-					com.siemens.ct.exi._2017.schemaforgrammars.Datatype d = of
+					com.siemens.ct.exi.grammars._2017.schemaforgrammars.Datatype d = of
 							.createDatatype();
 					setDatatype(d, dt);
 					simpleDatatypes.getSimpleDatatype().add(d);
@@ -399,7 +398,7 @@ public class Grammars2X {
 			d.setBoolean(of.createDatatypeBasicsBoolean());
 			break;
 		case BOOLEAN_FACET:
-			com.siemens.ct.exi._2017.schemaforgrammars.DatatypeBasics.Boolean b = of
+			com.siemens.ct.exi.grammars._2017.schemaforgrammars.DatatypeBasics.Boolean b = of
 					.createDatatypeBasicsBoolean();
 			b.setPatternFacet(of.createDatatypeBasicsBooleanPatternFacet());
 			d.setBoolean(b);
@@ -411,7 +410,7 @@ public class Grammars2X {
 			d.setDouble(of.createDatatypeBasicsDouble());
 			break;
 		case NBIT_UNSIGNED_INTEGER:
-			com.siemens.ct.exi._2017.schemaforgrammars.DatatypeBasics.Integer in = of
+			com.siemens.ct.exi.grammars._2017.schemaforgrammars.DatatypeBasics.Integer in = of
 					.createDatatypeBasicsInteger();
 			NBitUnsignedInteger nb = of
 					.createDatatypeBasicsIntegerNBitUnsignedInteger();
@@ -422,7 +421,7 @@ public class Grammars2X {
 			d.setInteger(in);
 			break;
 		case UNSIGNED_INTEGER:
-			com.siemens.ct.exi._2017.schemaforgrammars.DatatypeBasics.Integer inu = of
+			com.siemens.ct.exi.grammars._2017.schemaforgrammars.DatatypeBasics.Integer inu = of
 					.createDatatypeBasicsInteger();
 			inu.setUnsignedInteger(of
 					.createDatatypeBasicsIntegerUnsignedInteger());
@@ -469,7 +468,7 @@ public class Grammars2X {
 			break;
 		case RCS_STRING:
 			RestrictedCharacterSetDatatype rcsdt = (RestrictedCharacterSetDatatype) dt;
-			com.siemens.ct.exi._2017.schemaforgrammars.DatatypeBasics.String s = of
+			com.siemens.ct.exi.grammars._2017.schemaforgrammars.DatatypeBasics.String s = of
 					.createDatatypeBasicsString();
 			// RCS
 			RestrictedCharacterSet rcs = rcsdt.getRestrictedCharacterSet();
@@ -486,7 +485,7 @@ public class Grammars2X {
 	}
 	
 	private static void setDatatype(
-			com.siemens.ct.exi._2017.schemaforgrammars.Datatype d, Datatype dt) throws DatatypeConfigurationException {
+			com.siemens.ct.exi.grammars._2017.schemaforgrammars.Datatype d, Datatype dt) throws DatatypeConfigurationException {
 		switch (dt.getBuiltInType()) {
 		case BINARY_BASE64:
 		case BINARY_HEX:
@@ -504,7 +503,7 @@ public class Grammars2X {
 			break;
 		case ENUMERATION:
 			EnumerationDatatype endt = (EnumerationDatatype) dt;
-			com.siemens.ct.exi._2017.schemaforgrammars.Enumeration en = of.createEnumeration();
+			com.siemens.ct.exi.grammars._2017.schemaforgrammars.Enumeration en = of.createEnumeration();
 			// enum value type
 			Datatype enumDT = endt.getEnumValueDatatype();
 			DatatypeBasics enumdb = of.createDatatypeBasics();
@@ -647,7 +646,7 @@ public class Grammars2X {
 	protected void printGrammar(SchemaInformedGrammar sir,
 			ExiGrammars.Grammars grs) throws IOException, EXIException {
 
-		com.siemens.ct.exi._2017.schemaforgrammars.ExiGrammars.Grammars.Grammar g = new com.siemens.ct.exi._2017.schemaforgrammars.ExiGrammars.Grammars.Grammar();
+		com.siemens.ct.exi.grammars._2017.schemaforgrammars.ExiGrammars.Grammars.Grammar g = new com.siemens.ct.exi.grammars._2017.schemaforgrammars.ExiGrammars.Grammars.Grammar();
 		grs.getGrammar().add(g);
 
 		if (sir instanceof SchemaInformedFirstStartTagGrammar) {
@@ -727,7 +726,7 @@ public class Grammars2X {
         return datatypes[index.intValue()];
     }
 
-	protected void printGrammarProduction(SchemaInformedGrammar sir, List<com.siemens.ct.exi._2017.schemaforgrammars.Production> productions)
+	protected void printGrammarProduction(SchemaInformedGrammar sir, List<com.siemens.ct.exi.grammars._2017.schemaforgrammars.Production> productions)
             throws IOException, EXIException {
 
 		for (int i = 0; i < sir.getNumberOfEvents(); i++) {
@@ -735,7 +734,7 @@ public class Grammars2X {
 				statsCountTransitions++;
 			}
 			
-			com.siemens.ct.exi._2017.schemaforgrammars.Production p = new com.siemens.ct.exi._2017.schemaforgrammars.Production();
+			com.siemens.ct.exi.grammars._2017.schemaforgrammars.Production p = new com.siemens.ct.exi.grammars._2017.schemaforgrammars.Production();
 			productions.add(p);
 
 			Production ei = sir.getProduction(i);
@@ -813,7 +812,7 @@ public class Grammars2X {
 		}
 	}
 	
-	private static EnumerationDatatype getEnumerationDatatype(com.siemens.ct.exi._2017.schemaforgrammars.Enumeration en, QNameContext qnc) throws EXIException {
+	private static EnumerationDatatype getEnumerationDatatype(com.siemens.ct.exi.grammars._2017.schemaforgrammars.Enumeration en, QNameContext qnc) throws EXIException {
 		Value[] enumValues;
 		Datatype dtEnumValues;
 		
@@ -940,7 +939,7 @@ public class Grammars2X {
 
 
 	
-	private static Datatype getBasicDatatype(com.siemens.ct.exi._2017.schemaforgrammars.Datatype dt, QNameContext qnc) throws EXIException {
+	private static Datatype getBasicDatatype(com.siemens.ct.exi.grammars._2017.schemaforgrammars.Datatype dt, QNameContext qnc) throws EXIException {
 		Datatype datatype;
 		if(dt.getBase64Binary() != null) {
 			datatype = new BinaryBase64Datatype(qnc);
@@ -1048,7 +1047,7 @@ public class Grammars2X {
 		// 1. Init all datatypes
 		Datatype[] datatypes = new Datatype[exiGrammars.getSimpleDatatypes().getSimpleDatatype().size()];
 		for(int i = 0; i<exiGrammars.getSimpleDatatypes().getSimpleDatatype().size(); i++) {
-			com.siemens.ct.exi._2017.schemaforgrammars.Datatype dt = exiGrammars.getSimpleDatatypes().getSimpleDatatype().get(i);
+			com.siemens.ct.exi.grammars._2017.schemaforgrammars.Datatype dt = exiGrammars.getSimpleDatatypes().getSimpleDatatype().get(i);
 			
 			QNameContext qnc = grammarUriContexts[(int)dt.getSchemaTypeNamespaceID()].getQNameContext((int)dt.getSchemaTypeLocalNameID());
 			 
@@ -1062,7 +1061,7 @@ public class Grammars2X {
 				}
 				datatypes[i] = new ListDatatype(listDatatype, qnc);
 			} else  if(dt.getEnumeration() != null) {
-				com.siemens.ct.exi._2017.schemaforgrammars.Enumeration en = dt.getEnumeration();
+				com.siemens.ct.exi.grammars._2017.schemaforgrammars.Enumeration en = dt.getEnumeration();
 				EnumerationDatatype endt = getEnumerationDatatype(en, qnc);
 				datatypes[i] = endt;
 			} else {
@@ -1072,7 +1071,7 @@ public class Grammars2X {
 		}
 		// 2. set base datatypes
 		for(int i = 0; i<exiGrammars.getSimpleDatatypes().getSimpleDatatype().size(); i++) {
-			com.siemens.ct.exi._2017.schemaforgrammars.Datatype dt = exiGrammars.getSimpleDatatypes().getSimpleDatatype().get(i);
+			com.siemens.ct.exi.grammars._2017.schemaforgrammars.Datatype dt = exiGrammars.getSimpleDatatypes().getSimpleDatatype().get(i);
 			
 			if(dt.getBaseDatatypeID() != null) {
 				datatypes[i].setBaseDatatype(getDatatype(dt.getBaseDatatypeID(), datatypes, false));
@@ -1143,7 +1142,7 @@ public class Grammars2X {
                 	break;
             }
 
-			for(com.siemens.ct.exi._2017.schemaforgrammars.Production prod : grammar.getProduction()) {
+			for(com.siemens.ct.exi.grammars._2017.schemaforgrammars.Production prod : grammar.getProduction()) {
 				Event event;
 				if(prod.getStartDocument() != null) {
 					event = new StartDocument();

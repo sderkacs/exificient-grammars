@@ -17,14 +17,14 @@ import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import com.siemens.ct.exi.EXIFactory;
-import com.siemens.ct.exi._2017.schemaforgrammars.ExiGrammars;
-import com.siemens.ct.exi.api.sax.EXIResult;
-import com.siemens.ct.exi.api.sax.EXISource;
-import com.siemens.ct.exi.exceptions.EXIException;
-import com.siemens.ct.exi.grammars.SchemaInformedGrammars;
+import com.siemens.ct.exi.core.EXIFactory;
+import com.siemens.ct.exi.core.exceptions.EXIException;
+import com.siemens.ct.exi.core.grammars.SchemaInformedGrammars;
+import com.siemens.ct.exi.core.helpers.DefaultEXIFactory;
 import com.siemens.ct.exi.grammars.XSDGrammarsBuilder;
-import com.siemens.ct.exi.helpers.DefaultEXIFactory;
+import com.siemens.ct.exi.grammars._2017.schemaforgrammars.ExiGrammars;
+import com.siemens.ct.exi.main.api.sax.EXIResult;
+import com.siemens.ct.exi.main.api.sax.EXISource;
 
 public class Grammars2XTest extends TestCase {
 	

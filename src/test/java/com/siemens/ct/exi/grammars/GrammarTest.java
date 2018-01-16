@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007-2016 Siemens AG
+ * Copyright (c) 2007-2018 Siemens AG
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,21 +39,21 @@ import org.apache.xerces.xs.XSSimpleTypeDefinition;
 import org.apache.xerces.xs.XSTypeDefinition;
 import org.custommonkey.xmlunit.XMLConstants;
 
-import com.siemens.ct.exi.FidelityOptions;
-import com.siemens.ct.exi.GrammarFactory;
-import com.siemens.ct.exi.context.GrammarContext;
-import com.siemens.ct.exi.context.QNameContext;
-import com.siemens.ct.exi.datatype.Datatype;
-import com.siemens.ct.exi.datatype.EnumerationDatatype;
-import com.siemens.ct.exi.exceptions.EXIException;
-import com.siemens.ct.exi.grammars.event.Attribute;
-import com.siemens.ct.exi.grammars.event.Event;
-import com.siemens.ct.exi.grammars.event.EventType;
-import com.siemens.ct.exi.grammars.event.StartElement;
-import com.siemens.ct.exi.grammars.grammar.BuiltInStartTag;
-import com.siemens.ct.exi.grammars.grammar.Grammar;
-import com.siemens.ct.exi.grammars.production.Production;
-import com.siemens.ct.exi.types.BuiltInType;
+import com.siemens.ct.exi.core.FidelityOptions;
+import com.siemens.ct.exi.core.context.GrammarContext;
+import com.siemens.ct.exi.core.context.QNameContext;
+import com.siemens.ct.exi.core.datatype.Datatype;
+import com.siemens.ct.exi.core.datatype.EnumerationDatatype;
+import com.siemens.ct.exi.core.exceptions.EXIException;
+import com.siemens.ct.exi.core.grammars.Grammars;
+import com.siemens.ct.exi.core.grammars.event.Attribute;
+import com.siemens.ct.exi.core.grammars.event.Event;
+import com.siemens.ct.exi.core.grammars.event.EventType;
+import com.siemens.ct.exi.core.grammars.event.StartElement;
+import com.siemens.ct.exi.core.grammars.grammar.BuiltInStartTag;
+import com.siemens.ct.exi.core.grammars.grammar.Grammar;
+import com.siemens.ct.exi.core.grammars.production.Production;
+import com.siemens.ct.exi.core.types.BuiltInType;
 
 public class GrammarTest extends TestCase {
 	String schema;

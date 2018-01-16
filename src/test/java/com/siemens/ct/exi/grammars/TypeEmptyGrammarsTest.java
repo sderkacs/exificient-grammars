@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007-2016 Siemens AG
+ * Copyright (c) 2007-2018 Siemens AG
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,17 +27,17 @@ import java.io.ByteArrayInputStream;
 
 import junit.framework.TestCase;
 
-import com.siemens.ct.exi.FidelityOptions;
-import com.siemens.ct.exi.GrammarFactory;
-import com.siemens.ct.exi.context.GrammarContext;
-import com.siemens.ct.exi.grammars.event.Attribute;
-import com.siemens.ct.exi.grammars.event.EventType;
-import com.siemens.ct.exi.grammars.event.StartElement;
-import com.siemens.ct.exi.grammars.grammar.Fragment;
-import com.siemens.ct.exi.grammars.grammar.Grammar;
-import com.siemens.ct.exi.grammars.grammar.GrammarType;
-import com.siemens.ct.exi.grammars.grammar.SchemaInformedFirstStartTagGrammar;
-import com.siemens.ct.exi.grammars.production.Production;
+import com.siemens.ct.exi.core.FidelityOptions;
+import com.siemens.ct.exi.core.context.GrammarContext;
+import com.siemens.ct.exi.core.grammars.Grammars;
+import com.siemens.ct.exi.core.grammars.event.Attribute;
+import com.siemens.ct.exi.core.grammars.event.EventType;
+import com.siemens.ct.exi.core.grammars.event.StartElement;
+import com.siemens.ct.exi.core.grammars.grammar.Fragment;
+import com.siemens.ct.exi.core.grammars.grammar.Grammar;
+import com.siemens.ct.exi.core.grammars.grammar.GrammarType;
+import com.siemens.ct.exi.core.grammars.grammar.SchemaInformedFirstStartTagGrammar;
+import com.siemens.ct.exi.core.grammars.production.Production;
 
 public class TypeEmptyGrammarsTest extends TestCase {
 	

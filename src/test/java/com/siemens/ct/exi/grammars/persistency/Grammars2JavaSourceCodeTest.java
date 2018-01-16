@@ -11,8 +11,8 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import com.siemens.ct.exi.exceptions.EXIException;
-import com.siemens.ct.exi.grammars.SchemaInformedGrammars;
+import com.siemens.ct.exi.core.exceptions.EXIException;
+import com.siemens.ct.exi.core.grammars.SchemaInformedGrammars;
 import com.siemens.ct.exi.grammars.XSDGrammarsBuilder;
 
 public class Grammars2JavaSourceCodeTest extends TestCase {
@@ -80,7 +80,7 @@ public class Grammars2JavaSourceCodeTest extends TestCase {
 	
 	static String getEXIficientCoreJar() {
 		// String url = "https://repository.sonatype.org/service/local/artifact/maven/redirect?r=central-proxy&g=com.siemens.ct.exi&a=exificient-core&v=LATEST";
-		final String DEFAULT_EXIFICIENT_CORE_JAR = USER_HOME + "/.m2/repository/com/siemens/ct/exi/exificient-core/0.9.7-SNAPSHOT/exificient-core-0.9.7-SNAPSHOT.jar";
+		final String DEFAULT_EXIFICIENT_CORE_JAR = USER_HOME + "/.m2/repository/com/siemens/ct/exi/exificient-core/1.0.0-SNAPSHOT/exificient-core-1.0.0-SNAPSHOT.jar";
 		
 		
 		return DEFAULT_EXIFICIENT_CORE_JAR;

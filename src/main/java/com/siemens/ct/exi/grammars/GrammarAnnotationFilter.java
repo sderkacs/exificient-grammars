@@ -151,7 +151,7 @@ public class GrammarAnnotationFilter implements ContentHandler {
 				int indexAt;
 				if (atts != null
 						&& (indexAt = atts.getIndex(
-								com.siemens.ct.exi.Constants.W3C_EXI_NS_URI,
+								com.siemens.ct.exi.core.Constants.W3C_EXI_NS_URI,
 								"prepopulateValues")) != -1 && "true".equals(atts.getValue(indexAt))) {
 					// ok, right annotation --> change to
 					ch.startElement(uri, "simpleType", fixQName(qName, "simpleType"), typeNameAtts);

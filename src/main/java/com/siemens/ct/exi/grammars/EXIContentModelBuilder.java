@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007-2016 Siemens AG
+ * Copyright (c) 2007-2018 Siemens AG
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -63,25 +63,25 @@ import org.apache.xerces.xs.XSParticle;
 import org.apache.xerces.xs.XSTerm;
 import org.apache.xerces.xs.XSWildcard;
 
-import com.siemens.ct.exi.exceptions.EXIException;
-import com.siemens.ct.exi.grammars.event.AttributeGeneric;
-import com.siemens.ct.exi.grammars.event.CharactersGeneric;
-import com.siemens.ct.exi.grammars.event.EndElement;
-import com.siemens.ct.exi.grammars.event.Event;
-import com.siemens.ct.exi.grammars.event.StartElement;
-import com.siemens.ct.exi.grammars.event.StartElementGeneric;
-import com.siemens.ct.exi.grammars.event.StartElementNS;
-import com.siemens.ct.exi.grammars.grammar.SchemaInformedElement;
-import com.siemens.ct.exi.grammars.grammar.SchemaInformedGrammar;
-import com.siemens.ct.exi.util.sort.QNameSort;
-import com.siemens.ct.exi.util.sort.StartElementSort;
+import com.siemens.ct.exi.core.exceptions.EXIException;
+import com.siemens.ct.exi.core.grammars.event.AttributeGeneric;
+import com.siemens.ct.exi.core.grammars.event.CharactersGeneric;
+import com.siemens.ct.exi.core.grammars.event.EndElement;
+import com.siemens.ct.exi.core.grammars.event.Event;
+import com.siemens.ct.exi.core.grammars.event.StartElement;
+import com.siemens.ct.exi.core.grammars.event.StartElementGeneric;
+import com.siemens.ct.exi.core.grammars.event.StartElementNS;
+import com.siemens.ct.exi.core.grammars.grammar.SchemaInformedElement;
+import com.siemens.ct.exi.core.grammars.grammar.SchemaInformedGrammar;
+import com.siemens.ct.exi.core.util.sort.QNameSort;
+import com.siemens.ct.exi.core.util.sort.StartElementSort;
 
 /**
  * 
  * @author Daniel.Peintner.EXT@siemens.com
  * @author Joerg.Heuer@siemens.com
  * 
- * @version 0.9.7-SNAPSHOT
+ * @version 1.0.0-SNAPSHOT
  */
 
 public abstract class EXIContentModelBuilder extends CMBuilder implements
