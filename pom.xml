@@ -69,11 +69,11 @@
 			<version>1.6</version>
 			<scope>test</scope>
 		</dependency>
+		<!--  allows persistency checking -->
 		<dependency>
-			<!-- to allows persistency checking -->
 			<groupId>com.siemens.ct.exi</groupId>
 			<artifactId>exificient</artifactId>
-			<version>0.9.7-SNAPSHOT</version>
+			<version>0.9.6</version><!-- 0.9.7-SNAPSHOT -->
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
