@@ -85,7 +85,7 @@ public class GrammarsConstants {
 	public static final String END_ELEMENT = "endElement";
 	public static final String ATTRIBUTE = "attribute";
 	public static final String ATTRIBUTE_NAME = "attributeName";
-	public final String CHARACTERS = "characters";
+	public static final String CHARACTERS = "characters";
 	public static final String START_ELEMENT_NS = "startElementNS";
 	public static final String START_ELEMENT_GENERIC = "startElementGeneric";
 	public static final String CHARACTERS_GENERIC = "charactersGeneric";
