@@ -236,12 +236,14 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 		super.initEachRun();
 
 		grammarTypes.clear();
+		schemaLocalNames.clear();
 		attributePool.clear();
+		datatypePool.clear();
 
 		uniqueNamedElements = null;
 		elementFragment0 = null;
 
-		schemaLocalNames.clear();
+		
 		// "", empty string
 		for (int i = 0; i < Constants.LOCAL_NAMES_EMPTY.length; i++) {
 			String localName = Constants.LOCAL_NAMES_EMPTY[i];
