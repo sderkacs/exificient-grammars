@@ -584,7 +584,7 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 			} else {
 				// represented as a String
 				// at = new Attribute(an);
-				at = createAttribute(an, BuiltIn.DEFAULT_DATATYPE); // BuiltIn.DEFAULT_VALUE_NAME,
+				at = createAttribute(an, BuiltIn.getDefaultDatatype()); // BuiltIn.DEFAULT_VALUE_NAME,
 			}
 			elementFragment0.addProduction(at, elementFragment0);
 		}
@@ -637,7 +637,7 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 			} else {
 				// represented as a String
 				// at = new Attribute(an);
-				at = createAttribute(an, BuiltIn.DEFAULT_DATATYPE); //  BuiltIn.DEFAULT_VALUE_NAME,
+				at = createAttribute(an, BuiltIn.getDefaultDatatype()); //  BuiltIn.DEFAULT_VALUE_NAME,
 			}
 			elementFragmentEmpty0.addProduction(at, elementFragmentEmpty0);
 		}

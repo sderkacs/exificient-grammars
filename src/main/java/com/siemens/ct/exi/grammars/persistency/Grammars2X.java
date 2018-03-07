@@ -214,7 +214,7 @@ public class Grammars2X {
 					DatatypeEvent de = (DatatypeEvent) e;
 					// System.out.println(de.getDatatype());
 					if (!listOfSimpleDatatypes.contains(de.getDatatype())
-							&& de.getDatatype() != BuiltIn.DEFAULT_DATATYPE) {
+							&& !de.getDatatype().equals(BuiltIn.getDefaultDatatype())) {
 						listOfSimpleDatatypes.add(de.getDatatype());
 					}
 					// any simple Type !??!
@@ -697,7 +697,7 @@ public class Grammars2X {
 	 * @throws EXIException if the datatype can't be found in listOfSimpleDatatypes.
 	 */
 	private Long getDatatypeIndex(Datatype datatype, boolean useNullAsDefaultDatatype) throws EXIException {
-        if (datatype == BuiltIn.DEFAULT_DATATYPE && useNullAsDefaultDatatype) {
+        if (datatype.equals(BuiltIn.getDefaultDatatype()) && useNullAsDefaultDatatype) {
             return null;
         }
         int datatypeIndex = listOfSimpleDatatypes.indexOf(datatype);
@@ -718,7 +718,7 @@ public class Grammars2X {
 	 */
     private static Datatype getDatatype(Long index, Datatype[] datatypes, boolean useNullAsDefaultDatatype) throws EXIException {
 	    if (index == null && useNullAsDefaultDatatype) {
-	        return BuiltIn.DEFAULT_DATATYPE;
+	        return BuiltIn.getDefaultDatatype();
         }
         if (index == null || index >= datatypes.length || index < 0) {
             throw new EXIException("Can't find datatype of index: " + index);

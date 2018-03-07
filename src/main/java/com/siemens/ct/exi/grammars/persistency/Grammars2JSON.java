@@ -109,7 +109,7 @@ public class Grammars2JSON {
 				if(e instanceof DatatypeEvent) {
 					DatatypeEvent de = (DatatypeEvent) e;
 					// System.out.println(de.getDatatype());
-					if (!listOfDatatypes.contains(de.getDatatype()) && de.getDatatype() != BuiltIn.DEFAULT_DATATYPE) {							
+					if (!listOfDatatypes.contains(de.getDatatype()) && de.getDatatype() != BuiltIn.getDefaultDatatype()) {							
 						listOfDatatypes.add(de.getDatatype());
 					}
 					// any simple Type !??!

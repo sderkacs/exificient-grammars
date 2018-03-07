@@ -677,7 +677,7 @@ public class Grammars2JavaSourceCode {
 		int qnameID = getQNameID(dt.getSchemaType());
 		String s;
 		if(qnameID < 0) {
-			s = BuiltIn.class.getName() + ".DEFAULT_DATATYPE"; // .getClass().getName();
+			s = BuiltIn.class.getName() + ".getDefaultDatatype()"; // .getClass().getName();
 		} else {
 			s = "new " + dt.getClass().getName() + "(" + addP + "qnc"
 					+ qnameID + ")";
