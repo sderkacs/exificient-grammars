@@ -115,6 +115,8 @@ import com.siemens.ct.exi.core.types.BuiltIn;
 import com.siemens.ct.exi.core.types.BuiltInType;
 import com.siemens.ct.exi.core.types.DateTimeType;
 import com.siemens.ct.exi.core.types.IntegerType;
+import com.siemens.ct.exi.core.types.TypeEncoder;
+import com.siemens.ct.exi.core.types.TypedTypeEncoder;
 import com.siemens.ct.exi.core.values.BinaryBase64Value;
 import com.siemens.ct.exi.core.values.BinaryHexValue;
 import com.siemens.ct.exi.core.values.BooleanValue;
@@ -1267,7 +1269,7 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 		return globalElements;
 	}
 
-	protected Attribute getAttribute(XSAttributeDeclaration attrDecl) {
+	protected Attribute getAttribute(XSAttributeDeclaration attrDecl) throws EXIException {
 		// local name for string table pre-population
 		addLocalNameStringEntry(attrDecl.getNamespace(), attrDecl.getName());
 
@@ -1759,7 +1761,7 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 	}
 
 
-	public Datatype getDatatype(XSSimpleTypeDefinition std) {
+	public Datatype getDatatype(XSSimpleTypeDefinition std) throws EXIException {
 		Datatype datatype = datatypePool.get(std);
 		
 		if(datatype!= null) {
@@ -1930,7 +1932,8 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 														+ stdEnum);
 									}
 
-									boolean valid = dtEnumValues.isValid(enumValue);
+									TypeEncoder typeEncoder = new TypedTypeEncoder();
+									boolean valid = typeEncoder.isValid(dtEnumValues, enumValue);
 									if (!valid) {
 										throw new RuntimeException(
 												"No valid enumeration value '"
