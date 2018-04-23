@@ -142,6 +142,7 @@
 				<version>2.9.1</version><!--2.3.2 -->
 				<configuration>
 					<overview>${basedir}/src/main/java/overview.html</overview>
+					<failOnError>false</failOnError>
 				</configuration>
 				<executions>
 					<execution>
