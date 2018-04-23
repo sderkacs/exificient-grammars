@@ -53,7 +53,7 @@ import com.siemens.ct.exi.grammars.regex.Token.UnionToken;
  * @author Daniel.Peintner.EXT@siemens.com
  * @author Joerg.Heuer@siemens.com
  * 
- * @version 1.0.0-SNAPSHOT
+ * @version 1.0.0
  */
 
 // Useful XML Schema RegExpr Links
