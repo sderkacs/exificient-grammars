@@ -23,8 +23,8 @@ import com.siemens.ct.exi.core.grammars.SchemaInformedGrammars;
 import com.siemens.ct.exi.core.helpers.DefaultEXIFactory;
 import com.siemens.ct.exi.grammars.XSDGrammarsBuilder;
 import com.siemens.ct.exi.grammars._2017.schemaforgrammars.ExiGrammars;
-//import com.siemens.ct.exi.main.api.sax.EXIResult;
-//import com.siemens.ct.exi.main.api.sax.EXISource;
+import com.siemens.ct.exi.main.api.sax.EXIResult;
+import com.siemens.ct.exi.main.api.sax.EXISource;
 
 public class Grammars2XTest extends TestCase {
 	
@@ -57,24 +57,24 @@ public class Grammars2XTest extends TestCase {
 		// 1. Encode
 		exiFactory.setGrammars(grammarsIn);
 		
-//		ByteArrayOutputStream osEXI = new ByteArrayOutputStream();
-//		EXIResult exiResult = new EXIResult(exiFactory);
-//		exiResult.setOutputStream(osEXI);
-//		XMLReader xmlReader = XMLReaderFactory.createXMLReader();
-//		xmlReader.setContentHandler( exiResult.getHandler() );
-//        InputSource isXML = new InputSource(xml);
-//		xmlReader.parse(isXML); // parse XML input
-//		osEXI.close();
-//		
-//		// 2. Decode
-//		exiFactory.setGrammars(grammarsOut);
-//		ByteArrayOutputStream osXML = new ByteArrayOutputStream();
-//		Result result = new StreamResult(osXML);
-//		SAXSource exiSource = new EXISource(exiFactory);
-//		exiSource.setInputSource(new InputSource(new ByteArrayInputStream(osEXI.toByteArray())));
-//		TransformerFactory tf = TransformerFactory.newInstance();
-//		Transformer transformer = tf.newTransformer();
-//		transformer.transform(exiSource, result);
+		ByteArrayOutputStream osEXI = new ByteArrayOutputStream();
+		EXIResult exiResult = new EXIResult(exiFactory);
+		exiResult.setOutputStream(osEXI);
+		XMLReader xmlReader = XMLReaderFactory.createXMLReader();
+		xmlReader.setContentHandler( exiResult.getHandler() );
+        InputSource isXML = new InputSource(xml);
+		xmlReader.parse(isXML); // parse XML input
+		osEXI.close();
+		
+		// 2. Decode
+		exiFactory.setGrammars(grammarsOut);
+		ByteArrayOutputStream osXML = new ByteArrayOutputStream();
+		Result result = new StreamResult(osXML);
+		SAXSource exiSource = new EXISource(exiFactory);
+		exiSource.setInputSource(new InputSource(new ByteArrayInputStream(osEXI.toByteArray())));
+		TransformerFactory tf = TransformerFactory.newInstance();
+		Transformer transformer = tf.newTransformer();
+		transformer.transform(exiSource, result);
     }
 
 	@Test

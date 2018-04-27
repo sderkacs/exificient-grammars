@@ -25,8 +25,8 @@ import com.siemens.ct.exi.core.grammars.SchemaInformedGrammars;
 import com.siemens.ct.exi.core.helpers.DefaultEXIFactory;
 import com.siemens.ct.exi.grammars.XSDGrammarsBuilder;
 import com.siemens.ct.exi.grammars._2017.schemaforgrammars.ExiGrammars;
-//import com.siemens.ct.exi.main.api.sax.EXIResult;
-//import com.siemens.ct.exi.main.api.sax.SAXFactory;
+import com.siemens.ct.exi.main.api.sax.EXIResult;
+import com.siemens.ct.exi.main.api.sax.SAXFactory;
 
 public class Grammars2ExiTest extends TestCase {
     XSDGrammarsBuilder grammarBuilder = XSDGrammarsBuilder.newInstance();
@@ -82,57 +82,57 @@ public class Grammars2ExiTest extends TestCase {
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-//		EXIResult exiResult = new EXIResult(exiFactory);
-//		exiResult.setOutputStream(baos);
-//		Grammars2X.marshal(exiGrammar, exiResult.getHandler());
-//        // Grammars2Exi.marshal(grammarsIn, baos);
-//        baos.close();
-//        
-//        byte[] expecteds = baos.toByteArray();
-//        Grammars2X grammars2X = new Grammars2X();
-//        ExiGrammars exiGrammars = grammars2X.toGrammarsX(grammarsIn);
-//        ByteArrayOutputStream baosXml = new ByteArrayOutputStream();
-//        Grammars2X.marshal(exiGrammars, new StreamResult(baosXml));
-//
-//        
-//		InputSource exiInputSource = new InputSource(new ByteArrayInputStream(expecteds));
-//		SAXSource exiSource = new SAXSource(exiInputSource);
-//		XMLReader exiReader = new SAXFactory(exiFactory).createEXIReader();
-//		exiSource.setXMLReader(exiReader);
-//		
-//		Object o = Grammars2X.unmarshal(exiSource);
-//		if(!(o instanceof ExiGrammars)) {
-//			throw new Exception("Unmarshalled object not of instance " + ExiGrammars.class + ". Instead " + o.getClass());
-//		}
-//		ExiGrammars exiGrammars2 = (ExiGrammars)o;
-//		SchemaInformedGrammars grammarsOut = Grammars2X.toGrammars(exiGrammars2);
-//		// SchemaInformedGrammars grammarsOut = g2j.unmarshal(exiSource);
-//        // SchemaInformedGrammars grammarsOut = Grammars2Exi.unmarshal(new ByteArrayInputStream(expecteds));
-//        Assert.assertTrue(grammarsIn.equals(grammarsOut));
-//        ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
-//        baos2.close();
-//
-//        EXIFactory exiFactoryIn = DefaultEXIFactory.newInstance();
-//        exiFactoryIn.setGrammars(grammarsIn);
-//        ByteArrayOutputStream osEXIIn = new ByteArrayOutputStream();
-//        EXIResult exiResultIn = new EXIResult(exiFactoryIn);
-//        exiResultIn.setOutputStream(osEXIIn);
-//        XMLReader xmlReaderIn = XMLReaderFactory.createXMLReader();
-//        xmlReaderIn.setContentHandler( exiResultIn.getHandler() );
-//        InputSource isXML = new InputSource(xml);
-//        xmlReaderIn.parse(isXML);
-//        osEXIIn.close();
-//        EXIFactory exiFactoryOut = DefaultEXIFactory.newInstance();
-//        exiFactoryOut.setGrammars(grammarsOut);
-//        ByteArrayOutputStream osEXIOut = new ByteArrayOutputStream();
-//        EXIResult exiResultOut = new EXIResult(exiFactoryOut);
-//        exiResultOut.setOutputStream(osEXIOut);
-//        XMLReader xmlReaderOut = XMLReaderFactory.createXMLReader();
-//        xmlReaderOut.setContentHandler( exiResultOut.getHandler() );
-//        xmlReaderOut.parse(isXML);
-//        osEXIOut.close();
-//
-//        Assert.assertArrayEquals(osEXIIn.toByteArray(), osEXIOut.toByteArray());
+		EXIResult exiResult = new EXIResult(exiFactory);
+		exiResult.setOutputStream(baos);
+		Grammars2X.marshal(exiGrammar, exiResult.getHandler());
+        // Grammars2Exi.marshal(grammarsIn, baos);
+        baos.close();
+        
+        byte[] expecteds = baos.toByteArray();
+        Grammars2X grammars2X = new Grammars2X();
+        ExiGrammars exiGrammars = grammars2X.toGrammarsX(grammarsIn);
+        ByteArrayOutputStream baosXml = new ByteArrayOutputStream();
+        Grammars2X.marshal(exiGrammars, new StreamResult(baosXml));
+
+        
+		InputSource exiInputSource = new InputSource(new ByteArrayInputStream(expecteds));
+		SAXSource exiSource = new SAXSource(exiInputSource);
+		XMLReader exiReader = new SAXFactory(exiFactory).createEXIReader();
+		exiSource.setXMLReader(exiReader);
+		
+		Object o = Grammars2X.unmarshal(exiSource);
+		if(!(o instanceof ExiGrammars)) {
+			throw new Exception("Unmarshalled object not of instance " + ExiGrammars.class + ". Instead " + o.getClass());
+		}
+		ExiGrammars exiGrammars2 = (ExiGrammars)o;
+		SchemaInformedGrammars grammarsOut = Grammars2X.toGrammars(exiGrammars2);
+		// SchemaInformedGrammars grammarsOut = g2j.unmarshal(exiSource);
+        // SchemaInformedGrammars grammarsOut = Grammars2Exi.unmarshal(new ByteArrayInputStream(expecteds));
+        Assert.assertTrue(grammarsIn.equals(grammarsOut));
+        ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
+        baos2.close();
+
+        EXIFactory exiFactoryIn = DefaultEXIFactory.newInstance();
+        exiFactoryIn.setGrammars(grammarsIn);
+        ByteArrayOutputStream osEXIIn = new ByteArrayOutputStream();
+        EXIResult exiResultIn = new EXIResult(exiFactoryIn);
+        exiResultIn.setOutputStream(osEXIIn);
+        XMLReader xmlReaderIn = XMLReaderFactory.createXMLReader();
+        xmlReaderIn.setContentHandler( exiResultIn.getHandler() );
+        InputSource isXML = new InputSource(xml);
+        xmlReaderIn.parse(isXML);
+        osEXIIn.close();
+        EXIFactory exiFactoryOut = DefaultEXIFactory.newInstance();
+        exiFactoryOut.setGrammars(grammarsOut);
+        ByteArrayOutputStream osEXIOut = new ByteArrayOutputStream();
+        EXIResult exiResultOut = new EXIResult(exiFactoryOut);
+        exiResultOut.setOutputStream(osEXIOut);
+        XMLReader xmlReaderOut = XMLReaderFactory.createXMLReader();
+        xmlReaderOut.setContentHandler( exiResultOut.getHandler() );
+        xmlReaderOut.parse(isXML);
+        osEXIOut.close();
+
+        Assert.assertArrayEquals(osEXIIn.toByteArray(), osEXIOut.toByteArray());
     }
 
     @Test

@@ -30,52 +30,52 @@ public class Grammars2JavaSourceCodeTest extends TestCase {
 	}
 	
 	protected void _test(String xsd) throws EXIException, IOException {
-//		grammarBuilder.loadGrammars(xsd);
-//		SchemaInformedGrammars grammars = grammarBuilder.toGrammars();
-//		
-//		Grammars2JavaSourceCode g2j = new Grammars2JavaSourceCode(grammars);
-//		g2j.generateCode();
-//		String packageName = Grammars2JavaSourceCode.class.getPackage().toString();
-//		String className = "Test"+ System.currentTimeMillis();
-//		
-//		String sSource = g2j.getGrammars(packageName, className);
-//		
-//		// further validation (try to compile Java Code)
-//		String sTempDir = getTemporaryFolder("javaSource_");
-//		String jpath = packageName.replace("package ", ""); // replace leading "package ";
-//		jpath = jpath.replaceAll("\\.", "/"); // replace all dots with file separator
-//		File f = new File(sTempDir + jpath + "/" + className + ".java");
-//		f.getParentFile().mkdirs();
-//		writeStringToFile(sSource, f);
-//		System.out.println("File " + f + " exists: " + f.exists());
-//
-//		
-//		String sCmd = "javac -cp " + getEXIficientCoreJar() + " " + sTempDir + jpath + "/" + "*.java" ; 
-//		System.out.println("CMD: " + sCmd);
-//		
-//	    ProcessBuilder builder;
-//	    if(isWindows()) {
-//	    	builder = new ProcessBuilder("javac", "-cp", getEXIficientCoreJar(), sTempDir + jpath + "/" + "*.java" );
-//	    } else if(isUnix()) {
-//	    	builder = new ProcessBuilder("/bin/sh", "-c", sCmd); 
-//	    } else {
-//	    	throw new RuntimeException("Unsupported operating system: " + OS);
-//	    }
-//	    final Process process = builder.start();
-//
-//		// read streams
-//	    String errMsg = getMsg(process.getErrorStream());
-//		String inpMsg = getMsg(process.getInputStream());
-//		
-//		if (errMsg == null || errMsg.startsWith("Picked up _JAVA_OPTIONS")) {
-//			// NO Error
-//			// Travis seems to report always "Picked up _JAVA_OPTIONS: -Xmx2048m -Xms512m"
-//		} else {
-//			if (inpMsg != null) {
-//				errMsg += "\nCompilerMsg:\n" + inpMsg;
-//			}
-//			fail(errMsg);
-//		}
+		grammarBuilder.loadGrammars(xsd);
+		SchemaInformedGrammars grammars = grammarBuilder.toGrammars();
+		
+		Grammars2JavaSourceCode g2j = new Grammars2JavaSourceCode(grammars);
+		g2j.generateCode();
+		String packageName = Grammars2JavaSourceCode.class.getPackage().toString();
+		String className = "Test"+ System.currentTimeMillis();
+		
+		String sSource = g2j.getGrammars(packageName, className);
+		
+		// further validation (try to compile Java Code)
+		String sTempDir = getTemporaryFolder("javaSource_");
+		String jpath = packageName.replace("package ", ""); // replace leading "package ";
+		jpath = jpath.replaceAll("\\.", "/"); // replace all dots with file separator
+		File f = new File(sTempDir + jpath + "/" + className + ".java");
+		f.getParentFile().mkdirs();
+		writeStringToFile(sSource, f);
+		System.out.println("File " + f + " exists: " + f.exists());
+
+		
+		String sCmd = "javac -cp " + getEXIficientCoreJar() + " " + sTempDir + jpath + "/" + "*.java" ; 
+		System.out.println("CMD: " + sCmd);
+		
+	    ProcessBuilder builder;
+	    if(isWindows()) {
+	    	builder = new ProcessBuilder("javac", "-cp", getEXIficientCoreJar(), sTempDir + jpath + "/" + "*.java" );
+	    } else if(isUnix()) {
+	    	builder = new ProcessBuilder("/bin/sh", "-c", sCmd); 
+	    } else {
+	    	throw new RuntimeException("Unsupported operating system: " + OS);
+	    }
+	    final Process process = builder.start();
+
+		// read streams
+	    String errMsg = getMsg(process.getErrorStream());
+		String inpMsg = getMsg(process.getInputStream());
+		
+		if (errMsg == null || errMsg.startsWith("Picked up _JAVA_OPTIONS")) {
+			// NO Error
+			// Travis seems to report always "Picked up _JAVA_OPTIONS: -Xmx2048m -Xms512m"
+		} else {
+			if (inpMsg != null) {
+				errMsg += "\nCompilerMsg:\n" + inpMsg;
+			}
+			fail(errMsg);
+		}
 	}
 	
 	static String getEXIficientCoreJar() {
