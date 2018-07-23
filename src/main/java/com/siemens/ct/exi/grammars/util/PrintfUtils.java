@@ -53,5 +53,5 @@ public class PrintfUtils {
 		}
 		printf(w, format, args);
 	}
-	
+
 }

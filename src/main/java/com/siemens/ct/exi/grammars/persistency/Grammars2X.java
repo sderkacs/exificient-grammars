@@ -129,9 +129,9 @@ public class Grammars2X {
 	List<Datatype> listOfSimpleDatatypes = new ArrayList<Datatype>();
 
 	GrammarsPreperation gpreps = new GrammarsPreperation();
-	
+
 	static Class<ExiGrammars> CLASS = ExiGrammars.class;
-	
+
 	static JAXBContext jc;
 
 	public Grammars2X() {
@@ -142,56 +142,63 @@ public class Grammars2X {
 		listOfSimpleDatatypes.clear();
 		gpreps.clear();
 	}
-	
-	
+
 	private static JAXBContext getJAXBContext() throws JAXBException {
-		if(jc == null) {
+		if (jc == null) {
 			jc = JAXBContext.newInstance(CLASS);
 		}
 		return jc;
 	}
 
-	public static void marshal(ExiGrammars exiGrammars, Result result) throws JAXBException {
+	public static void marshal(ExiGrammars exiGrammars, Result result)
+			throws JAXBException {
 		Marshaller m = getJAXBContext().createMarshaller();
 		// m.setProperty("jaxb.formatted.output", Boolean.TRUE);
 		m.marshal(exiGrammars, result);
 	}
 
 	public static void marshal(ExiGrammars exiGrammars,
-								org.xml.sax.ContentHandler handler) throws JAXBException {
+			org.xml.sax.ContentHandler handler) throws JAXBException {
 		Marshaller m = getJAXBContext().createMarshaller();
 		m.marshal(exiGrammars, handler);
 	}
-	
-	public static ExiGrammars unmarshal(InputStream inputStream) throws JAXBException {
+
+	public static ExiGrammars unmarshal(InputStream inputStream)
+			throws JAXBException {
 		Unmarshaller u = getJAXBContext().createUnmarshaller();
 		Object o = u.unmarshal(inputStream);
-		if(o instanceof ExiGrammars) {
-			return (ExiGrammars)o;
+		if (o instanceof ExiGrammars) {
+			return (ExiGrammars) o;
 		}
-		throw new JAXBException("Unmarshalled object not of instance " + CLASS + ". Instead " + o.getClass());
+		throw new JAXBException("Unmarshalled object not of instance " + CLASS
+				+ ". Instead " + o.getClass());
 	}
 
-	public static ExiGrammars unmarshal(javax.xml.transform.Source source) throws JAXBException {
+	public static ExiGrammars unmarshal(javax.xml.transform.Source source)
+			throws JAXBException {
 		Unmarshaller u = getJAXBContext().createUnmarshaller();
 		Object o = u.unmarshal(source);
-		if(o instanceof ExiGrammars) {
-			return (ExiGrammars)o;
+		if (o instanceof ExiGrammars) {
+			return (ExiGrammars) o;
 		}
-		throw new JAXBException("Unmarshalled object not of instance " + CLASS + ". Instead " + o.getClass());
+		throw new JAXBException("Unmarshalled object not of instance " + CLASS
+				+ ". Instead " + o.getClass());
 	}
 
-	public static ExiGrammars unmarshal(javax.xml.stream.XMLStreamReader reader) throws JAXBException {
+	public static ExiGrammars unmarshal(javax.xml.stream.XMLStreamReader reader)
+			throws JAXBException {
 		Unmarshaller u = getJAXBContext().createUnmarshaller();
 		Object o = u.unmarshal(reader);
-		if(o instanceof ExiGrammars) {
-			return (ExiGrammars)o;
+		if (o instanceof ExiGrammars) {
+			return (ExiGrammars) o;
 		}
-		throw new JAXBException("Unmarshalled object not of instance " + CLASS + ". Instead " + o.getClass());
+		throw new JAXBException("Unmarshalled object not of instance " + CLASS
+				+ ". Instead " + o.getClass());
 	}
 
 	public ExiGrammars toGrammarsX(SchemaInformedGrammars grammars)
-			throws IOException, EXIException, ParserConfigurationException, DatatypeConfigurationException {
+			throws IOException, EXIException, ParserConfigurationException,
+			DatatypeConfigurationException {
 
 		ExiGrammars exiGrammars = of.createExiGrammars();
 
@@ -214,7 +221,8 @@ public class Grammars2X {
 					DatatypeEvent de = (DatatypeEvent) e;
 					// System.out.println(de.getDatatype());
 					if (!listOfSimpleDatatypes.contains(de.getDatatype())
-							&& !de.getDatatype().equals(BuiltIn.getDefaultDatatype())) {
+							&& !de.getDatatype().equals(
+									BuiltIn.getDefaultDatatype())) {
 						listOfSimpleDatatypes.add(de.getDatatype());
 					}
 					// any simple Type !??!
@@ -288,7 +296,9 @@ public class Grammars2X {
 								// simple type grammar
 								Characters chev = (Characters) typeGrammar
 										.getProduction(0).getEvent();
-								qnameContext.setGlobalSimpleTypeDatatypeID(getDatatypeIndex(chev.getDatatype(), false));
+								qnameContext
+										.setGlobalSimpleTypeDatatypeID(getDatatypeIndex(
+												chev.getDatatype(), false));
 							} else {
 								// complex type grammar
 								long gid = gpreps.getGrammarID(qnc
@@ -307,7 +317,9 @@ public class Grammars2X {
 						// global attribute
 						if (qnc.getGlobalAttribute() != null) {
 							Attribute at = qnc.getGlobalAttribute();
-							qnameContext.setGlobalAttributeDatatypeID(getDatatypeIndex(at.getDatatype(), false));
+							qnameContext
+									.setGlobalAttributeDatatypeID(getDatatypeIndex(
+											at.getDatatype(), false));
 						}
 
 					}
@@ -344,7 +356,7 @@ public class Grammars2X {
 							long baseDatatypeID = listOfSimpleDatatypes
 									.indexOf(dt.getBaseDatatype());
 							if (baseDatatypeID < 0) {
-								// 
+								//
 							} else {
 								d.setBaseDatatypeID(baseDatatypeID);
 							}
@@ -364,15 +376,16 @@ public class Grammars2X {
 			long fragmentGrammarID = gpreps.getGrammarID(grammars
 					.getFragmentGrammar());
 			grs.setFragmentGrammarID(fragmentGrammarID);
-			
+
 			long elementFragmentGrammarID = gpreps.getGrammarID(grammars
 					.getSchemaInformedElementFragmentGrammar());
 			grs.setElementFragmentGrammarID(elementFragmentGrammarID);
 
 			exiGrammars.setGrammars(grs);
-			
-			if(grammars.isBuiltInXMLSchemaTypesOnly()) {
-				grs.setIsBuiltInXMLSchemaTypesOnly(of.createExiGrammarsGrammarsIsBuiltInXMLSchemaTypesOnly());
+
+			if (grammars.isBuiltInXMLSchemaTypesOnly()) {
+				grs.setIsBuiltInXMLSchemaTypesOnly(of
+						.createExiGrammarsGrammarsIsBuiltInXMLSchemaTypesOnly());
 			}
 
 			for (int i = 0; i < gpreps.getNumberOfGrammars(); i++) {
@@ -385,7 +398,6 @@ public class Grammars2X {
 		return exiGrammars;
 	}
 
-	
 	private static void setDatatypeBasics(DatatypeBasics d, Datatype dt) {
 		switch (dt.getBuiltInType()) {
 		case BINARY_BASE64:
@@ -472,20 +484,22 @@ public class Grammars2X {
 					.createDatatypeBasicsString();
 			// RCS
 			RestrictedCharacterSet rcs = rcsdt.getRestrictedCharacterSet();
-			for(int i=0; i<rcs.size(); i++) {
+			for (int i = 0; i < rcs.size(); i++) {
 				int cp = rcs.getCodePoint(i);
 				s.getRestrictedCharSet().add((long) cp);
 			}
-			
+
 			d.setString(s);
 			break;
 		default:
-			throw new RuntimeException("Unsupported basic datatype: " + dt.getBuiltInType());
+			throw new RuntimeException("Unsupported basic datatype: "
+					+ dt.getBuiltInType());
 		}
 	}
-	
+
 	private static void setDatatype(
-			com.siemens.ct.exi.grammars._2017.schemaforgrammars.Datatype d, Datatype dt) throws DatatypeConfigurationException {
+			com.siemens.ct.exi.grammars._2017.schemaforgrammars.Datatype d,
+			Datatype dt) throws DatatypeConfigurationException {
 		switch (dt.getBuiltInType()) {
 		case BINARY_BASE64:
 		case BINARY_HEX:
@@ -503,7 +517,8 @@ public class Grammars2X {
 			break;
 		case ENUMERATION:
 			EnumerationDatatype endt = (EnumerationDatatype) dt;
-			com.siemens.ct.exi.grammars._2017.schemaforgrammars.Enumeration en = of.createEnumeration();
+			com.siemens.ct.exi.grammars._2017.schemaforgrammars.Enumeration en = of
+					.createEnumeration();
 			// enum value type
 			Datatype enumDT = endt.getEnumValueDatatype();
 			DatatypeBasics enumdb = of.createDatatypeBasics();
@@ -511,20 +526,22 @@ public class Grammars2X {
 			en.setEnumerationValueDatatype(enumdb);
 			switch (enumDT.getBuiltInType()) {
 			case BINARY_BASE64:
-				for(int i=0; i<endt.getEnumerationSize(); i++) {
-					AbstractBinaryValue v = (AbstractBinaryValue) endt.getEnumValue(i);
+				for (int i = 0; i < endt.getEnumerationSize(); i++) {
+					AbstractBinaryValue v = (AbstractBinaryValue) endt
+							.getEnumValue(i);
 					en.getBase64BinaryValue().add(v.toBytes());
 				}
 				break;
 			case BINARY_HEX:
-				for(int i=0; i<endt.getEnumerationSize(); i++) {
-					AbstractBinaryValue v = (AbstractBinaryValue) endt.getEnumValue(i);
+				for (int i = 0; i < endt.getEnumerationSize(); i++) {
+					AbstractBinaryValue v = (AbstractBinaryValue) endt
+							.getEnumValue(i);
 					en.getBase64BinaryValue().add(v.toBytes());
 				}
 				break;
 			case BOOLEAN:
 			case BOOLEAN_FACET:
-				for(int i=0; i<endt.getEnumerationSize(); i++) {
+				for (int i = 0; i < endt.getEnumerationSize(); i++) {
 					BooleanValue v = (BooleanValue) endt.getEnumValue(i);
 					en.getBooleanValue().add(v.toBoolean());
 				}
@@ -533,79 +550,95 @@ public class Grammars2X {
 				DatetimeDatatype ddt = (DatetimeDatatype) enumDT;
 				switch (ddt.getDatetimeType()) {
 				case gYear:
-					for(int i=0; i<endt.getEnumerationSize(); i++) {
+					for (int i = 0; i < endt.getEnumerationSize(); i++) {
 						DateTimeValue v = (DateTimeValue) endt.getEnumValue(i);
 						GregorianCalendar gc = new GregorianCalendar();
 						gc.setTime(v.toCalendar().getTime());
-						en.getGYearValue().add(DatatypeFactory.newInstance().newXMLGregorianCalendar(gc));
+						en.getGYearValue().add(
+								DatatypeFactory.newInstance()
+										.newXMLGregorianCalendar(gc));
 					}
 					break;
 				case gYearMonth:
-					for(int i=0; i<endt.getEnumerationSize(); i++) {
+					for (int i = 0; i < endt.getEnumerationSize(); i++) {
 						DateTimeValue v = (DateTimeValue) endt.getEnumValue(i);
 						GregorianCalendar gc = new GregorianCalendar();
 						gc.setTime(v.toCalendar().getTime());
-						en.getGYearMonthValue().add(DatatypeFactory.newInstance().newXMLGregorianCalendar(gc));
+						en.getGYearMonthValue().add(
+								DatatypeFactory.newInstance()
+										.newXMLGregorianCalendar(gc));
 					}
 					break;
 				case date:
-					for(int i=0; i<endt.getEnumerationSize(); i++) {
+					for (int i = 0; i < endt.getEnumerationSize(); i++) {
 						DateTimeValue v = (DateTimeValue) endt.getEnumValue(i);
 						GregorianCalendar gc = new GregorianCalendar();
 						gc.setTime(v.toCalendar().getTime());
-						en.getDateValue().add(DatatypeFactory.newInstance().newXMLGregorianCalendar(gc));
+						en.getDateValue().add(
+								DatatypeFactory.newInstance()
+										.newXMLGregorianCalendar(gc));
 					}
 					break;
 				case dateTime:
-					for(int i=0; i<endt.getEnumerationSize(); i++) {
+					for (int i = 0; i < endt.getEnumerationSize(); i++) {
 						DateTimeValue v = (DateTimeValue) endt.getEnumValue(i);
 						GregorianCalendar gc = new GregorianCalendar();
 						gc.setTime(v.toCalendar().getTime());
-						en.getDateTimeValue().add(DatatypeFactory.newInstance().newXMLGregorianCalendar(gc));
+						en.getDateTimeValue().add(
+								DatatypeFactory.newInstance()
+										.newXMLGregorianCalendar(gc));
 					}
 					break;
 				case gMonth:
-					for(int i=0; i<endt.getEnumerationSize(); i++) {
+					for (int i = 0; i < endt.getEnumerationSize(); i++) {
 						DateTimeValue v = (DateTimeValue) endt.getEnumValue(i);
 						GregorianCalendar gc = new GregorianCalendar();
 						gc.setTime(v.toCalendar().getTime());
-						en.getGMonthValue().add(DatatypeFactory.newInstance().newXMLGregorianCalendar(gc));
+						en.getGMonthValue().add(
+								DatatypeFactory.newInstance()
+										.newXMLGregorianCalendar(gc));
 					}
 					break;
 				case gMonthDay:
-					for(int i=0; i<endt.getEnumerationSize(); i++) {
+					for (int i = 0; i < endt.getEnumerationSize(); i++) {
 						DateTimeValue v = (DateTimeValue) endt.getEnumValue(i);
 						GregorianCalendar gc = new GregorianCalendar();
 						gc.setTime(v.toCalendar().getTime());
-						en.getGMonthDayValue().add(DatatypeFactory.newInstance().newXMLGregorianCalendar(gc));
+						en.getGMonthDayValue().add(
+								DatatypeFactory.newInstance()
+										.newXMLGregorianCalendar(gc));
 					}
 					break;
 				case gDay:
-					for(int i=0; i<endt.getEnumerationSize(); i++) {
+					for (int i = 0; i < endt.getEnumerationSize(); i++) {
 						DateTimeValue v = (DateTimeValue) endt.getEnumValue(i);
 						GregorianCalendar gc = new GregorianCalendar();
 						gc.setTime(v.toCalendar().getTime());
-						en.getGDayValue().add(DatatypeFactory.newInstance().newXMLGregorianCalendar(gc));
+						en.getGDayValue().add(
+								DatatypeFactory.newInstance()
+										.newXMLGregorianCalendar(gc));
 					}
 					break;
 				case time:
-					for(int i=0; i<endt.getEnumerationSize(); i++) {
+					for (int i = 0; i < endt.getEnumerationSize(); i++) {
 						DateTimeValue v = (DateTimeValue) endt.getEnumValue(i);
 						GregorianCalendar gc = new GregorianCalendar();
 						gc.setTime(v.toCalendar().getTime());
-						en.getTimeValue().add(DatatypeFactory.newInstance().newXMLGregorianCalendar(gc));
+						en.getTimeValue().add(
+								DatatypeFactory.newInstance()
+										.newXMLGregorianCalendar(gc));
 					}
 					break;
 				}
 				break;
 			case DECIMAL:
-				for(int i=0; i<endt.getEnumerationSize(); i++) {
+				for (int i = 0; i < endt.getEnumerationSize(); i++) {
 					DecimalValue v = (DecimalValue) endt.getEnumValue(i);
 					en.getDecimalValue().add(v.toBigDecimal());
 				}
 				break;
 			case FLOAT:
-				for(int i=0; i<endt.getEnumerationSize(); i++) {
+				for (int i = 0; i < endt.getEnumerationSize(); i++) {
 					FloatValue v = (FloatValue) endt.getEnumValue(i);
 					en.getFloatValue().add(Double.valueOf(v.toDouble()));
 				}
@@ -613,23 +646,25 @@ public class Grammars2X {
 			case INTEGER:
 			case UNSIGNED_INTEGER:
 			case NBIT_UNSIGNED_INTEGER:
-				for(int i=0; i<endt.getEnumerationSize(); i++) {
+				for (int i = 0; i < endt.getEnumerationSize(); i++) {
 					IntegerValue v = (IntegerValue) endt.getEnumValue(i);
 					en.getIntegerValue().add(v.bigIntegerValue());
 				}
 				break;
 			case STRING:
-				for(int i=0; i<endt.getEnumerationSize(); i++) {
+				for (int i = 0; i < endt.getEnumerationSize(); i++) {
 					StringValue v = (StringValue) endt.getEnumValue(i);
 					en.getStringValue().add(v.toString());
 				}
 				break;
 			default:
-				throw new RuntimeException("Datatype "+ enumDT.getBuiltInType() + " for Enumeration not supported");
+				throw new RuntimeException("Datatype "
+						+ enumDT.getBuiltInType()
+						+ " for Enumeration not supported");
 			}
-			
+
 			endt.getEnumValueDatatype();
-			
+
 			d.setEnumeration(en);
 			break;
 		case LIST:
@@ -639,7 +674,8 @@ public class Grammars2X {
 			d.setList(of.createDatatypeList());
 			break;
 		default:
-			throw new RuntimeException("Unsupported datatype: " + dt.getBuiltInType());
+			throw new RuntimeException("Unsupported datatype: "
+					+ dt.getBuiltInType());
 		}
 	}
 
@@ -653,7 +689,8 @@ public class Grammars2X {
 			SchemaInformedFirstStartTagGrammar fst = (SchemaInformedFirstStartTagGrammar) sir;
 
 			g.setGrammarType(GrammarType.FIRST_START_TAG_CONTENT);
-			g.setElementContentGrammarID(Long.valueOf(gpreps.getGrammarID(fst.getElementContentGrammar())));
+			g.setElementContentGrammarID(Long.valueOf(gpreps.getGrammarID(fst
+					.getElementContentGrammar())));
 			if (fst.isTypeCastable()) {
 				g.setIsTypeCastable(of
 						.createExiGrammarsGrammarsGrammarIsTypeCastable());
@@ -664,7 +701,8 @@ public class Grammars2X {
 		} else if (sir instanceof SchemaInformedStartTagGrammar) {
 			SchemaInformedStartTagGrammar st = (SchemaInformedStartTagGrammar) sir;
 			g.setGrammarType(GrammarType.START_TAG_CONTENT);
-			g.setElementContentGrammarID(Long.valueOf(gpreps.getGrammarID(st.getElementContentGrammar())));
+			g.setElementContentGrammarID(Long.valueOf(gpreps.getGrammarID(st
+					.getElementContentGrammar())));
 		} else if (sir instanceof SchemaInformedElement) {
 			g.setGrammarType(GrammarType.ELEMENT_CONTENT);
 		} else if (sir instanceof Document) {
@@ -689,51 +727,69 @@ public class Grammars2X {
 	}
 
 	/**
-	 * Get a datatype index from a Datatype instance using the listOfSimpleDatatypes,
-	 * or null if this is the default datatype and {@code useNullAsDefaultDatatype} is true.
-	 * @param datatype The datatype to get the index from.
-	 * @param useNullAsDefaultDatatype Tells is it should return null for the built-in default datatype.
+	 * Get a datatype index from a Datatype instance using the
+	 * listOfSimpleDatatypes, or null if this is the default datatype and
+	 * {@code useNullAsDefaultDatatype} is true.
+	 * 
+	 * @param datatype
+	 *            The datatype to get the index from.
+	 * @param useNullAsDefaultDatatype
+	 *            Tells is it should return null for the built-in default
+	 *            datatype.
 	 * @return The index of the datatype.
-	 * @throws EXIException if the datatype can't be found in listOfSimpleDatatypes.
+	 * @throws EXIException
+	 *             if the datatype can't be found in listOfSimpleDatatypes.
 	 */
-	private Long getDatatypeIndex(Datatype datatype, boolean useNullAsDefaultDatatype) throws EXIException {
-        if (datatype.equals(BuiltIn.getDefaultDatatype()) && useNullAsDefaultDatatype) {
-            return null;
-        }
-        int datatypeIndex = listOfSimpleDatatypes.indexOf(datatype);
-        if (datatypeIndex < 0){
-            throw new EXIException("Can't find datatype: " + datatype);
-        }
-        return Long.valueOf(datatypeIndex);
-    }
+	private Long getDatatypeIndex(Datatype datatype,
+			boolean useNullAsDefaultDatatype) throws EXIException {
+		if (datatype.equals(BuiltIn.getDefaultDatatype())
+				&& useNullAsDefaultDatatype) {
+			return null;
+		}
+		int datatypeIndex = listOfSimpleDatatypes.indexOf(datatype);
+		if (datatypeIndex < 0) {
+			throw new EXIException("Can't find datatype: " + datatype);
+		}
+		return Long.valueOf(datatypeIndex);
+	}
 
 	/**
-	 * Get the datatype instance from an index in the datatypes array,
-	 * or get the built-in default datatype if the {@code index} is null and {@code useNullAsDefaultDatatype} is true.
-	 * @param index The index of the datatype.
-	 * @param datatypes The array of datatypes.
-	 * @param useNullAsDefaultDatatype Tells is it should return null for the built-in default parameter.
+	 * Get the datatype instance from an index in the datatypes array, or get
+	 * the built-in default datatype if the {@code index} is null and
+	 * {@code useNullAsDefaultDatatype} is true.
+	 * 
+	 * @param index
+	 *            The index of the datatype.
+	 * @param datatypes
+	 *            The array of datatypes.
+	 * @param useNullAsDefaultDatatype
+	 *            Tells is it should return null for the built-in default
+	 *            parameter.
 	 * @return The datatype instance.
-	 * @throws EXIException if the index is out of bounds from the datatypes array.
+	 * @throws EXIException
+	 *             if the index is out of bounds from the datatypes array.
 	 */
-    private static Datatype getDatatype(Long index, Datatype[] datatypes, boolean useNullAsDefaultDatatype) throws EXIException {
-	    if (index == null && useNullAsDefaultDatatype) {
-	        return BuiltIn.getDefaultDatatype();
-        }
-        if (index == null || index >= datatypes.length || index < 0) {
-            throw new EXIException("Can't find datatype of index: " + index);
-        }
-        return datatypes[index.intValue()];
-    }
+	private static Datatype getDatatype(Long index, Datatype[] datatypes,
+			boolean useNullAsDefaultDatatype) throws EXIException {
+		if (index == null && useNullAsDefaultDatatype) {
+			return BuiltIn.getDefaultDatatype();
+		}
+		if (index == null || index >= datatypes.length || index < 0) {
+			throw new EXIException("Can't find datatype of index: " + index);
+		}
+		return datatypes[index.intValue()];
+	}
 
-	protected void printGrammarProduction(SchemaInformedGrammar sir, List<com.siemens.ct.exi.grammars._2017.schemaforgrammars.Production> productions)
-            throws IOException, EXIException {
+	protected void printGrammarProduction(
+			SchemaInformedGrammar sir,
+			List<com.siemens.ct.exi.grammars._2017.schemaforgrammars.Production> productions)
+			throws IOException, EXIException {
 
 		for (int i = 0; i < sir.getNumberOfEvents(); i++) {
 			if (STATS_ON) {
 				statsCountTransitions++;
 			}
-			
+
 			com.siemens.ct.exi.grammars._2017.schemaforgrammars.Production p = new com.siemens.ct.exi.grammars._2017.schemaforgrammars.Production();
 			productions.add(p);
 
@@ -750,12 +806,15 @@ public class Grammars2X {
 			case START_ELEMENT:
 				StartElement se = (StartElement) event;
 				QNameContext seqname = se.getQNameContext();
-				
+
 				p.setStartElement(of.createProductionStartElement());
-				
-				p.getStartElement().setStartElementGrammarID(gpreps.getGrammarID(se.getGrammar()));
-				p.getStartElement().setStartElementNamespaceID(seqname.getNamespaceUriID());
-				p.getStartElement().setStartElementLocalNameID(seqname.getLocalNameID());
+
+				p.getStartElement().setStartElementGrammarID(
+						gpreps.getGrammarID(se.getGrammar()));
+				p.getStartElement().setStartElementNamespaceID(
+						seqname.getNamespaceUriID());
+				p.getStartElement().setStartElementLocalNameID(
+						seqname.getLocalNameID());
 				break;
 			case START_ELEMENT_NS:
 				StartElementNS seNS = (StartElementNS) event;
@@ -768,12 +827,15 @@ public class Grammars2X {
 			case ATTRIBUTE:
 				Attribute at = (Attribute) event;
 				QNameContext atqname = at.getQNameContext();
-				
+
 				p.setAttribute(of.createProductionAttribute());
 
-                p.getAttribute().setAttributeDatatypeID(getDatatypeIndex(at.getDatatype(), true));
-				p.getAttribute().setAttributeNamespaceID(atqname.getNamespaceUriID());
-				p.getAttribute().setAttributeLocalNameID(atqname.getLocalNameID());
+				p.getAttribute().setAttributeDatatypeID(
+						getDatatypeIndex(at.getDatatype(), true));
+				p.getAttribute().setAttributeNamespaceID(
+						atqname.getNamespaceUriID());
+				p.getAttribute().setAttributeLocalNameID(
+						atqname.getLocalNameID());
 				break;
 			case ATTRIBUTE_NS:
 				AttributeNS atNS = (AttributeNS) event;
@@ -783,10 +845,12 @@ public class Grammars2X {
 			case CHARACTERS:
 				Characters ch = (Characters) event;
 				p.setCharacters(of.createProductionCharacters());
-				p.getCharacters().setCharactersDatatypeID(getDatatypeIndex(ch.getDatatype(), false));
+				p.getCharacters().setCharactersDatatypeID(
+						getDatatypeIndex(ch.getDatatype(), false));
 				break;
 			case START_ELEMENT_GENERIC:
-				p.setStartElementGeneric(of.createProductionStartElementGeneric());
+				p.setStartElementGeneric(of
+						.createProductionStartElementGeneric());
 				break;
 			case ATTRIBUTE_GENERIC:
 				p.setAttributeGeneric(of.createProductionAttributeGeneric());
@@ -811,94 +875,107 @@ public class Grammars2X {
 			}
 		}
 	}
-	
-	private static EnumerationDatatype getEnumerationDatatype(com.siemens.ct.exi.grammars._2017.schemaforgrammars.Enumeration en, QNameContext qnc) throws EXIException {
+
+	private static EnumerationDatatype getEnumerationDatatype(
+			com.siemens.ct.exi.grammars._2017.schemaforgrammars.Enumeration en,
+			QNameContext qnc) throws EXIException {
 		Value[] enumValues;
 		Datatype dtEnumValues;
-		
+
 		DatatypeBasics enumDT = en.getEnumerationValueDatatype();
 		if (enumDT.getBase64Binary() != null) {
 			dtEnumValues = new BinaryBase64Datatype(qnc);
 			enumValues = new BinaryBase64Value[en.getBase64BinaryValue().size()];
-			for(int k=0; k<en.getBase64BinaryValue().size(); k++) {
-				enumValues[k] =  new BinaryBase64Value(en.getBase64BinaryValue().get(k));
+			for (int k = 0; k < en.getBase64BinaryValue().size(); k++) {
+				enumValues[k] = new BinaryBase64Value(en.getBase64BinaryValue()
+						.get(k));
 			}
 		} else if (enumDT.getHexBinary() != null) {
 			dtEnumValues = new BinaryHexDatatype(qnc);
 			enumValues = new BinaryHexValue[en.getHexBinaryValue().size()];
-			for(int k=0; k<en.getHexBinaryValue().size(); k++) {
-				enumValues[k] =  new BinaryHexValue(en.getHexBinaryValue().get(k));
+			for (int k = 0; k < en.getHexBinaryValue().size(); k++) {
+				enumValues[k] = new BinaryHexValue(en.getHexBinaryValue()
+						.get(k));
 			}
 		} else if (enumDT.getBoolean() != null) {
 			dtEnumValues = new BooleanDatatype(qnc);
 			enumValues = new BooleanValue[en.getBooleanValue().size()];
-			for(int k=0; k<en.getBooleanValue().size(); k++) {
-				enumValues[k] = en.getBooleanValue().get(k) ? BooleanValue.BOOLEAN_VALUE_TRUE : BooleanValue.BOOLEAN_VALUE_FALSE;
+			for (int k = 0; k < en.getBooleanValue().size(); k++) {
+				enumValues[k] = en.getBooleanValue().get(k) ? BooleanValue.BOOLEAN_VALUE_TRUE
+						: BooleanValue.BOOLEAN_VALUE_FALSE;
 			}
 		} else if (enumDT.getDateAndTime() != null) {
 			DateTimeType dateType;
-			if(enumDT.getDateAndTime().getDateTime() != null) {
+			if (enumDT.getDateAndTime().getDateTime() != null) {
 				dateType = DateTimeType.dateTime;
 				enumValues = new DateTimeValue[en.getDateTimeValue().size()];
-				for(int k=0; k<en.getDateTimeValue().size(); k++) {
+				for (int k = 0; k < en.getDateTimeValue().size(); k++) {
 					XMLGregorianCalendar xmlgc = en.getDateTimeValue().get(k);
-					DateTimeValue dtv = DateTimeValue.parse(xmlgc.toGregorianCalendar(), dateType);
+					DateTimeValue dtv = DateTimeValue.parse(
+							xmlgc.toGregorianCalendar(), dateType);
 					enumValues[k] = dtv;
 				}
-			} else if(enumDT.getDateAndTime().getTime() != null) {
+			} else if (enumDT.getDateAndTime().getTime() != null) {
 				dateType = DateTimeType.time;
 				enumValues = new DateTimeValue[en.getTimeValue().size()];
-				for(int k=0; k<en.getTimeValue().size(); k++) {
+				for (int k = 0; k < en.getTimeValue().size(); k++) {
 					XMLGregorianCalendar xmlgc = en.getTimeValue().get(k);
-					DateTimeValue dtv = DateTimeValue.parse(xmlgc.toGregorianCalendar(), dateType);
+					DateTimeValue dtv = DateTimeValue.parse(
+							xmlgc.toGregorianCalendar(), dateType);
 					enumValues[k] = dtv;
 				}
-			} else if(enumDT.getDateAndTime().getDate() != null) {
+			} else if (enumDT.getDateAndTime().getDate() != null) {
 				dateType = DateTimeType.date;
 				enumValues = new DateTimeValue[en.getDateValue().size()];
-				for(int k=0; k<en.getDateValue().size(); k++) {
+				for (int k = 0; k < en.getDateValue().size(); k++) {
 					XMLGregorianCalendar xmlgc = en.getDateValue().get(k);
-					DateTimeValue dtv = DateTimeValue.parse(xmlgc.toGregorianCalendar(), dateType);
+					DateTimeValue dtv = DateTimeValue.parse(
+							xmlgc.toGregorianCalendar(), dateType);
 					enumValues[k] = dtv;
 				}
-			} else if(enumDT.getDateAndTime().getGYearMonth() != null) {
+			} else if (enumDT.getDateAndTime().getGYearMonth() != null) {
 				dateType = DateTimeType.gYearMonth;
 				enumValues = new DateTimeValue[en.getGYearMonthValue().size()];
-				for(int k=0; k<en.getGYearMonthValue().size(); k++) {
+				for (int k = 0; k < en.getGYearMonthValue().size(); k++) {
 					XMLGregorianCalendar xmlgc = en.getGYearMonthValue().get(k);
-					DateTimeValue dtv = DateTimeValue.parse(xmlgc.toGregorianCalendar(), dateType);
+					DateTimeValue dtv = DateTimeValue.parse(
+							xmlgc.toGregorianCalendar(), dateType);
 					enumValues[k] = dtv;
 				}
-			} else if(enumDT.getDateAndTime().getGYear() != null) {
+			} else if (enumDT.getDateAndTime().getGYear() != null) {
 				dateType = DateTimeType.gYear;
 				enumValues = new DateTimeValue[en.getGYearValue().size()];
-				for(int k=0; k<en.getGYearValue().size(); k++) {
+				for (int k = 0; k < en.getGYearValue().size(); k++) {
 					XMLGregorianCalendar xmlgc = en.getGYearValue().get(k);
-					DateTimeValue dtv = DateTimeValue.parse(xmlgc.toGregorianCalendar(), dateType);
+					DateTimeValue dtv = DateTimeValue.parse(
+							xmlgc.toGregorianCalendar(), dateType);
 					enumValues[k] = dtv;
 				}
-			} else if(enumDT.getDateAndTime().getGMonthDay() != null) {
+			} else if (enumDT.getDateAndTime().getGMonthDay() != null) {
 				dateType = DateTimeType.gMonthDay;
 				enumValues = new DateTimeValue[en.getGMonthDayValue().size()];
-				for(int k=0; k<en.getGMonthDayValue().size(); k++) {
+				for (int k = 0; k < en.getGMonthDayValue().size(); k++) {
 					XMLGregorianCalendar xmlgc = en.getGMonthDayValue().get(k);
-					DateTimeValue dtv = DateTimeValue.parse(xmlgc.toGregorianCalendar(), dateType);
+					DateTimeValue dtv = DateTimeValue.parse(
+							xmlgc.toGregorianCalendar(), dateType);
 					enumValues[k] = dtv;
 				}
-			} else if(enumDT.getDateAndTime().getGDay() != null) {
+			} else if (enumDT.getDateAndTime().getGDay() != null) {
 				dateType = DateTimeType.gDay;
 				enumValues = new DateTimeValue[en.getGDayValue().size()];
-				for(int k=0; k<en.getGDayValue().size(); k++) {
+				for (int k = 0; k < en.getGDayValue().size(); k++) {
 					XMLGregorianCalendar xmlgc = en.getGDayValue().get(k);
-					DateTimeValue dtv = DateTimeValue.parse(xmlgc.toGregorianCalendar(), dateType);
+					DateTimeValue dtv = DateTimeValue.parse(
+							xmlgc.toGregorianCalendar(), dateType);
 					enumValues[k] = dtv;
 				}
-			} else if(enumDT.getDateAndTime().getGMonth() != null) {
+			} else if (enumDT.getDateAndTime().getGMonth() != null) {
 				dateType = DateTimeType.gMonth;
 				enumValues = new DateTimeValue[en.getGMonthValue().size()];
-				for(int k=0; k<en.getGMonthValue().size(); k++) {
+				for (int k = 0; k < en.getGMonthValue().size(); k++) {
 					XMLGregorianCalendar xmlgc = en.getGMonthValue().get(k);
-					DateTimeValue dtv = DateTimeValue.parse(xmlgc.toGregorianCalendar(), dateType);
+					DateTimeValue dtv = DateTimeValue.parse(
+							xmlgc.toGregorianCalendar(), dateType);
 					enumValues[k] = dtv;
 				}
 			} else {
@@ -908,91 +985,100 @@ public class Grammars2X {
 		} else if (enumDT.getDecimal() != null) {
 			dtEnumValues = new DecimalDatatype(qnc);
 			enumValues = new DecimalValue[en.getDecimalValue().size()];
-			for(int k=0; k<en.getDecimalValue().size(); k++) {
+			for (int k = 0; k < en.getDecimalValue().size(); k++) {
 				enumValues[k] = DecimalValue.parse(en.getDecimalValue().get(k));
 			}
 		} else if (enumDT.getDouble() != null) {
 			dtEnumValues = new FloatDatatype(qnc);
 			enumValues = new FloatValue[en.getFloatValue().size()];
-			for(int k=0; k<en.getFloatValue().size(); k++) {
+			for (int k = 0; k < en.getFloatValue().size(); k++) {
 				enumValues[k] = FloatValue.parse(en.getFloatValue().get(k));
 			}
 		} else if (enumDT.getInteger() != null) {
 			dtEnumValues = new IntegerDatatype(qnc);
 			enumValues = new IntegerValue[en.getIntegerValue().size()];
-			for(int k=0; k<en.getIntegerValue().size(); k++) {
-				enumValues[k] = IntegerValue.valueOf(en.getIntegerValue().get(k));
+			for (int k = 0; k < en.getIntegerValue().size(); k++) {
+				enumValues[k] = IntegerValue.valueOf(en.getIntegerValue()
+						.get(k));
 			}
 		} else if (enumDT.getString() != null) {
 			dtEnumValues = new StringDatatype(qnc);
 			enumValues = new StringValue[en.getStringValue().size()];
-			for(int k=0; k<en.getStringValue().size(); k++) {
+			for (int k = 0; k < en.getStringValue().size(); k++) {
 				enumValues[k] = new StringValue(en.getStringValue().get(k));
 			}
 		} else {
 			throw new EXIException("Unsupported Enumeration type for " + enumDT);
 		}
-		
-		EnumerationDatatype endt = new EnumerationDatatype(enumValues, dtEnumValues, qnc);
+
+		EnumerationDatatype endt = new EnumerationDatatype(enumValues,
+				dtEnumValues, qnc);
 		return endt;
 	}
 
-
-	
-	private static Datatype getBasicDatatype(com.siemens.ct.exi.grammars._2017.schemaforgrammars.Datatype dt, QNameContext qnc) throws EXIException {
+	private static Datatype getBasicDatatype(
+			com.siemens.ct.exi.grammars._2017.schemaforgrammars.Datatype dt,
+			QNameContext qnc) throws EXIException {
 		Datatype datatype;
-		if(dt.getBase64Binary() != null) {
+		if (dt.getBase64Binary() != null) {
 			datatype = new BinaryBase64Datatype(qnc);
 		} else if (dt.getHexBinary() != null) {
 			datatype = new BinaryHexDatatype(qnc);
 		} else if (dt.getBoolean() != null) {
-			if(dt.getBoolean().getPatternFacet() != null) {
+			if (dt.getBoolean().getPatternFacet() != null) {
 				datatype = new BooleanFacetDatatype(qnc);
 			} else {
 				datatype = new BooleanDatatype(qnc);
 			}
 		} else if (dt.getDateAndTime() != null) {
-			if(dt.getDateAndTime().getDateTime() != null) {
+			if (dt.getDateAndTime().getDateTime() != null) {
 				datatype = new DatetimeDatatype(DateTimeType.dateTime, qnc);
-			} else if(dt.getDateAndTime().getTime() != null) {
+			} else if (dt.getDateAndTime().getTime() != null) {
 				datatype = new DatetimeDatatype(DateTimeType.time, qnc);
-			} else if(dt.getDateAndTime().getDate() != null) {
+			} else if (dt.getDateAndTime().getDate() != null) {
 				datatype = new DatetimeDatatype(DateTimeType.date, qnc);
-			} else if(dt.getDateAndTime().getGYearMonth() != null) {
+			} else if (dt.getDateAndTime().getGYearMonth() != null) {
 				datatype = new DatetimeDatatype(DateTimeType.gYearMonth, qnc);
-			} else if(dt.getDateAndTime().getGYear() != null) {
+			} else if (dt.getDateAndTime().getGYear() != null) {
 				datatype = new DatetimeDatatype(DateTimeType.gYear, qnc);
-			} else if(dt.getDateAndTime().getGMonthDay() != null) {
+			} else if (dt.getDateAndTime().getGMonthDay() != null) {
 				datatype = new DatetimeDatatype(DateTimeType.gMonthDay, qnc);
-			} else if(dt.getDateAndTime().getGDay() != null) {
+			} else if (dt.getDateAndTime().getGDay() != null) {
 				datatype = new DatetimeDatatype(DateTimeType.gDay, qnc);
-			} else if(dt.getDateAndTime().getGMonth() != null) {
+			} else if (dt.getDateAndTime().getGMonth() != null) {
 				datatype = new DatetimeDatatype(DateTimeType.gMonth, qnc);
 			} else {
-				throw new EXIException("Unsupported DateAndTime datatype: " + dt.getDateAndTime());
+				throw new EXIException("Unsupported DateAndTime datatype: "
+						+ dt.getDateAndTime());
 			}
 		} else if (dt.getDecimal() != null) {
 			datatype = new DecimalDatatype(qnc);
 		} else if (dt.getDouble() != null) {
 			datatype = new FloatDatatype(qnc);
 		} else if (dt.getInteger() != null) {
-			if(dt.getInteger().getNBitUnsignedInteger() != null) {
-				IntegerValue lowerBound = IntegerValue.valueOf(dt.getInteger().getNBitUnsignedInteger().getLowerBound());
-				IntegerValue upperBound = IntegerValue.valueOf(dt.getInteger().getNBitUnsignedInteger().getUpperBound());
-				datatype = new NBitUnsignedIntegerDatatype(lowerBound, upperBound, qnc);
-			} else if(dt.getInteger().getUnsignedInteger() != null) {
+			if (dt.getInteger().getNBitUnsignedInteger() != null) {
+				IntegerValue lowerBound = IntegerValue.valueOf(dt.getInteger()
+						.getNBitUnsignedInteger().getLowerBound());
+				IntegerValue upperBound = IntegerValue.valueOf(dt.getInteger()
+						.getNBitUnsignedInteger().getUpperBound());
+				datatype = new NBitUnsignedIntegerDatatype(lowerBound,
+						upperBound, qnc);
+			} else if (dt.getInteger().getUnsignedInteger() != null) {
 				datatype = new UnsignedIntegerDatatype(qnc);
 			} else {
 				datatype = new IntegerDatatype(qnc);
 			}
 		} else if (dt.getString() != null) {
-			if(dt.getString().getRestrictedCharSet() != null && dt.getString().getRestrictedCharSet().size() > 0) {
-				Iterator<Long> iter = dt.getString().getRestrictedCharSet().iterator();
+			if (dt.getString().getRestrictedCharSet() != null
+					&& dt.getString().getRestrictedCharSet().size() > 0) {
+				Iterator<Long> iter = dt.getString().getRestrictedCharSet()
+						.iterator();
 				Set<Integer> codePoints = new HashSet<Integer>();
-				while(iter.hasNext()) {
+				while (iter.hasNext()) {
 					codePoints.add(iter.next().intValue());
 				}
-				RestrictedCharacterSet rcs = new CodePointCharacterSet(codePoints);
+				RestrictedCharacterSet rcs = new CodePointCharacterSet(
+						codePoints);
 				datatype = new RestrictedCharacterSetDatatype(rcs, qnc);
 			} else {
 				datatype = new StringDatatype(qnc);
@@ -1000,33 +1086,35 @@ public class Grammars2X {
 		} else {
 			throw new EXIException("Unsupported datatype: " + dt);
 		}
-		
+
 		return datatype;
 	}
-	
-	
-	public static SchemaInformedGrammars toGrammars(ExiGrammars exiGrammars) throws EXIException {
+
+	public static SchemaInformedGrammars toGrammars(ExiGrammars exiGrammars)
+			throws EXIException {
 		// GrammarContext
 		ExiGrammars.Qnames qnames = exiGrammars.getQnames();
-		GrammarUriContext[] grammarUriContexts = new GrammarUriContext[qnames.getNamespaceContext().size()];
+		GrammarUriContext[] grammarUriContexts = new GrammarUriContext[qnames
+				.getNamespaceContext().size()];
 		int numberofQNamesContexts = 0;
-		for(int i=0; i<qnames.getNamespaceContext().size(); i++) {
+		for (int i = 0; i < qnames.getNamespaceContext().size(); i++) {
 			NamespaceContext nsc = qnames.getNamespaceContext().get(i);
-			
+
 			int namespaceUriID = i;
 			String namespaceUri = nsc.getNamespaceURI();
-			
+
 			List<NamespaceContext.QnameContext> qncs = nsc.getQnameContext();
 			QNameContext[] grammarQNames = new QNameContext[qncs.size()];
-			for(int k=0; k<qncs.size(); k++) {
+			for (int k = 0; k < qncs.size(); k++) {
 				numberofQNamesContexts++;
 				NamespaceContext.QnameContext qnc = qncs.get(k);
-				
+
 				int localNameID = k;
 				QName qName = new QName(namespaceUri, qnc.getLocalName());
-				grammarQNames[k] = new QNameContext(namespaceUriID, localNameID, qName);
+				grammarQNames[k] = new QNameContext(namespaceUriID,
+						localNameID, qName);
 			}
-			
+
 			String[] grammarPrefixes;
 			if (Constants.XML_NULL_NS_URI.equals(namespaceUri)) {
 				grammarPrefixes = Constants.PREFIXES_EMPTY;
@@ -1038,30 +1126,39 @@ public class Grammars2X {
 			} else {
 				grammarPrefixes = GrammarUriContext.EMPTY_PREFIXES;
 			}
-			
-			grammarUriContexts[i] = new GrammarUriContext(namespaceUriID, namespaceUri, grammarQNames, grammarPrefixes);
+
+			grammarUriContexts[i] = new GrammarUriContext(namespaceUriID,
+					namespaceUri, grammarQNames, grammarPrefixes);
 		}
-		GrammarContext grammarContext = new GrammarContext(grammarUriContexts, numberofQNamesContexts);
-		
+		GrammarContext grammarContext = new GrammarContext(grammarUriContexts,
+				numberofQNamesContexts);
+
 		// Simple Datatypes
 		// 1. Init all datatypes
-		Datatype[] datatypes = new Datatype[exiGrammars.getSimpleDatatypes().getSimpleDatatype().size()];
-		for(int i = 0; i<exiGrammars.getSimpleDatatypes().getSimpleDatatype().size(); i++) {
-			com.siemens.ct.exi.grammars._2017.schemaforgrammars.Datatype dt = exiGrammars.getSimpleDatatypes().getSimpleDatatype().get(i);
-			
-			QNameContext qnc = grammarUriContexts[(int)dt.getSchemaTypeNamespaceID()].getQNameContext((int)dt.getSchemaTypeLocalNameID());
-			 
+		Datatype[] datatypes = new Datatype[exiGrammars.getSimpleDatatypes()
+				.getSimpleDatatype().size()];
+		for (int i = 0; i < exiGrammars.getSimpleDatatypes()
+				.getSimpleDatatype().size(); i++) {
+			com.siemens.ct.exi.grammars._2017.schemaforgrammars.Datatype dt = exiGrammars
+					.getSimpleDatatypes().getSimpleDatatype().get(i);
+
+			QNameContext qnc = grammarUriContexts[(int) dt
+					.getSchemaTypeNamespaceID()].getQNameContext((int) dt
+					.getSchemaTypeLocalNameID());
+
 			if (dt.getList() != null) {
 				// list MUST be first (there can be a list of enums!)
 				Datatype listDatatype;
-				if(dt.getEnumeration() != null) {
-					listDatatype = getEnumerationDatatype(dt.getEnumeration(), qnc);
+				if (dt.getEnumeration() != null) {
+					listDatatype = getEnumerationDatatype(dt.getEnumeration(),
+							qnc);
 				} else {
 					listDatatype = getBasicDatatype(dt, qnc);
 				}
 				datatypes[i] = new ListDatatype(listDatatype, qnc);
-			} else  if(dt.getEnumeration() != null) {
-				com.siemens.ct.exi.grammars._2017.schemaforgrammars.Enumeration en = dt.getEnumeration();
+			} else if (dt.getEnumeration() != null) {
+				com.siemens.ct.exi.grammars._2017.schemaforgrammars.Enumeration en = dt
+						.getEnumeration();
 				EnumerationDatatype endt = getEnumerationDatatype(en, qnc);
 				datatypes[i] = endt;
 			} else {
@@ -1070,11 +1167,14 @@ public class Grammars2X {
 			}
 		}
 		// 2. set base datatypes
-		for(int i = 0; i<exiGrammars.getSimpleDatatypes().getSimpleDatatype().size(); i++) {
-			com.siemens.ct.exi.grammars._2017.schemaforgrammars.Datatype dt = exiGrammars.getSimpleDatatypes().getSimpleDatatype().get(i);
-			
-			if(dt.getBaseDatatypeID() != null) {
-				datatypes[i].setBaseDatatype(getDatatype(dt.getBaseDatatypeID(), datatypes, false));
+		for (int i = 0; i < exiGrammars.getSimpleDatatypes()
+				.getSimpleDatatype().size(); i++) {
+			com.siemens.ct.exi.grammars._2017.schemaforgrammars.Datatype dt = exiGrammars
+					.getSimpleDatatypes().getSimpleDatatype().get(i);
+
+			if (dt.getBaseDatatypeID() != null) {
+				datatypes[i].setBaseDatatype(getDatatype(
+						dt.getBaseDatatypeID(), datatypes, false));
 			}
 		}
 
@@ -1082,10 +1182,10 @@ public class Grammars2X {
 		ExiGrammars.Grammars grammars = exiGrammars.getGrammars();
 		Grammar[] grs = new Grammar[grammars.getGrammar().size()];
 		// 1. Walk over all productions to create initial (empty) grammar type
-		for(int i=0;i<grammars.getGrammar().size(); i++) {
+		for (int i = 0; i < grammars.getGrammar().size(); i++) {
 			ExiGrammars.Grammars.Grammar grammar = grammars.getGrammar().get(i);
 			Grammar g;
-			switch(grammar.getGrammarType()) {
+			switch (grammar.getGrammarType()) {
 			case DOCUMENT:
 				g = new Document();
 				break;
@@ -1103,11 +1203,11 @@ public class Grammars2X {
 				break;
 			case FIRST_START_TAG_CONTENT:
 				g = new SchemaInformedFirstStartTag();
-				if(grammar.getIsTypeCastable() != null) {
-					((SchemaInformedFirstStartTag)g).setTypeCastable(true);
+				if (grammar.getIsTypeCastable() != null) {
+					((SchemaInformedFirstStartTag) g).setTypeCastable(true);
 				}
-				if(grammar.getIsNillable() != null) {
-					((SchemaInformedFirstStartTag)g).setNillable(true);
+				if (grammar.getIsNillable() != null) {
+					((SchemaInformedFirstStartTag) g).setNillable(true);
 				}
 				break;
 			case START_TAG_CONTENT:
@@ -1117,143 +1217,176 @@ public class Grammars2X {
 				g = new SchemaInformedElement();
 				break;
 			default:
-				throw new EXIException("Unsupported grammar type " + grammar.getGrammarType());
+				throw new EXIException("Unsupported grammar type "
+						+ grammar.getGrammarType());
 			}
-			
+
 			grs[i] = g;
 		}
 
 		// 2. Walk over all productions to set the ElementContentGrammar
-        // and add productions and link next grammars
-		for(int i=0;i<grammars.getGrammar().size(); i++) {
+		// and add productions and link next grammars
+		for (int i = 0; i < grammars.getGrammar().size(); i++) {
 			ExiGrammars.Grammars.Grammar grammar = grammars.getGrammar().get(i);
 
-            switch(grammar.getGrammarType()) {
-                case FIRST_START_TAG_CONTENT:
-                    SchemaInformedFirstStartTag fst = (SchemaInformedFirstStartTag) grs[i];
-                    fst.setElementContentGrammar(grs[grammar.getElementContentGrammarID().intValue()]);
-                    break;
-                case START_TAG_CONTENT:
-                    SchemaInformedStartTag st = (SchemaInformedStartTag) grs[i];
-                    st.setElementContentGrammar(grs[grammar.getElementContentGrammarID().intValue()]);
-                    break;
-                default:
-                	/* no element content grammar */
-                	break;
-            }
+			switch (grammar.getGrammarType()) {
+			case FIRST_START_TAG_CONTENT:
+				SchemaInformedFirstStartTag fst = (SchemaInformedFirstStartTag) grs[i];
+				fst.setElementContentGrammar(grs[grammar
+						.getElementContentGrammarID().intValue()]);
+				break;
+			case START_TAG_CONTENT:
+				SchemaInformedStartTag st = (SchemaInformedStartTag) grs[i];
+				st.setElementContentGrammar(grs[grammar
+						.getElementContentGrammarID().intValue()]);
+				break;
+			default:
+				/* no element content grammar */
+				break;
+			}
 
-			for(com.siemens.ct.exi.grammars._2017.schemaforgrammars.Production prod : grammar.getProduction()) {
+			for (com.siemens.ct.exi.grammars._2017.schemaforgrammars.Production prod : grammar
+					.getProduction()) {
 				Event event;
-				if(prod.getStartDocument() != null) {
+				if (prod.getStartDocument() != null) {
 					event = new StartDocument();
-				} else if(prod.getEndDocument() != null) {
+				} else if (prod.getEndDocument() != null) {
 					event = new EndDocument();
-				} else if(prod.getStartElement() != null) {
-					Grammar seGrammar = grs[(int) prod.getStartElement().getStartElementGrammarID()];
-					QNameContext qnc = grammarUriContexts[(int)prod.getStartElement().getStartElementNamespaceID()].getQNameContext((int)prod.getStartElement().getStartElementLocalNameID());
+				} else if (prod.getStartElement() != null) {
+					Grammar seGrammar = grs[(int) prod.getStartElement()
+							.getStartElementGrammarID()];
+					QNameContext qnc = grammarUriContexts[(int) prod
+							.getStartElement().getStartElementNamespaceID()]
+							.getQNameContext((int) prod.getStartElement()
+									.getStartElementLocalNameID());
 					event = new StartElement(qnc, seGrammar);
-				} else if(prod.getStartElementNS() != null) {
-					GrammarUriContext guc = grammarUriContexts[prod.getStartElementNS().intValue()];
-					event = new StartElementNS(guc.getNamespaceUriID(), guc.getNamespaceUri());
-				} else if(prod.getStartElementGeneric() != null) {
+				} else if (prod.getStartElementNS() != null) {
+					GrammarUriContext guc = grammarUriContexts[prod
+							.getStartElementNS().intValue()];
+					event = new StartElementNS(guc.getNamespaceUriID(),
+							guc.getNamespaceUri());
+				} else if (prod.getStartElementGeneric() != null) {
 					event = new StartElementGeneric();
-				} else if(prod.getEndElement() != null) {
+				} else if (prod.getEndElement() != null) {
 					event = new EndElement();
-				} else if(prod.getAttribute() != null) {
-					QNameContext qnc = grammarUriContexts[(int)prod.getAttribute().getAttributeNamespaceID()].getQNameContext((int)prod.getAttribute().getAttributeLocalNameID());
-					Datatype datatype = getDatatype(prod.getAttribute().getAttributeDatatypeID(), datatypes, true);
+				} else if (prod.getAttribute() != null) {
+					QNameContext qnc = grammarUriContexts[(int) prod
+							.getAttribute().getAttributeNamespaceID()]
+							.getQNameContext((int) prod.getAttribute()
+									.getAttributeLocalNameID());
+					Datatype datatype = getDatatype(prod.getAttribute()
+							.getAttributeDatatypeID(), datatypes, true);
 					event = new Attribute(qnc, datatype);
-				} else if(prod.getAttributeNS() != null) {
-					GrammarUriContext guc = grammarUriContexts[prod.getAttributeNS().intValue()];
-					event = new AttributeNS(guc.getNamespaceUriID(), guc.getNamespaceUri());
-				} else if(prod.getAttributeGeneric() != null) {
+				} else if (prod.getAttributeNS() != null) {
+					GrammarUriContext guc = grammarUriContexts[prod
+							.getAttributeNS().intValue()];
+					event = new AttributeNS(guc.getNamespaceUriID(),
+							guc.getNamespaceUri());
+				} else if (prod.getAttributeGeneric() != null) {
 					event = new AttributeGeneric();
-				} else if(prod.getCharacters() != null) {
-					Datatype datatype = getDatatype(prod.getCharacters().getCharactersDatatypeID(), datatypes, false);
+				} else if (prod.getCharacters() != null) {
+					Datatype datatype = getDatatype(prod.getCharacters()
+							.getCharactersDatatypeID(), datatypes, false);
 					event = new Characters(datatype);
-				} else if(prod.getCharactersGeneric() != null) {
+				} else if (prod.getCharactersGeneric() != null) {
 					event = new CharactersGeneric();
 				} else {
-					throw new EXIException("Unsupported event for production: " + prod);
+					throw new EXIException("Unsupported event for production: "
+							+ prod);
 				}
-				
+
 				Grammar next = null;
-				if(prod.getNextGrammarID() != null) {
+				if (prod.getNextGrammarID() != null) {
 					next = grs[prod.getNextGrammarID().intValue()];
 				}
 				grs[i].addProduction(event, next);
 			}
 		}
-		
-		
+
 		// set global element / attribute / type (simple&complex)
-		for(int i=0; i<qnames.getNamespaceContext().size(); i++) {
-			NamespaceContext nsc = qnames.getNamespaceContext().get(i);			
+		for (int i = 0; i < qnames.getNamespaceContext().size(); i++) {
+			NamespaceContext nsc = qnames.getNamespaceContext().get(i);
 			List<NamespaceContext.QnameContext> qncs = nsc.getQnameContext();
-			for(int k=0; k<qncs.size(); k++) {
+			for (int k = 0; k < qncs.size(); k++) {
 				NamespaceContext.QnameContext qnc = qncs.get(k);
-				
+
 				// global element grammar
-				if(qnc.getGlobalElementGrammarID() != null) {
+				if (qnc.getGlobalElementGrammarID() != null) {
 					Grammar g = grs[qnc.getGlobalElementGrammarID().intValue()];
-					QNameContext qncSE = grammarUriContexts[i].getQNameContext(k);
+					QNameContext qncSE = grammarUriContexts[i]
+							.getQNameContext(k);
 					StartElement se = new StartElement(qncSE, g);
-					grammarUriContexts[i].getQNameContext(k).setGlobalStartElement(se);
+					grammarUriContexts[i].getQNameContext(k)
+							.setGlobalStartElement(se);
 				}
-				
+
 				// global attribute
-				if(qnc.getGlobalAttributeDatatypeID() != null) {
-					QNameContext qncAT = grammarUriContexts[i].getQNameContext(k);
-					Datatype dt = getDatatype(qnc.getGlobalAttributeDatatypeID(), datatypes, false);
+				if (qnc.getGlobalAttributeDatatypeID() != null) {
+					QNameContext qncAT = grammarUriContexts[i]
+							.getQNameContext(k);
+					Datatype dt = getDatatype(
+							qnc.getGlobalAttributeDatatypeID(), datatypes,
+							false);
 					Attribute at = new Attribute(qncAT, dt);
-					grammarUriContexts[i].getQNameContext(k).setGlobalAttribute(at);
+					grammarUriContexts[i].getQNameContext(k)
+							.setGlobalAttribute(at);
 				}
-				
+
 				// global types
-				if(qnc.getGlobalComplexTypeGrammarID() != null) {
-					grammarUriContexts[i].getQNameContext(k).setTypeGrammar((SchemaInformedFirstStartTagGrammar) grs[qnc.getGlobalComplexTypeGrammarID().intValue()]);
+				if (qnc.getGlobalComplexTypeGrammarID() != null) {
+					grammarUriContexts[i]
+							.getQNameContext(k)
+							.setTypeGrammar(
+									(SchemaInformedFirstStartTagGrammar) grs[qnc
+											.getGlobalComplexTypeGrammarID()
+											.intValue()]);
 				}
-				if(qnc.getGlobalSimpleTypeDatatypeID() != null) {
-                    // Note: Simple Type grammars always look the same
-                    // SimpleType0 : CH(schema-types) SimpleType1
-                    // SimpleType1 : EE 
-					Datatype dt = getDatatype(qnc.getGlobalSimpleTypeDatatypeID(), datatypes, false);
+				if (qnc.getGlobalSimpleTypeDatatypeID() != null) {
+					// Note: Simple Type grammars always look the same
+					// SimpleType0 : CH(schema-types) SimpleType1
+					// SimpleType1 : EE
+					Datatype dt = getDatatype(
+							qnc.getGlobalSimpleTypeDatatypeID(), datatypes,
+							false);
 					SchemaInformedFirstStartTagGrammar sistg = new SchemaInformedFirstStartTag();
 					SchemaInformedElement elementContent = new SchemaInformedElement();
 					SchemaInformedElement sie = new SchemaInformedElement();
 					sistg.setElementContentGrammar(elementContent);
-					sie.addTerminalProduction(new EndElement());					
+					sie.addTerminalProduction(new EndElement());
 					Characters ch = new Characters(dt);
 					sistg.addProduction(ch, sie);
 					elementContent.addProduction(ch, sie);
-					grammarUriContexts[i].getQNameContext(k).setTypeGrammar(sistg);
+					grammarUriContexts[i].getQNameContext(k).setTypeGrammar(
+							sistg);
 				}
-				
+
 			}
 		}
-		
-		
+
 		// Document
-		Document document = (Document) grs[(int)grammars.getDocumentGrammarID()];
-		
+		Document document = (Document) grs[(int) grammars
+				.getDocumentGrammarID()];
+
 		// Fragment
-		Fragment fragment = (Fragment) grs[(int)grammars.getFragmentGrammarID()];
-		
+		Fragment fragment = (Fragment) grs[(int) grammars
+				.getFragmentGrammarID()];
+
 		// TODO ElementFragment
-		SchemaInformedGrammar elementFragmentGrammar = (SchemaInformedGrammar)grs[(int)grammars.getElementFragmentGrammarID()];
-		
-		SchemaInformedGrammars sig = new SchemaInformedGrammars(grammarContext, document, fragment, elementFragmentGrammar);
-		
+		SchemaInformedGrammar elementFragmentGrammar = (SchemaInformedGrammar) grs[(int) grammars
+				.getElementFragmentGrammarID()];
+
+		SchemaInformedGrammars sig = new SchemaInformedGrammars(grammarContext,
+				document, fragment, elementFragmentGrammar);
+
 		// builtInXMLSchemaTypesOnly
 		boolean builtInXMLSchemaTypesOnly = false;
-		if(grammars.getIsBuiltInXMLSchemaTypesOnly() != null) {
+		if (grammars.getIsBuiltInXMLSchemaTypesOnly() != null) {
 			builtInXMLSchemaTypesOnly = true;
 		}
 		sig.setBuiltInXMLSchemaTypesOnly(builtInXMLSchemaTypesOnly);
-		
+
 		return sig;
 	}
-
 
 	public static void main(String[] args) throws Exception {
 		String xsd = null;

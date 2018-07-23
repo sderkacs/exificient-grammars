@@ -38,48 +38,51 @@ import com.siemens.ct.exi.core.grammars.event.EventType;
 import com.siemens.ct.exi.core.types.BuiltInType;
 
 public class GrammarAnnotationTest extends TestCase {
-	
+
 	static GrammarFactory grammarFactory = GrammarFactory.newInstance();
-	
+
 	String schema;
 
 	public static Grammars getGrammarFromSchemaAsString(String schemaAsString)
 			throws Exception {
 		ByteArrayInputStream bais = new ByteArrayInputStream(
 				schemaAsString.getBytes());
-		
+
 		Grammars grammar = grammarFactory.createGrammars(bais);
 
 		return grammar;
 	}
 
 	public void test1() throws Exception {
-		String schema = "<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\r\n" + 
-				"    <xs:element name=\"root\">\r\n" + 
-				"        <xs:simpleType>\r\n" + 
-				"            <xs:annotation>\r\n" + 
-				"                <xs:appinfo exi:prepopulateValues=\"true\" xmlns:exi=\"http://www.w3.org/2009/exi\">\r\n" + 
-				"                    <xs:restriction base=\"xs:string\">\r\n" + 
-				"                        <xs:enumeration value=\"A\"/>\r\n" + 
-				"                        <xs:enumeration value=\"B\"/>\r\n" + 
-				"                        <xs:enumeration value=\"C\"/>\r\n" + 
-				"                    </xs:restriction>\r\n" + 
-				"                </xs:appinfo>\r\n" + 
-				"            </xs:annotation>\r\n" + 
-				"            <xs:restriction base=\"xs:string\"/>\r\n" + 
-				"        </xs:simpleType>\r\n" + 
-				"    </xs:element>\r\n" + 
-				"</xs:schema>";
-		
-		Grammars grs = grammarFactory.createGrammars(new ByteArrayInputStream(schema.getBytes())); // StandardCharsets.UTF_8 not Java5/6
-		QNameContext qncRoot = grs.getGrammarContext().getGrammarUriContext("").getQNameContext("root");
-		
-		Event ev = qncRoot.getGlobalStartElement().getGrammar().getProduction(0).getEvent();
+		String schema = "<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\r\n"
+				+ "    <xs:element name=\"root\">\r\n"
+				+ "        <xs:simpleType>\r\n"
+				+ "            <xs:annotation>\r\n"
+				+ "                <xs:appinfo exi:prepopulateValues=\"true\" xmlns:exi=\"http://www.w3.org/2009/exi\">\r\n"
+				+ "                    <xs:restriction base=\"xs:string\">\r\n"
+				+ "                        <xs:enumeration value=\"A\"/>\r\n"
+				+ "                        <xs:enumeration value=\"B\"/>\r\n"
+				+ "                        <xs:enumeration value=\"C\"/>\r\n"
+				+ "                    </xs:restriction>\r\n"
+				+ "                </xs:appinfo>\r\n"
+				+ "            </xs:annotation>\r\n"
+				+ "            <xs:restriction base=\"xs:string\"/>\r\n"
+				+ "        </xs:simpleType>\r\n"
+				+ "    </xs:element>\r\n"
+				+ "</xs:schema>";
+
+		Grammars grs = grammarFactory.createGrammars(new ByteArrayInputStream(
+				schema.getBytes())); // StandardCharsets.UTF_8 not Java5/6
+		QNameContext qncRoot = grs.getGrammarContext().getGrammarUriContext("")
+				.getQNameContext("root");
+
+		Event ev = qncRoot.getGlobalStartElement().getGrammar()
+				.getProduction(0).getEvent();
 		assertTrue(ev.getEventType() == EventType.CHARACTERS);
 		Characters cev = (Characters) ev;
 		Datatype dt = cev.getDatatype();
 		assertTrue(dt.getBuiltInType() == BuiltInType.STRING);
-		
+
 		EnumDatatype enumDT = dt.getGrammarEnumeration();
 		// TODO enhance EnumDatatype
 		EnumerationDatatype edt = (EnumerationDatatype) enumDT;
@@ -88,38 +91,40 @@ public class GrammarAnnotationTest extends TestCase {
 		assertTrue(edt.getEnumValue(0).toString().equals("A"));
 		assertTrue(edt.getEnumValue(0).toString().equals("A"));
 	}
-	
+
 	public void testNoPrep1() throws Exception {
 		// missing attribute exi:prepopulateValues="true"
-		String schema = "<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\r\n" + 
-				"    <xs:element name=\"root\">\r\n" + 
-				"        <xs:simpleType>\r\n" + 
-				"            <xs:annotation  xmlns:exi=\"http://www.w3.org/2009/exi\">\r\n" + 
-				"                <xs:appinfo>\r\n" + 
-				"                    <xs:restriction base=\"xs:string\">\r\n" + 
-				"                        <xs:enumeration value=\"A\"/>\r\n" + 
-				"                        <xs:enumeration value=\"B\"/>\r\n" + 
-				"                        <xs:enumeration value=\"C\"/>\r\n" + 
-				"                    </xs:restriction>\r\n" + 
-				"                </xs:appinfo>\r\n" + 
-				"            </xs:annotation>\r\n" + 
-				"            <xs:restriction base=\"xs:string\"/>\r\n" + 
-				"        </xs:simpleType>\r\n" + 
-				"    </xs:element>\r\n" + 
-				"</xs:schema>";
-		
-		Grammars grs = grammarFactory.createGrammars(new ByteArrayInputStream(schema.getBytes())); // StandardCharsets.UTF_8 not Java5/6
-		QNameContext qncRoot = grs.getGrammarContext().getGrammarUriContext("").getQNameContext("root");
-		
-		Event ev = qncRoot.getGlobalStartElement().getGrammar().getProduction(0).getEvent();
+		String schema = "<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\r\n"
+				+ "    <xs:element name=\"root\">\r\n"
+				+ "        <xs:simpleType>\r\n"
+				+ "            <xs:annotation  xmlns:exi=\"http://www.w3.org/2009/exi\">\r\n"
+				+ "                <xs:appinfo>\r\n"
+				+ "                    <xs:restriction base=\"xs:string\">\r\n"
+				+ "                        <xs:enumeration value=\"A\"/>\r\n"
+				+ "                        <xs:enumeration value=\"B\"/>\r\n"
+				+ "                        <xs:enumeration value=\"C\"/>\r\n"
+				+ "                    </xs:restriction>\r\n"
+				+ "                </xs:appinfo>\r\n"
+				+ "            </xs:annotation>\r\n"
+				+ "            <xs:restriction base=\"xs:string\"/>\r\n"
+				+ "        </xs:simpleType>\r\n"
+				+ "    </xs:element>\r\n"
+				+ "</xs:schema>";
+
+		Grammars grs = grammarFactory.createGrammars(new ByteArrayInputStream(
+				schema.getBytes())); // StandardCharsets.UTF_8 not Java5/6
+		QNameContext qncRoot = grs.getGrammarContext().getGrammarUriContext("")
+				.getQNameContext("root");
+
+		Event ev = qncRoot.getGlobalStartElement().getGrammar()
+				.getProduction(0).getEvent();
 		assertTrue(ev.getEventType() == EventType.CHARACTERS);
 		Characters cev = (Characters) ev;
 		Datatype dt = cev.getDatatype();
 		assertTrue(dt.getBuiltInType() == BuiltInType.STRING);
-		
+
 		EnumDatatype enumDT = dt.getGrammarEnumeration();
 		assertTrue(enumDT == null); // attribute exi:prepopulateValues="true"
 	}
 
-	
 }

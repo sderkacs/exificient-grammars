@@ -48,45 +48,44 @@ import com.siemens.ct.exi.core.grammars.grammar.SchemaInformedStartTag;
 import com.siemens.ct.exi.core.grammars.production.Production;
 
 public class GrammarsPreperation {
-	
-	protected GrammarIdDispenser grsIdDispenser;
-	
-	protected List<Grammar> sortedGrammars;
 
+	protected GrammarIdDispenser grsIdDispenser;
+
+	protected List<Grammar> sortedGrammars;
 
 	protected int numberOfFirstStartTagGrammars;
 	protected int numberOfStartTagGrammars;
 	protected int numberOfElementGrammars;
-	
+
 	public GrammarsPreperation() {
 		grsIdDispenser = new GrammarIdDispenser();
 		sortedGrammars = new ArrayList<Grammar>();
 	}
-	
+
 	public void clear() {
 		grsIdDispenser.clear();
 		sortedGrammars.clear();
-		
+
 		numberOfFirstStartTagGrammars = 0;
 		numberOfStartTagGrammars = 0;
 		numberOfElementGrammars = 0;
 	}
-	
-	
+
 	public void prepareGrammars(Grammars grammar) throws IOException {
 		this.clear();
-		
+
 		// document
 		Grammar doc = grammar.getDocumentGrammar();
 		prepareGrammar(doc);
-		
+
 		// fragment
 		Grammar frag = grammar.getFragmentGrammar();
 		prepareGrammar(frag);
-		
+
 		// element fragment grammar
-		if(grammar instanceof SchemaInformedGrammars) {
-			SchemaInformedGrammar elFragGr = ((SchemaInformedGrammars)grammar).getSchemaInformedElementFragmentGrammar();
+		if (grammar instanceof SchemaInformedGrammars) {
+			SchemaInformedGrammar elFragGr = ((SchemaInformedGrammars) grammar)
+					.getSchemaInformedElementFragmentGrammar();
 			prepareGrammar(elFragGr);
 		}
 
@@ -103,16 +102,18 @@ public class GrammarsPreperation {
 				}
 			}
 		}
-		
+
 		sortedGrammars.clear();
-		
+
 		// walk over all handled rules to create sorted rule IDs
-		for(int k=0; k<8; k++ ) {
-			// Note: k defines grammar order: 1.Document to 7.ElementContent grammar
-			Iterator<Grammar> iterGrs = this.grsIdDispenser.getGrammarIterator();
-			while(iterGrs.hasNext()) {
+		for (int k = 0; k < 8; k++) {
+			// Note: k defines grammar order: 1.Document to 7.ElementContent
+			// grammar
+			Iterator<Grammar> iterGrs = this.grsIdDispenser
+					.getGrammarIterator();
+			while (iterGrs.hasNext()) {
 				Grammar r = iterGrs.next();
-				switch(k) {
+				switch (k) {
 				case 0:
 					/* Document */
 					if (r instanceof Document) {
@@ -153,8 +154,8 @@ public class GrammarsPreperation {
 				case 6:
 					/* StartTagContent */
 					if (r instanceof SchemaInformedStartTag) {
-						if(!(r instanceof SchemaInformedFirstStartTag)) {
-							numberOfStartTagGrammars++;	
+						if (!(r instanceof SchemaInformedFirstStartTag)) {
+							numberOfStartTagGrammars++;
 							sortedGrammars.add(r);
 						}
 					}
@@ -167,15 +168,14 @@ public class GrammarsPreperation {
 					}
 					break;
 				}
-				
-			}			
+
+			}
 		}
-		
+
 		System.out.println("Sorted Grammars: " + sortedGrammars);
 
 	}
-	
-	
+
 	void prepareGrammar(Grammar r) throws IOException {
 		if (this.grsIdDispenser.isGrammarHandled(r)) {
 			// abort, already processed
@@ -206,7 +206,7 @@ public class GrammarsPreperation {
 				// no further event to prepare
 			}
 
-			if(ei.getNextGrammar() != null) {
+			if (ei.getNextGrammar() != null) {
 				prepareGrammar(ei.getNextGrammar());
 			}
 		}
@@ -221,37 +221,35 @@ public class GrammarsPreperation {
 		// get ID of "equal" grammar (may be also pointer equal)
 		int id1 = this.grsIdDispenser.getGrammarID(r);
 		Grammar g1 = this.grsIdDispenser.getGrammar(id1);
-		
-		for(int i=0; i<this.sortedGrammars.size(); i++) {
+
+		for (int i = 0; i < this.sortedGrammars.size(); i++) {
 			Grammar g = this.sortedGrammars.get(i);
 			if (g1 == g) {
 				return i;
 			}
 		}
-		
+
 		throw new RuntimeException("No grammar id found for: " + r);
 	}
-	
+
 	public Grammar getGrammar(int id) {
 		return this.sortedGrammars.get(id);
 	}
-	
+
 	public int getNumberOfGrammars() {
 		return this.sortedGrammars.size();
 	}
-	
+
 	public int getNumberOfFirstStartTagGrammars() {
 		return numberOfFirstStartTagGrammars;
 	}
-
 
 	public int getNumberOfStartTagGrammars() {
 		return numberOfStartTagGrammars;
 	}
 
-
 	public int getNumberOfElementGrammars() {
 		return numberOfElementGrammars;
 	}
-	
+
 }

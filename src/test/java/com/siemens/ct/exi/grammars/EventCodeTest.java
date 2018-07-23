@@ -179,14 +179,14 @@ public class EventCodeTest extends TestCase {
 		// assertTrue(Use_color_0.get2ndLevelCharacteristics(fo) == 7);
 		assertTrue(fo.get2ndLevelCharacteristics(Use_color_0) == 7);
 		// EE 2.0
-		assertTrue(fo.get2ndLevelEventCode(
-				EventType.END_ELEMENT_UNDECLARED, Use_color_0) == 0);
+		assertTrue(fo.get2ndLevelEventCode(EventType.END_ELEMENT_UNDECLARED,
+				Use_color_0) == 0);
 		// AT(xsi:type) Use_color 0 2.1
-		assertTrue(fo.get2ndLevelEventCode(
-				EventType.ATTRIBUTE_XSI_TYPE, Use_color_0) == 1);
+		assertTrue(fo.get2ndLevelEventCode(EventType.ATTRIBUTE_XSI_TYPE,
+				Use_color_0) == 1);
 		// AT(xsi:nil) Use_color 0 2.2
-		assertTrue(fo.get2ndLevelEventCode(
-				EventType.ATTRIBUTE_XSI_NIL, Use_color_0) == 2);
+		assertTrue(fo.get2ndLevelEventCode(EventType.ATTRIBUTE_XSI_NIL,
+				Use_color_0) == 2);
 		// AT(*) Use_color 0 2.3
 		assertTrue(fo.get2ndLevelEventCode(
 				EventType.ATTRIBUTE_GENERIC_UNDECLARED, Use_color_0) == 3);
@@ -418,9 +418,11 @@ public class EventCodeTest extends TestCase {
 		Grammars g = getGrammarFromSchemaAsString(schema);
 
 		Grammar document = g.getDocumentGrammar();
-		assertTrue(FidelityOptions.createDefault().get1stLevelEventCodeLength(document) == 0);
-		assertTrue(FidelityOptions.createStrict().get1stLevelEventCodeLength(document) == 0);
-		
+		assertTrue(FidelityOptions.createDefault().get1stLevelEventCodeLength(
+				document) == 0);
+		assertTrue(FidelityOptions.createStrict().get1stLevelEventCodeLength(
+				document) == 0);
+
 		/*
 		 * Document : SD DocContent 0
 		 */
@@ -465,10 +467,11 @@ public class EventCodeTest extends TestCase {
 		Grammars g = getGrammarFromSchemaAsString(schema);
 
 		Grammar fragment = g.getFragmentGrammar();
-		assertTrue(FidelityOptions.createDefault().get1stLevelEventCodeLength(fragment) == 0);
-		assertTrue(FidelityOptions.createStrict().get1stLevelEventCodeLength(fragment) == 0);
-		
-		
+		assertTrue(FidelityOptions.createDefault().get1stLevelEventCodeLength(
+				fragment) == 0);
+		assertTrue(FidelityOptions.createStrict().get1stLevelEventCodeLength(
+				fragment) == 0);
+
 		/*
 		 * Fragment : SD FragmentContent 0
 		 */

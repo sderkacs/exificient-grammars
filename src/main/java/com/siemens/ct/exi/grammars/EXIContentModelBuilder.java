@@ -99,7 +99,7 @@ public abstract class EXIContentModelBuilder extends CMBuilder implements
 	protected static final XSAttributeDeclarationSort attributeDeclSort = new XSAttributeDeclarationSort();
 	protected static final XSAttributeUseSort attributeUseSort = new XSAttributeUseSort();
 	protected static final StartElementSort startElementSort = new StartElementSort();
-	
+
 	protected static final QNameSort qnameSort = new QNameSort();
 
 	protected SubstitutionGroupHandler subGroupHandler;
@@ -129,14 +129,15 @@ public abstract class EXIContentModelBuilder extends CMBuilder implements
 	public void loadGrammars(XMLInputSource xsdSource) throws EXIException {
 		this.loadGrammars(xsdSource, null);
 	}
-	
-	public void loadGrammars(XMLInputSource xsdSource, XMLEntityResolver entityResolver) throws EXIException {
+
+	public void loadGrammars(XMLInputSource xsdSource,
+			XMLEntityResolver entityResolver) throws EXIException {
 		try {
 			initEachRun();
 
 			// load XSD schema & get XSModel
 			XMLSchemaLoader sl = new XMLSchemaLoader();
-			if(entityResolver != null) {
+			if (entityResolver != null) {
 				sl.setEntityResolver(entityResolver);
 			}
 			sl.setErrorHandler(this);
@@ -156,7 +157,8 @@ public abstract class EXIContentModelBuilder extends CMBuilder implements
 			// Xerces Version 2.11.0
 			subGroupHandler = new SubstitutionGroupHandler(sl);
 		} catch (Exception e) {
-			throw new EXIException("XML Schema document (" + xsdSource.getSystemId() + ") not found.", e);
+			throw new EXIException("XML Schema document ("
+					+ xsdSource.getSystemId() + ") not found.", e);
 		}
 	}
 
@@ -172,11 +174,12 @@ public abstract class EXIContentModelBuilder extends CMBuilder implements
 	public void loadGrammars(String xsdLocation) throws EXIException {
 		this.loadGrammars(xsdLocation, null);
 	}
-	
-	public void loadGrammars(String xsdLocation, XMLEntityResolver entityResolver) throws EXIException {
+
+	public void loadGrammars(String xsdLocation,
+			XMLEntityResolver entityResolver) throws EXIException {
 		XMLInputSource xsdSource = null;
-		
-		if(entityResolver != null) {
+
+		if (entityResolver != null) {
 			XMLResourceIdentifier rid = new XMLResourceIdentifierImpl();
 			rid.setLiteralSystemId(xsdLocation);
 			try {
@@ -184,23 +187,22 @@ public abstract class EXIContentModelBuilder extends CMBuilder implements
 			} catch (Exception e) {
 			}
 		}
-		if (xsdSource == null ) {
+		if (xsdSource == null) {
 			String systemId = xsdLocation;
 			String publicId = null;
 			String baseSystemId = null; // f.getParent();
-			xsdSource = new XMLInputSource(publicId, systemId,
-					baseSystemId);
+			xsdSource = new XMLInputSource(publicId, systemId, baseSystemId);
 		}
-		
+
 		loadGrammars(xsdSource, entityResolver);
 	}
 
-	
 	public void loadGrammars(InputStream xsdInputStream) throws EXIException {
 		this.loadGrammars(xsdInputStream, null);
 	}
-	
-	public void loadGrammars(InputStream xsdInputStream, XMLEntityResolver entityResolver) throws EXIException {
+
+	public void loadGrammars(InputStream xsdInputStream,
+			XMLEntityResolver entityResolver) throws EXIException {
 		// XSD source
 		String publicId = null;
 		String systemId = null;
@@ -248,14 +250,15 @@ public abstract class EXIContentModelBuilder extends CMBuilder implements
 	private void getMaxOccursUnboundedElements(
 			List<XSElementDeclaration> elementsMaxOccursUnbounded,
 			XSParticle xsParticle) {
-		getMaxOccursUnboundedElements(elementsMaxOccursUnbounded, xsParticle, false);
+		getMaxOccursUnboundedElements(elementsMaxOccursUnbounded, xsParticle,
+				false);
 	}
-	
+
 	private void getMaxOccursUnboundedElements(
 			List<XSElementDeclaration> elementsMaxOccursUnbounded,
 			XSParticle xsParticle, boolean outerUnbounded) {
 		XSTerm xsTerm = xsParticle.getTerm();
-		
+
 		if (xsTerm instanceof XSElementDeclaration) {
 			XSElementDeclaration xse = (XSElementDeclaration) xsTerm;
 			if ((outerUnbounded || xsParticle.getMaxOccursUnbounded())
@@ -267,7 +270,8 @@ public abstract class EXIContentModelBuilder extends CMBuilder implements
 			XSObjectList particles = smg.getParticles();
 			for (int i = 0; i < particles.getLength(); i++) {
 				XSParticle xsp = (XSParticle) particles.item(i);
-				getMaxOccursUnboundedElements(elementsMaxOccursUnbounded, xsp, xsParticle.getMaxOccursUnbounded());
+				getMaxOccursUnboundedElements(elementsMaxOccursUnbounded, xsp,
+						xsParticle.getMaxOccursUnbounded());
 			}
 		} else {
 			// XSWildcard
@@ -529,7 +533,8 @@ public abstract class EXIContentModelBuilder extends CMBuilder implements
 	 * 
 	 * (see http://www.w3.org/TR/exi/#elementTerms)
 	 * 
-	 * @param el element
+	 * @param el
+	 *            element
 	 * @return list of possible elements
 	 */
 	protected List<XSElementDeclaration> getPossibleElementDeclarations(
@@ -541,13 +546,15 @@ public abstract class EXIContentModelBuilder extends CMBuilder implements
 		listElements.add(el);
 
 		// add possible substitution group elements
-		XSNamedMap globalElements = xsModel.getComponents(XSConstants.ELEMENT_DECLARATION);
+		XSNamedMap globalElements = xsModel
+				.getComponents(XSConstants.ELEMENT_DECLARATION);
 		// Note: no global elements in XSD cause error
-		if(globalElements!= null && globalElements.size() > 0) {
+		if (globalElements != null && globalElements.size() > 0) {
 			XSObjectList listSG = xsModel.getSubstitutionGroup(el);
 			if (listSG != null && listSG.getLength() > 0) {
 				for (int i = 0; i < listSG.getLength(); i++) {
-					XSElementDeclaration ed = (XSElementDeclaration) listSG.item(i);
+					XSElementDeclaration ed = (XSElementDeclaration) listSG
+							.item(i);
 					listElements.add(ed);
 				}
 			}
@@ -584,29 +591,30 @@ public abstract class EXIContentModelBuilder extends CMBuilder implements
 			throws XNIException {
 		schemaParsingErrors.add("[xs-warning] " + exception.getMessage());
 	}
-	
-	
-	static class XSElementDeclarationSort implements Comparator<XSElementDeclaration> {
+
+	static class XSElementDeclarationSort implements
+			Comparator<XSElementDeclaration> {
 		public int compare(XSElementDeclaration e1, XSElementDeclaration e2) {
-			return QNameSort.compare(e1.getNamespace(), e1.getName(), e2.getNamespace(),
-					e2.getName());
+			return QNameSort.compare(e1.getNamespace(), e1.getName(),
+					e2.getNamespace(), e2.getName());
 		}
 	}
-	
-	static class XSAttributeDeclarationSort implements Comparator<XSAttributeDeclaration> {
+
+	static class XSAttributeDeclarationSort implements
+			Comparator<XSAttributeDeclaration> {
 		public int compare(XSAttributeDeclaration a1, XSAttributeDeclaration a2) {
-			return QNameSort.compare(a1.getNamespace(), a1.getName(), a2.getNamespace(),
-					a2.getName());
+			return QNameSort.compare(a1.getNamespace(), a1.getName(),
+					a2.getNamespace(), a2.getName());
 		}
 	}
-	
+
 	static class XSAttributeUseSort implements Comparator<XSAttributeUse> {
 		public int compare(XSAttributeUse a1, XSAttributeUse a2) {
-			return attributeDeclSort.compare(a1.getAttrDeclaration(), a2.getAttrDeclaration());
+			return attributeDeclSort.compare(a1.getAttrDeclaration(),
+					a2.getAttrDeclaration());
 		}
 	}
-	
-	
+
 	/*
 	 * Internal Helper Class: CMState
 	 */
@@ -653,17 +661,19 @@ public abstract class EXIContentModelBuilder extends CMBuilder implements
 									// a[1] :: max occurs
 									// a[2] :: current value of the counter
 									// a[3] :: identifier for the repeating term
-									if(this.occurenceInfo == null) {
+									if (this.occurenceInfo == null) {
 										return true;
 									} else {
-//										int currThis = this.occurenceInfo == null ? -1
-//												: this.occurenceInfo[2];
-//										int currOther = other.occurenceInfo == null ? -1
-//												: other.occurenceInfo[2];
+										// int currThis = this.occurenceInfo ==
+										// null ? -1
+										// : this.occurenceInfo[2];
+										// int currOther = other.occurenceInfo
+										// == null ? -1
+										// : other.occurenceInfo[2];
 
 										assert (this.occurenceInfo[0] == other.occurenceInfo[0]);
 										return (this.occurenceInfo[2] >= this.occurenceInfo[0] && other.occurenceInfo[2] >= this.occurenceInfo[0]);
-											
+
 									}
 									// return true;
 								}

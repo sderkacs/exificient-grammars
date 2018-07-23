@@ -33,15 +33,16 @@ public class GrammarAnnotationFilter implements ContentHandler {
 			.newInstance();
 	private ContentHandler ch;
 	private boolean rootElement;
-//	private final String typeName;
+	// private final String typeName;
 	private final AttributesImpl typeNameAtts;
 
-	public GrammarAnnotationFilter(OutputStream os, String typeName) throws SAXException {
-//		this.typeName = typeName;
-		
+	public GrammarAnnotationFilter(OutputStream os, String typeName)
+			throws SAXException {
+		// this.typeName = typeName;
+
 		typeNameAtts = new AttributesImpl();
 		typeNameAtts.addAttribute("", "name", "name", "CDATA", typeName);
-		
+
 		try {
 			final Transformer t = tf.newTransformer();
 
@@ -124,14 +125,14 @@ public class GrammarAnnotationFilter implements ContentHandler {
 	public void endPrefixMapping(String prefix) throws SAXException {
 		ch.endPrefixMapping(prefix);
 	}
-	
+
 	private String fixQName(String qname, String ename) {
 		int index = qname.indexOf(':');
-		if(index== -1) {
+		if (index == -1) {
 			// no prefix
 			return ename;
 		} else {
-			return qname.substring(0, index+1) + ename;
+			return qname.substring(0, index + 1) + ename;
 		}
 	}
 
@@ -142,19 +143,22 @@ public class GrammarAnnotationFilter implements ContentHandler {
 				&& "annotation".equals(localName)) {
 			// yes, it is an annotation
 			ch.startElement(uri, "schema", fixQName(qName, "schema"), null);
-		} else if(this.rootElement) {
+		} else if (this.rootElement) {
 			throw new SAXException("No annotation element as root element");
 		} else {
-			if(XMLConstants.W3C_XML_SCHEMA_NS_URI.equals(uri)
+			if (XMLConstants.W3C_XML_SCHEMA_NS_URI.equals(uri)
 					&& "appinfo".equals(localName)) {
 				// --> check for attribute
 				int indexAt;
 				if (atts != null
-						&& (indexAt = atts.getIndex(
-								com.siemens.ct.exi.core.Constants.W3C_EXI_NS_URI,
-								"prepopulateValues")) != -1 && "true".equals(atts.getValue(indexAt))) {
+						&& (indexAt = atts
+								.getIndex(
+										com.siemens.ct.exi.core.Constants.W3C_EXI_NS_URI,
+										"prepopulateValues")) != -1
+						&& "true".equals(atts.getValue(indexAt))) {
 					// ok, right annotation --> change to
-					ch.startElement(uri, "simpleType", fixQName(qName, "simpleType"), typeNameAtts);
+					ch.startElement(uri, "simpleType",
+							fixQName(qName, "simpleType"), typeNameAtts);
 				} else {
 					throw new SAXException(
 							"No prepopulateValues attribute in annotation element");
@@ -173,7 +177,7 @@ public class GrammarAnnotationFilter implements ContentHandler {
 		if (XMLConstants.W3C_XML_SCHEMA_NS_URI.equals(uri)
 				&& "annotation".equals(localName)) {
 			ch.endElement(uri, "schema", fixQName(qName, "schema"));
-		} else if(XMLConstants.W3C_XML_SCHEMA_NS_URI.equals(uri)
+		} else if (XMLConstants.W3C_XML_SCHEMA_NS_URI.equals(uri)
 				&& "appinfo".equals(localName)) {
 			ch.endElement(uri, "simpleType", fixQName(qName, "simpleType"));
 		} else {

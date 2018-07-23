@@ -153,13 +153,13 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 
 	// pool for attribute-declaration of Attribute events
 	protected Map<XSAttributeDeclaration, Attribute> attributePool;
-	
+
 	// pool for datatypes
 	protected Map<XSSimpleTypeDefinition, Datatype> datatypePool;
 
 	// unique named elements
 	protected Map<QName, List<XSElementDeclaration>> uniqueNamedElements;
-	
+
 	// when schema information is available to describe the contents of an EXI
 	// stream and more than one element is declared with the same qname
 	protected SchemaInformedFirstStartTagGrammar elementFragment0;
@@ -182,7 +182,8 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 		SIMPLE_END_ELEMENT_EMPTY_RULE_TYPABLE = new SchemaInformedFirstStartTag(
 				SIMPLE_END_ELEMENT_RULE);
 		//
-		SIMPLE_END_ELEMENT_EMPTY_RULE_TYPABLE.addTerminalProduction(END_ELEMENT);
+		SIMPLE_END_ELEMENT_EMPTY_RULE_TYPABLE
+				.addTerminalProduction(END_ELEMENT);
 		SIMPLE_END_ELEMENT_EMPTY_RULE_TYPABLE.setTypeCastable(true);
 
 		initOnce();
@@ -199,7 +200,7 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 		grammarTypes = new HashMap<QName, SchemaInformedFirstStartTagGrammar>();
 		schemaLocalNames = new HashMap<String, List<String>>();
 		attributePool = new HashMap<XSAttributeDeclaration, Attribute>();
-		datatypePool = new HashMap<XSSimpleTypeDefinition, Datatype>();		
+		datatypePool = new HashMap<XSSimpleTypeDefinition, Datatype>();
 
 		/*
 		 * Datatype mappings
@@ -244,7 +245,6 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 		uniqueNamedElements = null;
 		elementFragment0 = null;
 
-		
 		// "", empty string
 		for (int i = 0; i < Constants.LOCAL_NAMES_EMPTY.length; i++) {
 			String localName = Constants.LOCAL_NAMES_EMPTY[i];
@@ -258,14 +258,13 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 		// "http://www.w3.org/2001/XMLSchema-instance", xsi
 		for (int i = 0; i < Constants.LOCAL_NAMES_XSI.length; i++) {
 			String localName = Constants.LOCAL_NAMES_XSI[i];
-			addLocalNameStringEntry(
-					Constants.XML_SCHEMA_INSTANCE_NS_URI, localName);
+			addLocalNameStringEntry(Constants.XML_SCHEMA_INSTANCE_NS_URI,
+					localName);
 		}
 		// "http://www.w3.org/2001/XMLSchema", xsd
 		for (int i = 0; i < Constants.LOCAL_NAMES_XSD.length; i++) {
 			String localName = Constants.LOCAL_NAMES_XSD[i];
-			addLocalNameStringEntry(Constants.XML_SCHEMA_NS_URI,
-					localName);
+			addLocalNameStringEntry(Constants.XML_SCHEMA_NS_URI, localName);
 		}
 	}
 
@@ -308,7 +307,7 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 			GrammarUriContext[] grammarUriContexts) {
 		namespaceUri = namespaceUri == null ? Constants.XML_NULL_NS_URI
 				: namespaceUri;
-		assert(grammarUriContexts != null);
+		assert (grammarUriContexts != null);
 
 		for (int i = 0; i < grammarUriContexts.length; i++) {
 			GrammarUriContext guc = grammarUriContexts[i];
@@ -321,11 +320,10 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 	}
 
 	// QName valueType
-	protected Attribute createAttribute(QName qname, 
-			Datatype datatype) {
+	protected Attribute createAttribute(QName qname, Datatype datatype) {
 		QNameContext qnameContext = getQNameContext(qname.getNamespaceURI(),
 				qname.getLocalPart(), grammarUriContexts);
-		Attribute at = new Attribute(qnameContext, datatype); // valueType, 
+		Attribute at = new Attribute(qnameContext, datatype); // valueType,
 
 		return at;
 	}
@@ -383,12 +381,11 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 		return true;
 	}
 
-	
 	protected Map<QName, List<XSElementDeclaration>> getUniqueNamedElements() {
 		if (this.uniqueNamedElements != null) {
 			return uniqueNamedElements;
 		}
-		
+
 		// create unique qname map
 		uniqueNamedElements = new HashMap<QName, List<XSElementDeclaration>>();
 		for (XSElementDeclaration elDecl : elementPool.keySet()) {
@@ -401,10 +398,10 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 				uniqueNamedElements.put(en, list);
 			}
 		}
-		
+
 		return uniqueNamedElements;
 	}
-	
+
 	protected List<StartElement> getFragmentElements() throws EXIException {
 		List<StartElement> fragmentElements = new ArrayList<StartElement>();
 
@@ -454,7 +451,7 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 
 		// unique qname map
 		Map<QName, List<XSElementDeclaration>> uniqueNamedElements = getUniqueNamedElements();
-		
+
 		if (elementFragment0 != null) {
 			return elementFragment0;
 		}
@@ -638,11 +635,12 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 			} else {
 				// represented as a String
 				// at = new Attribute(an);
-				at = createAttribute(an, BuiltIn.getDefaultDatatype()); //  BuiltIn.DEFAULT_VALUE_NAME,
+				at = createAttribute(an, BuiltIn.getDefaultDatatype()); // BuiltIn.DEFAULT_VALUE_NAME,
 			}
 			elementFragmentEmpty0.addProduction(at, elementFragmentEmpty0);
 		}
-		elementFragmentEmpty0.addProduction(ATTRIBUTE_GENERIC, elementFragmentEmpty0);
+		elementFragmentEmpty0.addProduction(ATTRIBUTE_GENERIC,
+				elementFragmentEmpty0);
 		elementFragmentEmpty0.addTerminalProduction(END_ELEMENT);
 
 		// ElementFragmentTypeEmpty 1 :
@@ -691,9 +689,11 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 				return -1;
 			} else if (Constants.XML_NS_URI.equals(o.namespaceUri)) {
 				return +1;
-			} else if (Constants.XML_SCHEMA_INSTANCE_NS_URI.equals(this.namespaceUri)) {
+			} else if (Constants.XML_SCHEMA_INSTANCE_NS_URI
+					.equals(this.namespaceUri)) {
 				return -1;
-			} else if (Constants.XML_SCHEMA_INSTANCE_NS_URI.equals(o.namespaceUri)) {
+			} else if (Constants.XML_SCHEMA_INSTANCE_NS_URI
+					.equals(o.namespaceUri)) {
 				return +1;
 			} else if (Constants.XML_SCHEMA_NS_URI.equals(this.namespaceUri)) {
 				return -1;
@@ -815,9 +815,10 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 			handleType(ed.getTypeDefinition());
 
 			// substitution group
-			XSNamedMap globalElements = xsModel.getComponents(XSConstants.ELEMENT_DECLARATION);
+			XSNamedMap globalElements = xsModel
+					.getComponents(XSConstants.ELEMENT_DECLARATION);
 			// Note: no global elements in XSD cause error
-			if(globalElements!= null && globalElements.size() > 0) {
+			if (globalElements != null && globalElements.size() > 0) {
 				XSObjectList subs = xsModel.getSubstitutionGroup(ed);
 				if (subs != null) {
 					for (int s = 0; s < subs.getLength(); s++) {
@@ -828,7 +829,7 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 						// type
 						handleType(sub.getTypeDefinition());
 					}
-				}				
+				}
 			}
 
 		}
@@ -1009,78 +1010,78 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 					SchemaInformedFirstStartTagGrammar fstr = this
 							.translateTypeDefinitionToFSA(typeDef);
 					qnc.setTypeGrammar(fstr);
-					
 
-//					// simple datatype
-//					if (typeDef.getTypeCategory() == XSTypeDefinition.SIMPLE_TYPE) {
-//						XSSimpleTypeDefinition std = (XSSimpleTypeDefinition) typeDef;
-//						//type_i = translateSimpleTypeDefinitionToFSA(std);
-//						Datatype dt = getDatatype(std);
-//						
-//						qnc.setSimpleDatatype(dt);
-//						//System.out.println(qnc.getQName() + " --> " +  dt);
-//					}
+					// // simple datatype
+					// if (typeDef.getTypeCategory() ==
+					// XSTypeDefinition.SIMPLE_TYPE) {
+					// XSSimpleTypeDefinition std = (XSSimpleTypeDefinition)
+					// typeDef;
+					// //type_i = translateSimpleTypeDefinitionToFSA(std);
+					// Datatype dt = getDatatype(std);
+					//
+					// qnc.setSimpleDatatype(dt);
+					// //System.out.println(qnc.getQName() + " --> " + dt);
+					// }
 				}
-				
 
-//				// (direct) simple sub-types vs. baseType
-//				if (typeDef != null
-//						&& typeDef.getTypeCategory() == XSTypeDefinition.SIMPLE_TYPE
-//						&& !typeDef.getAnonymous()) {
-//
-//					XSTypeDefinition baseType = getBaseType(typeDef);
-//					while (baseType != null && baseType.getAnonymous()) {
-//						baseType = getBaseType(baseType);
-//					}
-//
-////					// subtypes
-////					if (baseType == null) {
-////						// http://www.w3.org/2001/XMLSchema,anySimpleType
-////					} else {
-////						// Note: according to EXI errata enumerations are not
-////						// handled by simple DTR maps
-////						// There are only other enum types in hierarchy
-////						Datatype dtBase = this
-////								.getDatatype((XSSimpleTypeDefinition) baseType);
-////						Datatype dt = this
-////								.getDatatype((XSSimpleTypeDefinition) typeDef);
-////
-////						if (dt.getBuiltInType() == BuiltInType.ENUMERATION
-////								&& dtBase.getBuiltInType() != BuiltInType.ENUMERATION) {
-////							// not added as sub-type
-////						} else if (XMLConstants.W3C_XML_SCHEMA_NS_URI
-////								.equals(baseType.getNamespace())
-////								&& baseType.getName() == null) {
-////							// e.g., xsd:ENTITIES
-////						} else {
-////							// Set simple baseType
-////							QNameContext base = getQNameContext(
-////									baseType.getNamespace(),
-////									baseType.getName(), grammarUriContexts);
-////							assert(base != null);
-////							qnc.setSimpleBaseType(base);
-////							
-////							qnc.setSimpleBaseDatatype(dtBase);
-////							
-////							
-//////							// TODO subtypes needed anymore?!
-//////							// List<QName> sub = subtypes.get(baseTypeQName);
-//////							// System.out.println(baseType);
-//////							List<QNameContext> subTypes = base
-//////									.getSimpleTypeSubtypes();
-//////							// List<QNameContext> subTypes =
-//////							// qnc.getSimpleTypeSubtypes();
-//////							if (subTypes == null) {
-//////								subTypes = new ArrayList<QNameContext>();
-//////								// qnc.setSimpleTypeSubtypes(subTypes);
-//////								base.setSimpleTypeSubtypes(subTypes);
-//////							}
-//////							// QName baseTypeQName = getValueType(baseType);
-//////							// subTypes.add(base);
-//////							subTypes.add(qnc);
-////						}
-////					}
-//				}
+				// // (direct) simple sub-types vs. baseType
+				// if (typeDef != null
+				// && typeDef.getTypeCategory() == XSTypeDefinition.SIMPLE_TYPE
+				// && !typeDef.getAnonymous()) {
+				//
+				// XSTypeDefinition baseType = getBaseType(typeDef);
+				// while (baseType != null && baseType.getAnonymous()) {
+				// baseType = getBaseType(baseType);
+				// }
+				//
+				// // // subtypes
+				// // if (baseType == null) {
+				// // // http://www.w3.org/2001/XMLSchema,anySimpleType
+				// // } else {
+				// // // Note: according to EXI errata enumerations are not
+				// // // handled by simple DTR maps
+				// // // There are only other enum types in hierarchy
+				// // Datatype dtBase = this
+				// // .getDatatype((XSSimpleTypeDefinition) baseType);
+				// // Datatype dt = this
+				// // .getDatatype((XSSimpleTypeDefinition) typeDef);
+				// //
+				// // if (dt.getBuiltInType() == BuiltInType.ENUMERATION
+				// // && dtBase.getBuiltInType() != BuiltInType.ENUMERATION) {
+				// // // not added as sub-type
+				// // } else if (XMLConstants.W3C_XML_SCHEMA_NS_URI
+				// // .equals(baseType.getNamespace())
+				// // && baseType.getName() == null) {
+				// // // e.g., xsd:ENTITIES
+				// // } else {
+				// // // Set simple baseType
+				// // QNameContext base = getQNameContext(
+				// // baseType.getNamespace(),
+				// // baseType.getName(), grammarUriContexts);
+				// // assert(base != null);
+				// // qnc.setSimpleBaseType(base);
+				// //
+				// // qnc.setSimpleBaseDatatype(dtBase);
+				// //
+				// //
+				// //// // TODO subtypes needed anymore?!
+				// //// // List<QName> sub = subtypes.get(baseTypeQName);
+				// //// // System.out.println(baseType);
+				// //// List<QNameContext> subTypes = base
+				// //// .getSimpleTypeSubtypes();
+				// //// // List<QNameContext> subTypes =
+				// //// // qnc.getSimpleTypeSubtypes();
+				// //// if (subTypes == null) {
+				// //// subTypes = new ArrayList<QNameContext>();
+				// //// // qnc.setSimpleTypeSubtypes(subTypes);
+				// //// base.setSimpleTypeSubtypes(subTypes);
+				// //// }
+				// //// // QName baseTypeQName = getValueType(baseType);
+				// //// // subTypes.add(base);
+				// //// subTypes.add(qnc);
+				// // }
+				// // }
+				// }
 			}
 		}
 
@@ -1103,9 +1104,11 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 		DocEnd builtInDocEndGrammar = new DocEnd("DocEnd");
 		builtInDocEndGrammar.addTerminalProduction(new EndDocument());
 		// DocContent rule
-		SchemaInformedGrammar builtInDocContentGrammar = new SchemaInformedDocContent("DocContent");
-		builtInDocContentGrammar.addProduction(START_ELEMENT_GENERIC, builtInDocEndGrammar);
-		
+		SchemaInformedGrammar builtInDocContentGrammar = new SchemaInformedDocContent(
+				"DocContent");
+		builtInDocContentGrammar.addProduction(START_ELEMENT_GENERIC,
+				builtInDocEndGrammar);
+
 		// DocContent rule & add global elements (sorted)
 		for (int i = 0; i < globalElements.size(); i++) {
 			StartElement globalElement = globalElements.get(i);
@@ -1114,7 +1117,8 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 		}
 		// Document rule
 		Document documentGrammar = new Document("Document");
-		documentGrammar.addProduction(new StartDocument(), builtInDocContentGrammar);
+		documentGrammar.addProduction(new StartDocument(),
+				builtInDocContentGrammar);
 
 		/*
 		 * FragmentContent grammar represents the number of unique element
@@ -1126,19 +1130,20 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 		SchemaInformedGrammar builtInFragmentContentGrammar = new SchemaInformedFragmentContent(
 				"FragmentContent");
 		// SE(*) --> FragmentContent
-		builtInFragmentContentGrammar.addProduction(START_ELEMENT_GENERIC, builtInFragmentContentGrammar);
+		builtInFragmentContentGrammar.addProduction(START_ELEMENT_GENERIC,
+				builtInFragmentContentGrammar);
 		// ED
 		builtInFragmentContentGrammar.addTerminalProduction(new EndDocument());
-		
-		
+
 		for (int i = 0; i < fragmentElements.size(); i++) {
 			StartElement fragmentElement = fragmentElements.get(i);
 			builtInFragmentContentGrammar.addProduction(fragmentElement,
 					builtInFragmentContentGrammar);
 		}
 		// Fragment
-		Fragment fragmentGrammar = new Fragment( "Fragment");
-		fragmentGrammar.addProduction(new StartDocument(), builtInFragmentContentGrammar);
+		Fragment fragmentGrammar = new Fragment("Fragment");
+		fragmentGrammar.addProduction(new StartDocument(),
+				builtInFragmentContentGrammar);
 
 		/*
 		 * create schema informed grammar
@@ -1146,7 +1151,8 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 		GrammarContext grammarContext = new GrammarContext(grammarUriContexts,
 				qNameID);
 		SchemaInformedGrammars sig = new SchemaInformedGrammars(grammarContext,
-				documentGrammar, fragmentGrammar, this.getSchemaInformedElementFragmentGrammar());
+				documentGrammar, fragmentGrammar,
+				this.getSchemaInformedElementFragmentGrammar());
 
 		return sig;
 	}
@@ -1160,8 +1166,7 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 		assert (namespaceURI != null);
 		if (namespaceURI.equals(Constants.XML_NULL_NS_URI)
 				|| namespaceURI.equals(Constants.XML_NS_URI)
-				|| namespaceURI
-						.equals(Constants.XML_SCHEMA_INSTANCE_NS_URI)
+				|| namespaceURI.equals(Constants.XML_SCHEMA_INSTANCE_NS_URI)
 				|| namespaceURI.equals(Constants.XML_SCHEMA_NS_URI)) {
 			return false;
 		} else {
@@ -1268,7 +1273,8 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 		return globalElements;
 	}
 
-	protected Attribute getAttribute(XSAttributeDeclaration attrDecl) throws EXIException {
+	protected Attribute getAttribute(XSAttributeDeclaration attrDecl)
+			throws EXIException {
 		// local name for string table pre-population
 		addLocalNameStringEntry(attrDecl.getNamespace(), attrDecl.getName());
 
@@ -1282,9 +1288,9 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 			// create new Attribute event
 			QName qname = new QName(attrDecl.getNamespace(), attrDecl.getName());
 			at = createAttribute(qname, getDatatype(std)); // new
-																		// Attribute(qname,
-																		// valueType,
-																		// getDatatype(std));
+															// Attribute(qname,
+															// valueType,
+															// getDatatype(std));
 			attributePool.put(attrDecl, at);
 		}
 
@@ -1297,11 +1303,9 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 		// nonPositiveInteger
 		if (td.getTypeCategory() == XSTypeDefinition.SIMPLE_TYPE) {
 			if ("negativeInteger".equals(td.getName())
-					&& Constants.XML_SCHEMA_NS_URI.equals(td
-							.getNamespace())) {
+					&& Constants.XML_SCHEMA_NS_URI.equals(td.getNamespace())) {
 				XSTypeDefinition td2 = xsModel.getTypeDefinition(
-						"nonPositiveInteger",
-						Constants.XML_SCHEMA_NS_URI);
+						"nonPositiveInteger", Constants.XML_SCHEMA_NS_URI);
 				return td2;
 			} else {
 				return td.getBaseType();
@@ -1323,9 +1327,9 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 	}
 
 	protected SchemaInformedStartTagGrammar handleAttributes(
-			SchemaInformedGrammar ruleContent, SchemaInformedGrammar ruleContent2,
-			XSObjectList attributes, XSWildcard attributeWC)
-			throws EXIException {
+			SchemaInformedGrammar ruleContent,
+			SchemaInformedGrammar ruleContent2, XSObjectList attributes,
+			XSWildcard attributeWC) throws EXIException {
 
 		// Attribute Uses
 		// http://www.w3.org/TR/exi/#attributeUses
@@ -1378,11 +1382,14 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 					// optional --> join top level events
 					for (int k = 0; k < ruleStart.getNumberOfEvents(); k++) {
 						Production ei = ruleStart.getProduction(k);
-						if (ei.getEvent().isEventType(EventType.ATTRIBUTE_GENERIC)
-								|| ei.getEvent().isEventType(EventType.ATTRIBUTE_NS)) {
+						if (ei.getEvent().isEventType(
+								EventType.ATTRIBUTE_GENERIC)
+								|| ei.getEvent().isEventType(
+										EventType.ATTRIBUTE_NS)) {
 							// AT(*) & AT(uri:*) wilcards added before
 						} else {
-							newCurrent.addProduction(ei.getEvent(), ei.getNextGrammar());
+							newCurrent.addProduction(ei.getEvent(),
+									ei.getNextGrammar());
 						}
 					}
 				}
@@ -1494,58 +1501,59 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 		return se;
 	}
 
-//	// http://www.w3.org/TR/exi/#anyTypeGrammar
-//	public static SchemaInformedFirstStartTagGrammar getUrTypeRule() {
-//
-//		SchemaInformedGrammar urType1 = new SchemaInformedElement();
-//		SchemaInformedFirstStartTag urType0 = new SchemaInformedFirstStartTag(
-//				urType1);
-//		urType0.setLabel("ur-type");
-//
-//		// Type ur-type, 0 :
-//		// AT (*) Type ur-type, 0
-//		// SE(*) Type ur-type, 1
-//		// EE
-//		// CH Type ur-type, 1
-//		urType0.addProduction(ATTRIBUTE_GENERIC, urType0);
-//		urType0.addProduction(START_ELEMENT_GENERIC, urType1);
-//		urType0.addTerminalProduction(END_ELEMENT);
-//		urType0.addProduction(CHARACTERS_GENERIC, urType1);
-//		// // anyType is castable
-//		// urType0.setTypeCastable(true);
-//		// // types are NOT nillable
-//		// urType0.setNillable(false);
-//
-//		// Type ur-type, 1 :
-//		// SE(*) Type ur-type, 1
-//		// EE
-//		// CH Type ur-type, 1
-//		urType1.addProduction(START_ELEMENT_GENERIC, urType1);
-//		urType1.addTerminalProduction(END_ELEMENT);
-//		urType1.addProduction(CHARACTERS_GENERIC, urType1);
-//
-//		// empty types
-//		SchemaInformedGrammar emptyUrType1 = new SchemaInformedElement();
-//		SchemaInformedFirstStartTagGrammar emptyUrType0 = new SchemaInformedFirstStartTag(
-//				emptyUrType1);
-//		// set type empty
-//		urType0.setTypeEmpty(emptyUrType0);
-//
-//		// TypeEmpty ur-type, 0 :
-//		// AT (*) TypeEmpty ur-type, 0
-//		// EE
-//		emptyUrType0.addProduction(ATTRIBUTE_GENERIC, emptyUrType0);
-//		emptyUrType0.addTerminalProduction(END_ELEMENT);
-//
-//		// // anyType is castable
-//		// emptyUrType0.setTypeCastable(true);
-//
-//		// TypeEmpty ur-type, 1 :
-//		// EE
-//		emptyUrType1.addTerminalProduction(END_ELEMENT);
-//
-//		return urType0;
-//	}
+	// // http://www.w3.org/TR/exi/#anyTypeGrammar
+	// public static SchemaInformedFirstStartTagGrammar getUrTypeRule() {
+	//
+	// SchemaInformedGrammar urType1 = new SchemaInformedElement();
+	// SchemaInformedFirstStartTag urType0 = new SchemaInformedFirstStartTag(
+	// urType1);
+	// urType0.setLabel("ur-type");
+	//
+	// // Type ur-type, 0 :
+	// // AT (*) Type ur-type, 0
+	// // SE(*) Type ur-type, 1
+	// // EE
+	// // CH Type ur-type, 1
+	// urType0.addProduction(ATTRIBUTE_GENERIC, urType0);
+	// urType0.addProduction(START_ELEMENT_GENERIC, urType1);
+	// urType0.addTerminalProduction(END_ELEMENT);
+	// urType0.addProduction(CHARACTERS_GENERIC, urType1);
+	// // // anyType is castable
+	// // urType0.setTypeCastable(true);
+	// // // types are NOT nillable
+	// // urType0.setNillable(false);
+	//
+	// // Type ur-type, 1 :
+	// // SE(*) Type ur-type, 1
+	// // EE
+	// // CH Type ur-type, 1
+	// urType1.addProduction(START_ELEMENT_GENERIC, urType1);
+	// urType1.addTerminalProduction(END_ELEMENT);
+	// urType1.addProduction(CHARACTERS_GENERIC, urType1);
+	//
+	// // empty types
+	// SchemaInformedGrammar emptyUrType1 = new SchemaInformedElement();
+	// SchemaInformedFirstStartTagGrammar emptyUrType0 = new
+	// SchemaInformedFirstStartTag(
+	// emptyUrType1);
+	// // set type empty
+	// urType0.setTypeEmpty(emptyUrType0);
+	//
+	// // TypeEmpty ur-type, 0 :
+	// // AT (*) TypeEmpty ur-type, 0
+	// // EE
+	// emptyUrType0.addProduction(ATTRIBUTE_GENERIC, emptyUrType0);
+	// emptyUrType0.addTerminalProduction(END_ELEMENT);
+	//
+	// // // anyType is castable
+	// // emptyUrType0.setTypeCastable(true);
+	//
+	// // TypeEmpty ur-type, 1 :
+	// // EE
+	// emptyUrType1.addTerminalProduction(END_ELEMENT);
+	//
+	// return urType0;
+	// }
 
 	protected boolean isTypeCastable(XSTypeDefinition td) {
 
@@ -1580,9 +1588,11 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 	 * grammar that accepts only the attribute uses and attribute wildcards of T
 	 * i , if any.
 	 * 
-	 * @param td type definition
+	 * @param td
+	 *            type definition
 	 * @return schema-informed first start tag grammar
-	 * @throws EXIException EXI exception
+	 * @throws EXIException
+	 *             EXI exception
 	 */
 	protected SchemaInformedFirstStartTagGrammar translateTypeDefinitionToFSA(
 			XSTypeDefinition td) throws EXIException {
@@ -1610,7 +1620,7 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 		if (!td.getAnonymous()) {
 			// add to localName table for string table pre-population
 			addLocalNameStringEntry(td.getNamespace(), td.getName());
-//			type_i.setTypeName(typeName);
+			// type_i.setTypeName(typeName);
 			grammarTypes.put(typeName, type_i);
 		}
 
@@ -1624,23 +1634,25 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 	 * grammar that accepts only the attribute uses and attribute wildcards of T
 	 * i , if any.
 	 * 
-	 * @param ctd complex type definition
+	 * @param ctd
+	 *            complex type definition
 	 * @return schema-informed first start tag grammar
-	 * @throws EXIException EXI exception
+	 * @throws EXIException
+	 *             EXI exception
 	 */
 	protected SchemaInformedFirstStartTagGrammar translateComplexTypeDefinitionToFSA(
 			XSComplexTypeDefinition ctd) throws EXIException {
 
-//		/*
-//		 * anyType is special
-//		 */
-//		if (Constants.XSD_ANY_TYPE.equals(ctd.getName())
-//				&& XMLConstants.W3C_XML_SCHEMA_NS_URI
-//						.equals(ctd.getNamespace())) {
-//			// ur-type
-//			SchemaInformedFirstStartTagGrammar urType = getUrTypeRule();
-//			return urType;
-//		}
+		// /*
+		// * anyType is special
+		// */
+		// if (Constants.XSD_ANY_TYPE.equals(ctd.getName())
+		// && XMLConstants.W3C_XML_SCHEMA_NS_URI
+		// .equals(ctd.getNamespace())) {
+		// // ur-type
+		// SchemaInformedFirstStartTagGrammar urType = getUrTypeRule();
+		// return urType;
+		// }
 
 		/*
 		 * Rule Content
@@ -1689,10 +1701,10 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 		// (used for content schema-deviations in start-tags, direct
 		// jumps)
 		SchemaInformedGrammar ruleContent2 = ruleContent.duplicate();
-		if(ruleContent2 instanceof SchemaInformedStartTagGrammar) {
+		if (ruleContent2 instanceof SchemaInformedStartTagGrammar) {
 			// --> copy to schema informed elements grammar
 			SchemaInformedElement sie = new SchemaInformedElement();
-			for(int i=0; i<ruleContent2.getNumberOfEvents(); i++) {
+			for (int i = 0; i < ruleContent2.getNumberOfEvents(); i++) {
 				Production p = ruleContent2.getProduction(i);
 				sie.addProduction(p.getEvent(), p.getNextGrammar());
 			}
@@ -1731,9 +1743,11 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 	 * grammar that accepts only the attribute uses and attribute wildcards of T
 	 * i , if any.
 	 * 
-	 * @param std simple type definition
+	 * @param std
+	 *            simple type definition
 	 * @return schema-informed first start tag grammar
-	 * @throws EXIException EXI exception
+	 * @throws EXIException
+	 *             EXI exception
 	 */
 	// protected SchemaInformedElement translateSimpleTypeDefinitionToFSA(
 	protected SchemaInformedFirstStartTagGrammar translateSimpleTypeDefinitionToFSA(
@@ -1743,7 +1757,7 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 		 * Simple content
 		 */
 		// QName valueType = this.getValueType(std);
-		Characters chSchemaValid = new Characters(getDatatype(std)); // valueType, 
+		Characters chSchemaValid = new Characters(getDatatype(std)); // valueType,
 
 		SchemaInformedGrammar simpleContentEnd = SIMPLE_END_ELEMENT_RULE;
 
@@ -1759,18 +1773,19 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 		return type_i;
 	}
 
-
 	public Datatype getDatatype(XSSimpleTypeDefinition std) throws EXIException {
 		Datatype datatype = datatypePool.get(std);
-		
-		if(datatype!= null) {
+
+		if (datatype != null) {
 			return datatype;
 		}
 
 		// used for dtr map
 		QName schemaType = getSchemaType(std);
-		QNameContext qncSchemaType = getQNameContext(schemaType.getNamespaceURI(), schemaType.getLocalPart(), this.grammarUriContexts);
-		
+		QNameContext qncSchemaType = getQNameContext(
+				schemaType.getNamespaceURI(), schemaType.getLocalPart(),
+				this.grammarUriContexts);
+
 		// is enumeration ?
 		if (std.isDefinedFacet(XSSimpleTypeDefinition.FACET_ENUMERATION)) {
 			// datatype = getDatatypeOfEnumeration ( std );
@@ -1782,9 +1797,11 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 					if (enumer.getFacetKind() == XSSimpleTypeDefinition.FACET_ENUMERATION) {
 						StringList enumList = enumer.getLexicalFacetValues();
 						// avoid enumeration of enumeration
-						XSSimpleTypeDefinition stdEnum = (XSSimpleTypeDefinition) std.getBaseType();
-						while ( this.getDatatype(stdEnum).getBuiltInType() == BuiltInType.ENUMERATION ) {
-							stdEnum = (XSSimpleTypeDefinition) stdEnum.getBaseType();
+						XSSimpleTypeDefinition stdEnum = (XSSimpleTypeDefinition) std
+								.getBaseType();
+						while (this.getDatatype(stdEnum).getBuiltInType() == BuiltInType.ENUMERATION) {
+							stdEnum = (XSSimpleTypeDefinition) stdEnum
+									.getBaseType();
 						}
 						/*
 						 * Exceptions are for schema types derived from others
@@ -1800,77 +1817,97 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 								.equals(getSchemaType(stdEnum))
 								|| BuiltIn.XSD_NOTATION
 										.equals(getSchemaType(stdEnum))) {
-							datatype = new StringDatatype(qncSchemaType, getWhiteSpaceFacet(stdEnum));
+							datatype = new StringDatatype(qncSchemaType,
+									getWhiteSpaceFacet(stdEnum));
 						} else {
 							Datatype dtEnumValues = getDatatype(stdEnum);
-//							Datatype baseType = dtEnumValues.getBaseDatatype();
-//							
-//							// update schema type
-//							switch (dtEnumValues.getBuiltInType()) {
-//							/* Binary */
-//							case BINARY_BASE64:
-//								dtEnumValues = new BinaryBase64Datatype(qncSchemaType);
-//								break;
-//							case BINARY_HEX:
-//								dtEnumValues = new BinaryHexDatatype(qncSchemaType);
-//								break;
-//							/* Boolean */
-//							case BOOLEAN:
-//								dtEnumValues = new BooleanDatatype(qncSchemaType);
-//								break;
-//							case BOOLEAN_FACET:
-//								dtEnumValues = new BooleanFacetDatatype(qncSchemaType);
-//								break;
-//							/* Decimal */
-//							case DECIMAL:
-//								dtEnumValues = new DecimalDatatype(qncSchemaType);
-//								break;
-//							/* Float */
-//							case FLOAT:
-//								dtEnumValues = new FloatDatatype(qncSchemaType);
-//								break;
-//							/* int */
-//							case NBIT_UNSIGNED_INTEGER:
-//								NBitUnsignedIntegerDatatype dtEnumValuesO = (NBitUnsignedIntegerDatatype) dtEnumValues;
-//								dtEnumValues = new NBitUnsignedIntegerDatatype(dtEnumValuesO.getLowerBound(), dtEnumValuesO.getUpperBound(), qncSchemaType);
-//								break;
-//							case UNSIGNED_INTEGER:
-//								dtEnumValues = new UnsignedIntegerDatatype(qncSchemaType);
-//								break;
-//							case INTEGER:
-//								dtEnumValues = new IntegerDatatype(qncSchemaType);
-//								break;
-//							/* Datetime */
-//							case DATETIME:
-//								DatetimeDatatype datetimeDT = (DatetimeDatatype) dtEnumValues;
-//								dtEnumValues = new DatetimeDatatype(datetimeDT.getDatetimeType(), qncSchemaType);
-//								break;
-//							/* List*/
-//							case LIST:
-//								// forbidden with errata item
-//								throw new RuntimeException("Enumerated values not possible as part of a list");
-//								// ListDatatype listDT = (ListDatatype) dtEnumValues;
-//								// enumValue = ListValue.parse(tok, listDT.getListDatatype());
-//								// break;
-//							case RCS_STRING:
-//								RestrictedCharacterSetDatatype datetimeRCS = (RestrictedCharacterSetDatatype) dtEnumValues;
-//								dtEnumValues = new RestrictedCharacterSetDatatype(datetimeRCS.getRestrictedCharacterSet(), qncSchemaType);
-//								break;
-//							default:
-//								dtEnumValues = new StringDatatype(qncSchemaType);
-//							}
-//							
-//							dtEnumValues.setBaseDatatype(baseType);
-							
-							
+							// Datatype baseType =
+							// dtEnumValues.getBaseDatatype();
+							//
+							// // update schema type
+							// switch (dtEnumValues.getBuiltInType()) {
+							// /* Binary */
+							// case BINARY_BASE64:
+							// dtEnumValues = new
+							// BinaryBase64Datatype(qncSchemaType);
+							// break;
+							// case BINARY_HEX:
+							// dtEnumValues = new
+							// BinaryHexDatatype(qncSchemaType);
+							// break;
+							// /* Boolean */
+							// case BOOLEAN:
+							// dtEnumValues = new
+							// BooleanDatatype(qncSchemaType);
+							// break;
+							// case BOOLEAN_FACET:
+							// dtEnumValues = new
+							// BooleanFacetDatatype(qncSchemaType);
+							// break;
+							// /* Decimal */
+							// case DECIMAL:
+							// dtEnumValues = new
+							// DecimalDatatype(qncSchemaType);
+							// break;
+							// /* Float */
+							// case FLOAT:
+							// dtEnumValues = new FloatDatatype(qncSchemaType);
+							// break;
+							// /* int */
+							// case NBIT_UNSIGNED_INTEGER:
+							// NBitUnsignedIntegerDatatype dtEnumValuesO =
+							// (NBitUnsignedIntegerDatatype) dtEnumValues;
+							// dtEnumValues = new
+							// NBitUnsignedIntegerDatatype(dtEnumValuesO.getLowerBound(),
+							// dtEnumValuesO.getUpperBound(), qncSchemaType);
+							// break;
+							// case UNSIGNED_INTEGER:
+							// dtEnumValues = new
+							// UnsignedIntegerDatatype(qncSchemaType);
+							// break;
+							// case INTEGER:
+							// dtEnumValues = new
+							// IntegerDatatype(qncSchemaType);
+							// break;
+							// /* Datetime */
+							// case DATETIME:
+							// DatetimeDatatype datetimeDT = (DatetimeDatatype)
+							// dtEnumValues;
+							// dtEnumValues = new
+							// DatetimeDatatype(datetimeDT.getDatetimeType(),
+							// qncSchemaType);
+							// break;
+							// /* List*/
+							// case LIST:
+							// // forbidden with errata item
+							// throw new
+							// RuntimeException("Enumerated values not possible as part of a list");
+							// // ListDatatype listDT = (ListDatatype)
+							// dtEnumValues;
+							// // enumValue = ListValue.parse(tok,
+							// listDT.getListDatatype());
+							// // break;
+							// case RCS_STRING:
+							// RestrictedCharacterSetDatatype datetimeRCS =
+							// (RestrictedCharacterSetDatatype) dtEnumValues;
+							// dtEnumValues = new
+							// RestrictedCharacterSetDatatype(datetimeRCS.getRestrictedCharacterSet(),
+							// qncSchemaType);
+							// break;
+							// default:
+							// dtEnumValues = new StringDatatype(qncSchemaType);
+							// }
+							//
+							// dtEnumValues.setBaseDatatype(baseType);
+
 							// values
-							
+
 							Value[] values = new Value[enumList.getLength()];
 
 							BuiltInType enumBIT = dtEnumValues.getBuiltInType();
-							
+
 							// EXI errata item
-							if(enumBIT == BuiltInType.LIST) {
+							if (enumBIT == BuiltInType.LIST) {
 								ListDatatype listDT = (ListDatatype) dtEnumValues;
 								Datatype dtL = listDT.getListDatatype();
 								datatype = new ListDatatype(dtL, qncSchemaType);
@@ -1882,7 +1919,8 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 									switch (enumBIT) {
 									/* Binary */
 									case BINARY_BASE64:
-										enumValue = BinaryBase64Value.parse(tok);
+										enumValue = BinaryBase64Value
+												.parse(tok);
 										break;
 									case BINARY_HEX:
 										enumValue = BinaryHexValue.parse(tok);
@@ -1912,12 +1950,15 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 										enumValue = DateTimeValue.parse(tok,
 												datetimeDT.getDatetimeType());
 										break;
-									/* List*/
+									/* List */
 									case LIST:
 										// forbidden with errata item
-										throw new RuntimeException("Enumerated values not possible as part of a list");
-										// ListDatatype listDT = (ListDatatype) dtEnumValues;
-										// enumValue = ListValue.parse(tok, listDT.getListDatatype());
+										throw new RuntimeException(
+												"Enumerated values not possible as part of a list");
+										// ListDatatype listDT = (ListDatatype)
+										// dtEnumValues;
+										// enumValue = ListValue.parse(tok,
+										// listDT.getListDatatype());
 										// break;
 									default:
 										enumValue = new StringValue(tok); // String
@@ -1932,7 +1973,8 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 									}
 
 									TypeEncoder typeEncoder = new TypedTypeEncoder();
-									boolean valid = typeEncoder.isValid(dtEnumValues, enumValue);
+									boolean valid = typeEncoder.isValid(
+											dtEnumValues, enumValue);
 									if (!valid) {
 										throw new RuntimeException(
 												"No valid enumeration value '"
@@ -1942,78 +1984,86 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 									values[k] = enumValue;
 								}
 
-								datatype = new EnumerationDatatype(values, dtEnumValues,
-										qncSchemaType);
+								datatype = new EnumerationDatatype(values,
+										dtEnumValues, qncSchemaType);
 							}
-							
-
-
 
 						}
 					}
 				}
 			}
-		// is list ?
+			// is list ?
 		} else if (std.getVariety() == XSSimpleTypeDefinition.VARIETY_LIST) {
 			XSSimpleTypeDefinition listSTD = std.getItemType();
 
 			Datatype dtList = getDatatype(listSTD);
 
 			datatype = new ListDatatype(dtList, qncSchemaType);
-		// is union ?
+			// is union ?
 		} else if (std.getVariety() == XSSimpleTypeDefinition.VARIETY_UNION) {
 			datatype = new StringDatatype(qncSchemaType, true);
 		} else {
 			datatype = getDatatypeOfType(std, schemaType);
 		}
-		
+
 		// simple base datatype
 		XSTypeDefinition baseType = this.getBaseType(std);
-		if(baseType != null && baseType.getTypeCategory() == XSTypeDefinition.SIMPLE_TYPE) {
-			XSSimpleTypeDefinition stdBaseType = (XSSimpleTypeDefinition)baseType;
+		if (baseType != null
+				&& baseType.getTypeCategory() == XSTypeDefinition.SIMPLE_TYPE) {
+			XSSimpleTypeDefinition stdBaseType = (XSSimpleTypeDefinition) baseType;
 			datatype.setBaseDatatype(this.getDatatype(stdBaseType));
-			
-//			if(!stdBaseType.getAnonymous() && stdBaseType.getTypeCategory() == XSTypeDefinition.SIMPLE_TYPE) {
-//				QNameContext qncBaseType = getQNameContext(stdBaseType.getNamespace(), stdBaseType.getName(), this.grammarUriContexts);
-//				qncSchemaType.setSimpleBaseType(qncBaseType);
-//			}
+
+			// if(!stdBaseType.getAnonymous() && stdBaseType.getTypeCategory()
+			// == XSTypeDefinition.SIMPLE_TYPE) {
+			// QNameContext qncBaseType =
+			// getQNameContext(stdBaseType.getNamespace(),
+			// stdBaseType.getName(), this.grammarUriContexts);
+			// qncSchemaType.setSimpleBaseType(qncBaseType);
+			// }
 		}
-		
+
 		// xsd:annotations
 		XSObjectList anns = std.getAnnotations();
 		// some initial tests for pre-populated strings within an XSD annotation
-		// 
-		//		<xs:annotation exi:prepopulateValues="true" xmlns:exi="http://www.w3.org/2009/exi" xmlns:xs="http://www.w3.org/2001/XMLSchema" >
-		//		               <xs:appinfo>
-		//		                    <xs:restriction base="xs:string">
-		//		                        <xs:enumeration value="A"></xs:enumeration>
-		//		                        <xs:enumeration value="B"></xs:enumeration>
-		//		                        <xs:enumeration value="C"></xs:enumeration>
-		//		                    </xs:restriction>
-		//		                </xs:appinfo>
-		//		</xs:annotation>
-		if(anns != null && anns.getLength() > 0) {
+		//
+		// <xs:annotation exi:prepopulateValues="true"
+		// xmlns:exi="http://www.w3.org/2009/exi"
+		// xmlns:xs="http://www.w3.org/2001/XMLSchema" >
+		// <xs:appinfo>
+		// <xs:restriction base="xs:string">
+		// <xs:enumeration value="A"></xs:enumeration>
+		// <xs:enumeration value="B"></xs:enumeration>
+		// <xs:enumeration value="C"></xs:enumeration>
+		// </xs:restriction>
+		// </xs:appinfo>
+		// </xs:annotation>
+		if (anns != null && anns.getLength() > 0) {
 			try {
-				for(int i=0; i<anns.getLength(); i++) {
+				for (int i = 0; i < anns.getLength(); i++) {
 					XSAnnotation ann = (XSAnnotation) anns.get(i);
 					String as = ann.getAnnotationString();
-					
+
 					XMLReader reader = XMLReaderFactory.createXMLReader();
 					ByteArrayOutputStream baos = new ByteArrayOutputStream();
-					
+
 					String enumTypeName = "grammarEnumerationType";
-					
-					GrammarAnnotationFilter xmlS = new GrammarAnnotationFilter(baos, enumTypeName);
+
+					GrammarAnnotationFilter xmlS = new GrammarAnnotationFilter(
+							baos, enumTypeName);
 					reader.setContentHandler(xmlS);
-					
-					reader.parse(new InputSource(new ByteArrayInputStream(as.getBytes())));
-					
-					Grammars grs = GrammarFactory.newInstance().createGrammars(new ByteArrayInputStream(baos.toByteArray()));
-					SchemaInformedFirstStartTagGrammar tg = grs.getGrammarContext().getGrammarUriContext("").getQNameContext(enumTypeName).getTypeGrammar();
+
+					reader.parse(new InputSource(new ByteArrayInputStream(as
+							.getBytes())));
+
+					Grammars grs = GrammarFactory.newInstance().createGrammars(
+							new ByteArrayInputStream(baos.toByteArray()));
+					SchemaInformedFirstStartTagGrammar tg = grs
+							.getGrammarContext().getGrammarUriContext("")
+							.getQNameContext(enumTypeName).getTypeGrammar();
 					Event ev = tg.getProduction(0).getEvent();
 					DatatypeEvent dev = (DatatypeEvent) ev;
 					Datatype dt = dev.getDatatype();
-					if(dt.getBuiltInType() == BuiltInType.ENUMERATION) {
+					if (dt.getBuiltInType() == BuiltInType.ENUMERATION) {
 						EnumerationDatatype edt = (EnumerationDatatype) dt;
 						datatype.setGrammarEnumeration(edt);
 					}
@@ -2022,7 +2072,7 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 				// issues
 			}
 		}
-		
+
 		datatypePool.put(std, datatype);
 
 		return datatype;
@@ -2080,14 +2130,15 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 
 	private Datatype getIntegerDatatype(XSSimpleTypeDefinition std,
 			QName schemaType) {
-		QNameContext qncSchemaType = getQNameContext(schemaType.getNamespaceURI(), schemaType.getLocalPart(), this.grammarUriContexts);
+		QNameContext qncSchemaType = getQNameContext(
+				schemaType.getNamespaceURI(), schemaType.getLocalPart(),
+				this.grammarUriContexts);
 		/*
 		 * detect base integer type (e.g. int, long, BigInteger)
 		 */
 		// walk up the hierarchy till we find xsd simple integer types
 		XSTypeDefinition xsdSTD = std;
-		while (!Constants.XML_SCHEMA_NS_URI
-				.equals(xsdSTD.getNamespace())) {
+		while (!Constants.XML_SCHEMA_NS_URI.equals(xsdSTD.getNamespace())) {
 			xsdSTD = xsdSTD.getBaseType();
 		}
 
@@ -2244,7 +2295,7 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 				intType = IntegerType.UNSIGNED_INTEGER_8;
 				break;
 			default:
-				// no action	
+				// no action
 			}
 
 			switch (intType) {
@@ -2286,8 +2337,10 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 
 	private Datatype getDatatypeOfType(XSSimpleTypeDefinition std,
 			final QName schemaType) {
-		final QNameContext qncSchemaType = getQNameContext(schemaType.getNamespaceURI(), schemaType.getLocalPart(), this.grammarUriContexts);
-		
+		final QNameContext qncSchemaType = getQNameContext(
+				schemaType.getNamespaceURI(), schemaType.getLocalPart(),
+				this.grammarUriContexts);
+
 		//
 		Datatype datatype;
 		QName schemaDatatype = getXMLSchemaDatatype(std);
@@ -2309,21 +2362,26 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 				datatype = new DatetimeDatatype(DateTimeType.dateTime,
 						qncSchemaType);
 			} else if (BuiltIn.XSD_TIME.equals(primitive)) {
-				datatype = new DatetimeDatatype(DateTimeType.time, qncSchemaType);
+				datatype = new DatetimeDatatype(DateTimeType.time,
+						qncSchemaType);
 			} else if (BuiltIn.XSD_DATE.equals(primitive)) {
-				datatype = new DatetimeDatatype(DateTimeType.date, qncSchemaType);
+				datatype = new DatetimeDatatype(DateTimeType.date,
+						qncSchemaType);
 			} else if (BuiltIn.XSD_GYEARMONTH.equals(primitive)) {
 				datatype = new DatetimeDatatype(DateTimeType.gYearMonth,
 						qncSchemaType);
 			} else if (BuiltIn.XSD_GYEAR.equals(primitive)) {
-				datatype = new DatetimeDatatype(DateTimeType.gYear, qncSchemaType);
+				datatype = new DatetimeDatatype(DateTimeType.gYear,
+						qncSchemaType);
 			} else if (BuiltIn.XSD_GMONTHDAY.equals(primitive)) {
 				datatype = new DatetimeDatatype(DateTimeType.gMonthDay,
 						qncSchemaType);
 			} else if (BuiltIn.XSD_GDAY.equals(primitive)) {
-				datatype = new DatetimeDatatype(DateTimeType.gDay, qncSchemaType);
+				datatype = new DatetimeDatatype(DateTimeType.gDay,
+						qncSchemaType);
 			} else if (BuiltIn.XSD_GMONTH.equals(primitive)) {
-				datatype = new DatetimeDatatype(DateTimeType.gMonth, qncSchemaType);
+				datatype = new DatetimeDatatype(DateTimeType.gMonth,
+						qncSchemaType);
 			} else {
 				throw new RuntimeException();
 			}
@@ -2342,7 +2400,8 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 
 				if (isBuiltInTypeFacet(std, sl.getLength())) {
 					// *normal* string
-					datatype = new StringDatatype(qncSchemaType, getWhiteSpaceFacet(std));
+					datatype = new StringDatatype(qncSchemaType,
+							getWhiteSpaceFacet(std));
 				} else {
 					// analyze most-derived datatype facet only
 					String regexPattern = sl.item(0);
@@ -2351,7 +2410,8 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 
 					if (re.isEntireSetOfXMLCharacters()) {
 						// *normal* string
-						datatype = new StringDatatype(qncSchemaType, getWhiteSpaceFacet(std));
+						datatype = new StringDatatype(qncSchemaType,
+								getWhiteSpaceFacet(std));
 					} else {
 						// restricted char set
 						RestrictedCharacterSet rcs = new CodePointCharacterSet(
@@ -2361,35 +2421,37 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 					}
 				}
 			} else {
-				datatype = new StringDatatype(qncSchemaType, getWhiteSpaceFacet(std));
+				datatype = new StringDatatype(qncSchemaType,
+						getWhiteSpaceFacet(std));
 			}
 		}
 
 		return datatype;
 	}
-	
+
 	private WhiteSpace getWhiteSpaceFacet(XSSimpleTypeDefinition std) {
 		// default for string is preserve
 		WhiteSpace whiteSpace = WhiteSpace.preserve;
-		boolean hasWSF = std.isDefinedFacet(XSSimpleTypeDefinition.FACET_WHITESPACE);
-		if(hasWSF) {
+		boolean hasWSF = std
+				.isDefinedFacet(XSSimpleTypeDefinition.FACET_WHITESPACE);
+		if (hasWSF) {
 			// http://www.w3.org/TR/xmlschema-2/#rf-whiteSpace
-			XSObject o =  std.getFacet(XSSimpleTypeDefinition.FACET_WHITESPACE);
+			XSObject o = std.getFacet(XSSimpleTypeDefinition.FACET_WHITESPACE);
 			XSFacet fac = (XSFacet) o;
 			String fv = fac.getLexicalFacetValue();
-			
-			if("preserve".equals(fv)) {
+
+			if ("preserve".equals(fv)) {
 				whiteSpace = WhiteSpace.preserve;
 			} else if ("replace".equals(fv)) {
 				whiteSpace = WhiteSpace.replace;
 			} else if ("collapse".equals(fv)) {
 				whiteSpace = WhiteSpace.collapse;
 			} else {
-				throw new RuntimeException("Unexpected WhiteSpace facet value: "
-						+ fv);
+				throw new RuntimeException(
+						"Unexpected WhiteSpace facet value: " + fv);
 			}
 		}
-		
+
 		return whiteSpace;
 	}
 
@@ -2412,8 +2474,8 @@ public class XSDGrammarsBuilder extends EXIContentModelBuilder {
 				 * --> std defines the last pattern (check whether it is a
 				 * built-in type)
 				 */
-				isBuiltInTypeFacet = Constants.XML_SCHEMA_NS_URI
-						.equals(std.getNamespace());
+				isBuiltInTypeFacet = Constants.XML_SCHEMA_NS_URI.equals(std
+						.getNamespace());
 			} else {
 				// call again base type
 				isBuiltInTypeFacet = isBuiltInTypeFacet(baseType,

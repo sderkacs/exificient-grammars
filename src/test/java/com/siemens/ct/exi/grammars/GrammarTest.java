@@ -605,8 +605,7 @@ public class GrammarTest extends TestCase {
 
 		}
 	}
-	
-	
+
 	public static Datatype getSimpleDatatypeFor(String schemaAsString,
 			String typeName, String typeURI) throws EXIException {
 		XSDGrammarsBuilder xsdGB = XSDGrammarsBuilder.newInstance();
@@ -626,7 +625,7 @@ public class GrammarTest extends TestCase {
 
 		return dt;
 	}
-	
+
 	public void testEnum1() throws Exception {
 		schema = "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>"
 				+ "  <xs:simpleType name='stringDerived'>"
@@ -634,34 +633,31 @@ public class GrammarTest extends TestCase {
 				+ "      <xs:enumeration value='Tokyo'/>"
 				+ "      <xs:enumeration value='Osaka'/>"
 				+ "      <xs:enumeration value='Nagoya'/>"
-				+ "    </xs:restriction>"
-				+ "  </xs:simpleType>"
+				+ "    </xs:restriction>" + "  </xs:simpleType>"
 				+ "  <xs:simpleType name='stringDerived2'>"
 				+ "    <xs:restriction base='stringDerived'/>"
 				+ "  </xs:simpleType>" + "</xs:schema>";
-		
-//		Grammars g = getGrammarFromSchemaAsString(schema);
-//		GrammarContext gc = g.getGrammarContext();
-//
-//		Grammar rule = gc.getGrammarUriContext("").getQNameContext("root")
-//				.getGlobalStartElement().getGrammar();
-		
-		
-		Datatype dtEnumDerived2 = getSimpleDatatypeFor(
-				schema, "stringDerived2", "");
+
+		// Grammars g = getGrammarFromSchemaAsString(schema);
+		// GrammarContext gc = g.getGrammarContext();
+		//
+		// Grammar rule = gc.getGrammarUriContext("").getQNameContext("root")
+		// .getGlobalStartElement().getGrammar();
+
+		Datatype dtEnumDerived2 = getSimpleDatatypeFor(schema,
+				"stringDerived2", "");
 		assertTrue(dtEnumDerived2.getBuiltInType() == BuiltInType.ENUMERATION);
 		QName schemaTypeStringDerived2 = new QName("", "stringDerived2");
 		assertTrue(dtEnumDerived2.getSchemaType().getQName()
 				.equals(schemaTypeStringDerived2));
-		
+
 		EnumerationDatatype edtEnumDerived2 = (EnumerationDatatype) dtEnumDerived2;
 		assertTrue(edtEnumDerived2.getEnumValueDatatype().getBuiltInType() == BuiltInType.STRING);
 		QName schemaTypeStringDerived = new QName("", "stringDerived");
 		// assertTrue(edtEnumDerived2.getEnumValueDatatype().getSchemaType().getQName().equals(schemaTypeStringDerived));
-		assertTrue(edtEnumDerived2.getBaseDatatype().getSchemaType().getQName().equals(schemaTypeStringDerived));
+		assertTrue(edtEnumDerived2.getBaseDatatype().getSchemaType().getQName()
+				.equals(schemaTypeStringDerived));
 	}
-	
-
 
 	// public void testSequenceSourceForgeForum1_() throws Exception {
 	// String schema = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
@@ -791,11 +787,9 @@ public class GrammarTest extends TestCase {
 		// schema-informed grammars should not expand
 		// EvolvingUriContext ruc = new RuntimeEvolvingUriContext(0, "");
 		int namespaceUriID = 0;
-		QNameContext qncAt = new QNameContext(namespaceUriID, 0,
-				new QName("a"));
+		QNameContext qncAt = new QNameContext(namespaceUriID, 0, new QName("a"));
 		rule.learnAttribute(new Attribute(qncAt, null));
-		QNameContext qncSE = new QNameContext(namespaceUriID, 1,
-				new QName("s"));
+		QNameContext qncSE = new QNameContext(namespaceUriID, 1, new QName("s"));
 		rule.learnStartElement(new StartElement(qncSE));
 		rule.learnEndElement();
 		rule.learnCharacters();
@@ -831,8 +825,7 @@ public class GrammarTest extends TestCase {
 		int namespaceUriID = 0;
 
 		// learn SE, can have multiple events even if similar
-		QNameContext qncSE = new QNameContext(namespaceUriID, 1,
-				new QName("s"));
+		QNameContext qncSE = new QNameContext(namespaceUriID, 1, new QName("s"));
 		StartElement s = new StartElement(qncSE);
 		startTag.learnStartElement(s);
 		startTag.learnStartElement(s);
@@ -842,8 +835,7 @@ public class GrammarTest extends TestCase {
 		assertTrue(content.getNumberOfEvents() == 4);
 
 		// learn AT, can have multiple events even if similar
-		QNameContext qncAt = new QNameContext(namespaceUriID, 0,
-				new QName("a"));
+		QNameContext qncAt = new QNameContext(namespaceUriID, 0, new QName("a"));
 		Attribute a = new Attribute(qncAt, null);
 		startTag.learnAttribute(a);
 		startTag.learnAttribute(a);
@@ -1001,14 +993,15 @@ public class GrammarTest extends TestCase {
 	// GrammarContext gc2 = g2.getGrammarContext();
 	// }
 
-	
-	public void testXsdResolverTest() throws XNIException, IOException, EXIException {
+	public void testXsdResolverTest() throws XNIException, IOException,
+			EXIException {
 		// Note: resolve 2 schema files without "actual" files
 
 		InputStream isMain = new ByteArrayInputStream(sMain.getBytes());
-		
+
 		TestXSDResolver entityResolver = new TestXSDResolver();
-		Grammars grs = GrammarFactory.newInstance().createGrammars(isMain, entityResolver);
+		Grammars grs = GrammarFactory.newInstance().createGrammars(isMain,
+				entityResolver);
 		assertTrue(grs != null);
 	}
 
@@ -1018,7 +1011,7 @@ public class GrammarTest extends TestCase {
 	// <xs:element name="root" type="myInt"></xs:element>
 	// </xs:schema>
 	String sMain = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n    <xs:include schemaLocation=\"types.xsd\"></xs:include>\n    <xs:element name=\"root\" type=\"myInt\"></xs:element>\n</xs:schema>\n";
-	
+
 	// types.xsd
 	// <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	// <xs:simpleType name="myInt">
@@ -1026,14 +1019,12 @@ public class GrammarTest extends TestCase {
 	// </xs:simpleType>
 	// </xs:schema>
 	String sTypes = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n    <xs:simpleType name=\"myInt\">\n        <xs:restriction base=\"xs:int\"></xs:restriction>\n    </xs:simpleType>\n</xs:schema>\n";
-	
-	
+
 	class TestXSDResolver implements
 			org.apache.xerces.xni.parser.XMLEntityResolver {
 
 		public TestXSDResolver() {
 		}
-
 
 		public XMLInputSource resolveEntity(
 				XMLResourceIdentifier resourceIdentifier) throws XNIException,
@@ -1042,23 +1033,26 @@ public class GrammarTest extends TestCase {
 			// String baseSystemId = resourceIdentifier.getBaseSystemId();
 			// String expandedSystemId =
 			// resourceIdentifier.getExpandedSystemId();
-			String literalSystemId = resourceIdentifier.getLiteralSystemId(); // e.g., "types.xsd"
+			String literalSystemId = resourceIdentifier.getLiteralSystemId(); // e.g.,
+																				// "types.xsd"
 			// String namespace = resourceIdentifier.getNamespace();
 
 			if (literalSystemId.equals("types.xsd")) {
-				InputStream isTypes = new ByteArrayInputStream(sTypes.getBytes());
-				
+				InputStream isTypes = new ByteArrayInputStream(
+						sTypes.getBytes());
+
 				String publicId = null;
 				String systemId = null;
 				String baseSystemId = null;
 				String encoding = null;
-				XMLInputSource xsdSourceTypes = new XMLInputSource(publicId, systemId,
-						baseSystemId, isTypes, encoding);
+				XMLInputSource xsdSourceTypes = new XMLInputSource(publicId,
+						systemId, baseSystemId, isTypes, encoding);
 				return xsdSourceTypes;
 			} else {
-				// Note: if the entity cannot be resolved, this method should return
+				// Note: if the entity cannot be resolved, this method should
+				// return
 				// null.
-				return null;				
+				return null;
 			}
 
 		}

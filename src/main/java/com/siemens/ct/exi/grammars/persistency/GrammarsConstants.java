@@ -25,13 +25,13 @@ package com.siemens.ct.exi.grammars.persistency;
 
 public class GrammarsConstants {
 
-//	static final String NUMBER_OF_URIS = "numberOfUris";
-//	static final String NUMBER_OF_QNAMES = "numberOfQNames";
-//	static final String NUMBER_OF_LOCAL_NAMES = "numberOfLocalNames";
+	// static final String NUMBER_OF_URIS = "numberOfUris";
+	// static final String NUMBER_OF_QNAMES = "numberOfQNames";
+	// static final String NUMBER_OF_LOCAL_NAMES = "numberOfLocalNames";
 	public static final String NUMBER_OF_FIRST_START_TAG_GRAMMARS = "numberOfFirstStartTagGrammars";
 	public static final String NUMBER_OF_START_TAG_GRAMMARS = "numberOfStartTagGrammars";
-	public static final String NUMBER_OF_ELEMENT_GRAMMARS = "numberOfElementGrammars";	
-	
+	public static final String NUMBER_OF_ELEMENT_GRAMMARS = "numberOfElementGrammars";
+
 	public static final String FIRST_START_TAG_CONTENT = "firstStartTagContent";
 	public static final String START_TAG_CONTENT = "startTagContent";
 	public static final String ELEMENT_CONTENT = "elementContent";
@@ -41,9 +41,9 @@ public class GrammarsConstants {
 	public static final String DOC_END = "docEnd";
 	public static final String FRAGMENT = "fragment";
 	public static final String FRAGMENT_GRAMMAR_ID = "fragmentGrammarID";
-	
+
 	public static final String FRAGMENT_CONTENT = "fragmentContent";
-	
+
 	public static final String PRODUCTION = "production";
 
 	public static final String TYPE = "type";
@@ -59,8 +59,7 @@ public class GrammarsConstants {
 	public static final String NAMESPACE_URI = "namespaceUri";
 	public static final String LOCAL_NAME = "localName";
 	public static final String LOCAL_NAME_ID = "localNameID";
-	
-	
+
 	public static final String START_ELEMENT_QNAME_ID = "startElementQNameID";
 	public static final String START_ELEMENT_NAMESPACE_ID = "startElementNamespaceID";
 	public static final String START_ELEMENT_LOCALNAME_ID = "startElementLocalNameID";
@@ -91,10 +90,10 @@ public class GrammarsConstants {
 	public static final String CHARACTERS_GENERIC = "charactersGeneric";
 	public static final String ATTRIBUTE_NS = "attributeNS";
 	public static final String ATTRIBUTE_GENERIC = "attributeGeneric";
-	
+
 	public static final String ATTRIBUTE_DATATYPE = "attributeDatatype";
 	public static final String CHARACTERS_DATATYPE = "charactersDatatype";
-	
+
 	public static final String DATATYPE_BUILTIN_TYPE = "datatypeBuiltInType";
 	public static final String DATATYPE_BOOLEAN = "datatypeBoolean";
 	public static final String DATATYPE_BOOLEAN_FACET = "facet";
@@ -116,7 +115,7 @@ public class GrammarsConstants {
 	public static final String IS_TYPE_CASTABLE = "isTypeCastable";
 
 	public static final String EVENT = "event";
-	
+
 	public static final String GRAMMARS = "grammars";
 	public static final String GRAMMAR = "grammar";
 	public static final String GRAMMAR_ID = "grammarID";

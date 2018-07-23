@@ -60,9 +60,11 @@ public class GrammarFactory {
 	/**
 	 * Schema information is generated for processing the EXI body.
 	 * 
-	 * @param xsdLocation file location
+	 * @param xsdLocation
+	 *            file location
 	 * @return schema-informed EXI grammars
-	 * @throws EXIException EXI exception
+	 * @throws EXIException
+	 *             EXI exception
 	 */
 	public Grammars createGrammars(String xsdLocation) throws EXIException {
 		return this.createGrammars(xsdLocation, null);
@@ -71,10 +73,13 @@ public class GrammarFactory {
 	/**
 	 * Schema information is generated for processing the EXI body.
 	 * 
-	 * @param xsdLocation file location
-	 * @param entityResolver application can register XSD resolver
+	 * @param xsdLocation
+	 *            file location
+	 * @param entityResolver
+	 *            application can register XSD resolver
 	 * @return schema-informed EXI grammars
-	 * @throws EXIException EXI exception
+	 * @throws EXIException
+	 *             EXI exception
 	 */
 	public Grammars createGrammars(String xsdLocation,
 			XMLEntityResolver entityResolver) throws EXIException {
@@ -92,9 +97,11 @@ public class GrammarFactory {
 	/**
 	 * Schema information is generated for processing the EXI body.
 	 * 
-	 * @param is input stream
+	 * @param is
+	 *            input stream
 	 * @return schema-informed EXI grammars
-	 * @throws EXIException EXI exception
+	 * @throws EXIException
+	 *             EXI exception
 	 */
 	public Grammars createGrammars(InputStream is) throws EXIException {
 		return this.createGrammars(is, null);
@@ -103,10 +110,13 @@ public class GrammarFactory {
 	/**
 	 * Schema information is generated for processing the EXI body.
 	 * 
-	 * @param is input stream
-	 * @param entityResolver application can register XSD resolver
+	 * @param is
+	 *            input stream
+	 * @param entityResolver
+	 *            application can register XSD resolver
 	 * @return schema-informed EXI grammars
-	 * @throws EXIException EXI exception
+	 * @throws EXIException
+	 *             EXI exception
 	 */
 	public Grammars createGrammars(InputStream is,
 			XMLEntityResolver entityResolver) throws EXIException {
@@ -117,12 +127,13 @@ public class GrammarFactory {
 	}
 
 	/**
-	 * No user defined schema information is generated for processing the EXI body;
-	 * however, the built-in XML schema types are available for use in the EXI
-	 * body.
+	 * No user defined schema information is generated for processing the EXI
+	 * body; however, the built-in XML schema types are available for use in the
+	 * EXI body.
 	 * 
 	 * @return built-in XSD EXI grammars
-	 * @throws EXIException EXI exception
+	 * @throws EXIException
+	 *             EXI exception
 	 */
 	public Grammars createXSDTypesOnlyGrammars() throws EXIException {
 		grammarBuilder.loadXSDTypesOnlyGrammars();
