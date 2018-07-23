@@ -72,7 +72,7 @@
 		<dependency>
 			<groupId>com.siemens.ct.exi</groupId>
 			<artifactId>exificient</artifactId>
-			<version>1.0.1</version><!-- -SNAPSHOT -->
+			<version>1.0.0</version><!-- -SNAPSHOT -->
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
