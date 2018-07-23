@@ -36,7 +36,7 @@ import com.siemens.ct.exi.core.grammars.SchemaLessGrammars;
  * Class allows creating EXI <code>Grammars</code>s from different sources.
  * 
  * @author Daniel.Peintner.EXT@siemens.com
- * @author Joerg.Heuer@siemens.com
+ * @author Richard.Kuntschke@siemens.com
  * 
  */
 

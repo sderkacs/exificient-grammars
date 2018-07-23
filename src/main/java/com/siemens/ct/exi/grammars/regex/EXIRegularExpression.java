@@ -51,7 +51,7 @@ import com.siemens.ct.exi.grammars.regex.Token.UnionToken;
  * character set (if possible).
  * 
  * @author Daniel.Peintner.EXT@siemens.com
- * @author Joerg.Heuer@siemens.com
+ * @author Richard.Kuntschke@siemens.com
  * 
  * @version 1.0.1
  */
