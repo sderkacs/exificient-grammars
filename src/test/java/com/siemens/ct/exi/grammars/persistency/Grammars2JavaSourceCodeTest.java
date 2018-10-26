@@ -22,6 +22,8 @@ public class Grammars2JavaSourceCodeTest extends TestCase {
 	static String WORKSPACE_DIR = System.getProperty("workspace");
 	static String FILE_SEPARATOR = System.getProperty("file.separator");
 	static String OS = System.getProperty("os.name").toLowerCase();
+	
+	static final String EXIFICIENT_CORE_JAR = "/.m2/repository/com/siemens/ct/exi/exificient-core/1.0.2-SNAPSHOT/exificient-core-1.0.2-SNAPSHOT.jar";
 
 	XSDGrammarsBuilder grammarBuilder = XSDGrammarsBuilder.newInstance();
 
@@ -86,8 +88,7 @@ public class Grammars2JavaSourceCodeTest extends TestCase {
 	static String getEXIficientCoreJar() {
 		// String url =
 		// "https://repository.sonatype.org/service/local/artifact/maven/redirect?r=central-proxy&g=com.siemens.ct.exi&a=exificient-core&v=LATEST";
-		final String DEFAULT_EXIFICIENT_CORE_JAR = USER_HOME
-				+ "/.m2/repository/com/siemens/ct/exi/exificient-core/1.0.0-SNAPSHOT/exificient-core-1.0.0-SNAPSHOT.jar";
+		final String DEFAULT_EXIFICIENT_CORE_JAR = USER_HOME + EXIFICIENT_CORE_JAR;
 
 		return DEFAULT_EXIFICIENT_CORE_JAR;
 	}
