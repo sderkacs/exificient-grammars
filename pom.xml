@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>com.siemens.ct.exi</groupId>
 			<artifactId>exificient-core</artifactId>
-			<version>1.0.4</version><!-- -SNAPSHOT -->
+			<version>1.0.5-SNAPSHOT</version>
 		</dependency>
 		<!-- Runtime Dependencies (schema-informed mode) -->
 		<dependency>
@@ -72,7 +72,7 @@
 		<dependency>
 			<groupId>com.siemens.ct.exi</groupId>
 			<artifactId>exificient</artifactId>
-			<version>1.0.1</version><!-- -SNAPSHOT -->
+			<version>1.0.4</version><!-- -SNAPSHOT -->
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -163,7 +163,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jaxb2-maven-plugin</artifactId>
-				<version>2.3.1</version>
+				<version>2.4</version>
 				<executions>
 					<execution>
 						<id>exiGrammars</id>
