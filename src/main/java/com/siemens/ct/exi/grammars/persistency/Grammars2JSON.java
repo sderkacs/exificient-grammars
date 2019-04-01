@@ -20,13 +20,14 @@ package com.siemens.ct.exi.grammars.persistency;
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- * 
+ *
  */
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintStream;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +71,8 @@ import com.siemens.ct.exi.grammars.XSDGrammarsBuilder;
 import com.siemens.ct.exi.grammars.util.PrintfUtils;
 
 public class Grammars2JSON {
+
+	public static final PrintStream ps = System.out;
 
 	public static final boolean STATS_ON = true;
 
@@ -653,47 +656,55 @@ public class Grammars2JSON {
 	}
 
 	public static void main(String[] args) throws Exception {
-		String xsd = null;
-		String grsOut = null;
+		if (args == null || args.length == 0) {
+			// show help
+			ps.println("#########################################################################");
+			ps.println("###   EXIficient - Grammars2JSON                                     ###");
+			ps.println("###   Command-Shell Options                                          ###");
+			ps.println("#########################################################################");
+			ps.println(" " + "<xsd-input-file>");
+		} else {
+			String xsd = args[0];
+			String grsOut = null;
 
-		// schema-for-json.xsd, see
-		// https://www.w3.org/TR/exi-for-json/schema-for-json.xsd
-		// xsd = "../exificient.js/grammars/schema-for-json.xsd";
-		// xsd = "../exificient.js/grammars/exi4json.xsd";
-		// notebook
-		// xsd = "../exificient.js/grammars/notebook.xsd";
-		// xsd = "../exificient.js/test/data/xml/any0.xsd";
-		xsd = "../exificient.js/test/data/xml/basic_rdf_query_v02.xsd";
-		// xsd =
-		// "D:\\Projects\\EXI\\EXIficient\\exificient.js\\test\\data\\xml\\unsignedInteger.xsd";
-		// xsd =
-		// "D:\\Projects\\EXI\\EXIficient\\exificient.js\\test\\data\\xml\\test1.xsd";
+			// schema-for-json.xsd, see
+			// https://www.w3.org/TR/exi-for-json/schema-for-json.xsd
+			// xsd = "../exificient.js/grammars/schema-for-json.xsd";
+			// xsd = "../exificient.js/grammars/exi4json.xsd";
+			// notebook
+			// xsd = "../exificient.js/grammars/notebook.xsd";
+			// xsd = "../exificient.js/test/data/xml/any0.xsd";
+			// xsd = "../exificient.js/test/data/xml/basic_rdf_query_v02.xsd";
+			// xsd =
+			// "D:\\Projects\\EXI\\EXIficient\\exificient.js\\test\\data\\xml\\unsignedInteger.xsd";
+			// xsd =
+			// "D:\\Projects\\EXI\\EXIficient\\exificient.js\\test\\data\\xml\\test1.xsd";
 
-		grsOut = xsd + ".grs";
+			grsOut = xsd + ".grs";
 
-		XSDGrammarsBuilder grammarBuilder = XSDGrammarsBuilder.newInstance();
+			XSDGrammarsBuilder grammarBuilder = XSDGrammarsBuilder.newInstance();
 
-		grammarBuilder.loadGrammars(xsd);
+			grammarBuilder.loadGrammars(xsd);
 
-		SchemaInformedGrammars grammarIn = grammarBuilder.toGrammars();
+			SchemaInformedGrammars grammarIn = grammarBuilder.toGrammars();
 
-		Grammars2JSON g2j = new Grammars2JSON();
+			Grammars2JSON g2j = new Grammars2JSON();
 
-		/*
-		 * Encode
-		 */
-		FileOutputStream fos = new FileOutputStream(grsOut);
-		g2j.toGrammarsJSON(grammarIn, fos);
-		fos.close();
+			/*
+			 * Encode
+			 */
+			FileOutputStream fos = new FileOutputStream(grsOut);
+			g2j.toGrammarsJSON(grammarIn, fos);
+			fos.close();
 
-		/*
-		 * STATS
-		 */
-		if (STATS_ON) {
-			System.out.println("Transitions: " + g2j.statsCountTransitions);
-			System.out.println("States: " + g2j.statsCountStates);
+			/*
+			 * STATS
+			 */
+			if (STATS_ON) {
+				System.out.println("Transitions: " + g2j.statsCountTransitions);
+				System.out.println("States: " + g2j.statsCountStates);
+			}
 		}
-
 	}
 
 }
