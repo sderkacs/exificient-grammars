@@ -5,7 +5,7 @@ EXIficient schema-informed grammars part of the open source implementation of th
 See https://www.w3.org/TR/exi/#informedGrammars.
 
 
-[![Build Status](https://travis-ci.org/EXIficient/exificient-grammars.svg?branch=master)](https://travis-ci.org/EXIficient/exificient-grammars)
+[![Java CI](https://github.com/EXIficient/exificient-grammars/actions/workflows/java-ci.yml/badge.svg)](https://github.com/EXIficient/exificient-grammars/actions/workflows/java-ci.yml)
 
 ## Exchange of EXI Grammars
 
