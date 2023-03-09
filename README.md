@@ -15,7 +15,7 @@ Currently we support the following mechanisms
 
 1. Grammars serialized to JavaSourceCode (`class com.siemens.ct.exi.grammars.persistency.Grammars2JavaSourceCode` *explorative*)
 
-2. Grammars serialized in XML (`class com.siemens.ct.exi.grammars.persistency.Grammars2X` *explorative*)
+2. ~~Grammars serialized in XML (`class com.siemens.ct.exi.grammars.persistency.Grammars2X` *explorative*)~~ not supported anymore after v1.0.4 since JAXB dependencies are no longer available in recent JDKs
 
 3. Grammars serialized in JSON (`class com.siemens.ct.exi.grammars.persistency.Grammars2JSON` *explorative*). See its use in https://github.com/EXIficient/exificient-for-json.
 
