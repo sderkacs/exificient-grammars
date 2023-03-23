@@ -21,6 +21,9 @@ package com.siemens.ct.exi.grammars.regex;
 
 import java.text.CharacterIterator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 //import org.apache.xerces.impl.xpath.regex.Match;
 //import org.apache.xerces.impl.xpath.regex.ParseException;
 
@@ -30,6 +33,10 @@ import java.text.CharacterIterator;
  * @version $Id: REUtil.java 828015 2009-10-21 13:56:13Z knoaman $
  */
 public final class REUtil {
+
+	/** The logger used in this class. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(REUtil.class);
+	
 	private REUtil() {
 	}
 
@@ -229,7 +236,7 @@ public final class REUtil {
 					else if (target == null)
 						target = argv[i];
 					else
-						System.err.println("Unnecessary: " + argv[i]);
+						LOGGER.warn("Unnecessary: {}", argv[i]);
 				} else if (argv[i].equals("-i")) {
 					options += "i";
 				} else if (argv[i].equals("-m")) {
@@ -243,7 +250,7 @@ public final class REUtil {
 				} else if (argv[i].equals("-X")) {
 					options += "X";
 				} else {
-					System.err.println("Unknown option: " + argv[i]);
+					LOGGER.warn("Unknown option: {}", argv[i]);
 				}
 			}
 			RegularExpression reg = new RegularExpression(pattern, options);
@@ -264,24 +271,9 @@ public final class REUtil {
 				}
 			}
 		} catch (ParseException pe) {
-			if (pattern == null) {
-				pe.printStackTrace();
-			} else {
-				System.err
-						.println("org.apache.xerces.utils.regex.ParseException: "
-								+ pe.getMessage());
-				String indent = "        ";
-				System.err.println(indent + pattern);
-				int loc = pe.getLocation();
-				if (loc >= 0) {
-					System.err.print(indent);
-					for (int i = 0; i < loc; i++)
-						System.err.print("-");
-					System.err.println("^");
-				}
-			}
+			LOGGER.error("unexpected ParseException", pe);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("unexpected error", e);
 		}
 	}
 

@@ -11,6 +11,9 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.math.BigInteger;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.siemens.ct.exi.core.context.GrammarContext;
 import com.siemens.ct.exi.core.context.GrammarUriContext;
 import com.siemens.ct.exi.core.context.QNameContext;
@@ -46,6 +49,9 @@ import com.siemens.ct.exi.grammars.util.PrintfUtils;
 
 public class Grammars2JavaSourceCode {
 
+	/** The logger used in this class. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(Grammars2JavaSourceCode.class);
+	
 	protected static final String TOKEN_GRAMMAR_CONTEXT_BEGIN = "/* BEGIN GrammarContext ----- */";
 	protected static final String TOKEN_GRAMMAR_CONTEXT_END = "/* END GrammarContext ----- */";
 
@@ -399,8 +405,7 @@ public class Grammars2JavaSourceCode {
 				SchemaInformedStartTag sist = (SchemaInformedStartTag) r;
 				Grammar elementContentGrammar = sist.getElementContentGrammar();
 				if (elementContentGrammar instanceof SchemaInformedStartTag) {
-					System.err.println("Error for " + sist + " and "
-							+ elementContentGrammar);
+					LOGGER.error("Error for {} and {}", sist, elementContentGrammar);
 				}
 				int elementContentGrammarID = gpreps
 						.getGrammarID(elementContentGrammar);
