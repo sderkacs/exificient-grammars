@@ -1037,14 +1037,10 @@ public class RegularExpression implements java.io.Serializable {
 		con.match = match;
 
 		if (RegularExpression.isSet(this.options, XMLSCHEMA_MODE)) {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("target string={}", target);
-			}
+			LOGGER.debug("target string={}", target);
 			int matchEnd = this.match(con, this.operations, con.start, 1,
 					this.options);
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("matchEnd={}, con.limit={}", matchEnd, con.limit);
-			}
+			LOGGER.debug("matchEnd={}, con.limit={}", matchEnd, con.limit);
 			if (matchEnd == con.limit) {
 				if (con.match != null) {
 					con.match.setBeginning(0, con.start);
@@ -1469,9 +1465,7 @@ public class RegularExpression implements java.io.Serializable {
 
 				case Op.UNION: {
 					int unionIndex = dataStack.pop();
-					if (LOGGER.isDebugEnabled()) {
-						LOGGER.debug("UNION={}, ret={}", unionIndex, retValue);
-					}
+					LOGGER.debug("UNION={}, ret={}", unionIndex, retValue);
 
 					if (retValue < 0) {
 						if (++unionIndex < op.size()) {
@@ -2271,16 +2265,14 @@ public class RegularExpression implements java.io.Serializable {
 			if (fresult == Token.FC_TERMINAL) {
 				firstChar.compactRanges();
 				this.firstChar = firstChar;
-				if (LOGGER.isDebugEnabled())
-					LOGGER.debug("DEBUG: Use the first character optimization: {}", firstChar);
+				LOGGER.debug("DEBUG: Use the first character optimization: {}", firstChar);
 			}
 		}
 
 		if (this.operations != null
 				&& (this.operations.type == Op.STRING || this.operations.type == Op.CHAR)
 				&& this.operations.next == null) {
-			if (LOGGER.isDebugEnabled())
-				LOGGER.debug(" *** Only fixed string! *** ");
+			LOGGER.debug(" *** Only fixed string! *** ");
 			this.fixedStringOnly = true;
 			if (this.operations.type == Op.STRING)
 				this.fixedString = this.operations.getString();
@@ -2308,11 +2300,9 @@ public class RegularExpression implements java.io.Serializable {
 			if (this.fixedString != null) {
 				this.fixedStringTable = new BMPattern(this.fixedString, 256,
 						isSet(this.fixedStringOptions, IGNORE_CASE));
-				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("DEBUG: The longest fixed string: {}/{}", this.fixedString.length(), REUtil.createOptionString(this.fixedStringOptions));
-					LOGGER.debug("String: ");
-					REUtil.dumpString(this.fixedString);
-				}
+				LOGGER.debug("DEBUG: The longest fixed string: {}/{}", this.fixedString.length(), REUtil.createOptionString(this.fixedStringOptions));
+				LOGGER.debug("String: ");
+				REUtil.dumpString(this.fixedString);
 			}
 		}
 	}

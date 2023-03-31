@@ -336,9 +336,7 @@ public abstract class EXIContentModelBuilder extends CMBuilder implements
 
 			CMState startState = new CMState(possibleElements, isEnd, state,
 					elementsMaxOccursUnbounded, occurenceInfo);
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Start = {}", startState);
-			}
+			LOGGER.debug("Start = {}", startState);
 
 			Map<CMState, SchemaInformedGrammar> knownStates = new HashMap<CMState, SchemaInformedGrammar>();
 			addNewState(knownStates, startState, isMixedContent);
@@ -571,9 +569,7 @@ public abstract class EXIContentModelBuilder extends CMBuilder implements
 
 	private static void printTransition(CMState startState, XSObject xs,
 			CMState nextState) {
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("\t{} --> {} --> {}", startState, xs, nextState);
-		}
+		LOGGER.debug("\t{} --> {} --> {}", startState, xs, nextState);
 	}
 
 	/*

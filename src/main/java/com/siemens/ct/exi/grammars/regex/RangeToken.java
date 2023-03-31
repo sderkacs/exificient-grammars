@@ -153,36 +153,33 @@ final class RangeToken extends Token implements java.io.Serializable {
 				if (baseend + 1 < this.ranges[target])
 					break;
 				if (baseend + 1 == this.ranges[target]) {
-					if (LOGGER.isDebugEnabled())
-						LOGGER.debug("Token#compactRanges(): Compaction: [{}, {}], [{}, {}] -> [{}, {}]",
-								this.ranges[base],
-								this.ranges[base + 1],
-								this.ranges[target],
-								this.ranges[target + 1],
-								this.ranges[base],
-								this.ranges[target + 1]);
+					LOGGER.debug("Token#compactRanges(): Compaction: [{}, {}], [{}, {}] -> [{}, {}]",
+							this.ranges[base],
+							this.ranges[base + 1],
+							this.ranges[target],
+							this.ranges[target + 1],
+							this.ranges[base],
+							this.ranges[target + 1]);
 					this.ranges[base + 1] = this.ranges[target + 1];
 					baseend = this.ranges[base + 1];
 					target += 2;
 				} else if (baseend >= this.ranges[target + 1]) {
-					if (LOGGER.isDebugEnabled())
-						LOGGER.debug("Token#compactRanges(): Compaction: [{}, {}], [{}, {}] -> [{}, {}]",
-								this.ranges[base],
-								this.ranges[base + 1],
-								this.ranges[target],
-								this.ranges[target + 1],
-								this.ranges[base],
-								this.ranges[base + 1]);
+					LOGGER.debug("Token#compactRanges(): Compaction: [{}, {}], [{}, {}] -> [{}, {}]",
+							this.ranges[base],
+							this.ranges[base + 1],
+							this.ranges[target],
+							this.ranges[target + 1],
+							this.ranges[base],
+							this.ranges[base + 1]);
 					target += 2;
 				} else if (baseend < this.ranges[target + 1]) {
-					if (LOGGER.isDebugEnabled())
-						LOGGER.debug("Token#compactRanges(): Compaction: [{}, {}], [{}, {}] -> [{}, {}]",
-								this.ranges[base],
-								this.ranges[base + 1],
-								this.ranges[target],
-								this.ranges[target + 1],
-								this.ranges[base],
-								this.ranges[target + 1]);
+					LOGGER.debug("Token#compactRanges(): Compaction: [{}, {}], [{}, {}] -> [{}, {}]",
+							this.ranges[base],
+							this.ranges[base + 1],
+							this.ranges[target],
+							this.ranges[target + 1],
+							this.ranges[base],
+							this.ranges[target + 1]);
 					this.ranges[base + 1] = this.ranges[target + 1];
 					baseend = this.ranges[base + 1];
 					target += 2;
