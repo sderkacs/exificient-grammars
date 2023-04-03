@@ -1,5 +1,8 @@
 package com.siemens.ct.exi.grammars.regex;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -29,6 +32,9 @@ package com.siemens.ct.exi.grammars.regex;
 final class RangeToken extends Token implements java.io.Serializable {
 
 	private static final long serialVersionUID = -553983121197679934L;
+
+	/** The logger used in this class. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(RangeToken.class);
 
 	int[] ranges;
 	boolean sorted;
@@ -129,7 +135,6 @@ final class RangeToken extends Token implements java.io.Serializable {
 	 * this.ranges is sorted.
 	 */
 	protected void compactRanges() {
-		boolean DEBUG = false;
 		if (this.ranges == null || this.ranges.length <= 2)
 			return;
 		if (this.isCompacted())
@@ -148,39 +153,33 @@ final class RangeToken extends Token implements java.io.Serializable {
 				if (baseend + 1 < this.ranges[target])
 					break;
 				if (baseend + 1 == this.ranges[target]) {
-					if (DEBUG)
-						System.err
-								.println("Token#compactRanges(): Compaction: ["
-										+ this.ranges[base] + ", "
-										+ this.ranges[base + 1] + "], ["
-										+ this.ranges[target] + ", "
-										+ this.ranges[target + 1] + "] -> ["
-										+ this.ranges[base] + ", "
-										+ this.ranges[target + 1] + "]");
+					LOGGER.debug("Token#compactRanges(): Compaction: [{}, {}], [{}, {}] -> [{}, {}]",
+							this.ranges[base],
+							this.ranges[base + 1],
+							this.ranges[target],
+							this.ranges[target + 1],
+							this.ranges[base],
+							this.ranges[target + 1]);
 					this.ranges[base + 1] = this.ranges[target + 1];
 					baseend = this.ranges[base + 1];
 					target += 2;
 				} else if (baseend >= this.ranges[target + 1]) {
-					if (DEBUG)
-						System.err
-								.println("Token#compactRanges(): Compaction: ["
-										+ this.ranges[base] + ", "
-										+ this.ranges[base + 1] + "], ["
-										+ this.ranges[target] + ", "
-										+ this.ranges[target + 1] + "] -> ["
-										+ this.ranges[base] + ", "
-										+ this.ranges[base + 1] + "]");
+					LOGGER.debug("Token#compactRanges(): Compaction: [{}, {}], [{}, {}] -> [{}, {}]",
+							this.ranges[base],
+							this.ranges[base + 1],
+							this.ranges[target],
+							this.ranges[target + 1],
+							this.ranges[base],
+							this.ranges[base + 1]);
 					target += 2;
 				} else if (baseend < this.ranges[target + 1]) {
-					if (DEBUG)
-						System.err
-								.println("Token#compactRanges(): Compaction: ["
-										+ this.ranges[base] + ", "
-										+ this.ranges[base + 1] + "], ["
-										+ this.ranges[target] + ", "
-										+ this.ranges[target + 1] + "] -> ["
-										+ this.ranges[base] + ", "
-										+ this.ranges[target + 1] + "]");
+					LOGGER.debug("Token#compactRanges(): Compaction: [{}, {}], [{}, {}] -> [{}, {}]",
+							this.ranges[base],
+							this.ranges[base + 1],
+							this.ranges[target],
+							this.ranges[target + 1],
+							this.ranges[base],
+							this.ranges[target + 1]);
 					this.ranges[base + 1] = this.ranges[target + 1];
 					baseend = this.ranges[base + 1];
 					target += 2;
@@ -498,19 +497,6 @@ final class RangeToken extends Token implements java.io.Serializable {
 
 		this.icaseCache = lowers;
 		return lowers;
-	}
-
-	void dumpRanges() {
-		System.err.print("RANGE: ");
-		if (this.ranges == null) {
-			System.err.println(" NULL");
-			return;
-		}
-		for (int i = 0; i < this.ranges.length; i += 2) {
-			System.err.print("[" + this.ranges[i] + "," + this.ranges[i + 1]
-					+ "] ");
-		}
-		System.err.println("");
 	}
 
 	boolean match(int ch) {

@@ -62,6 +62,8 @@ import org.apache.xerces.xs.XSObjectList;
 import org.apache.xerces.xs.XSParticle;
 import org.apache.xerces.xs.XSTerm;
 import org.apache.xerces.xs.XSWildcard;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.siemens.ct.exi.core.exceptions.EXIException;
 import com.siemens.ct.exi.core.grammars.event.AttributeGeneric;
@@ -86,7 +88,8 @@ import com.siemens.ct.exi.core.util.sort.StartElementSort;
 public abstract class EXIContentModelBuilder extends CMBuilder implements
 		XMLErrorHandler {
 
-	private static final boolean DEBUG = false;
+	/** The logger used in this class. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(EXIContentModelBuilder.class);
 
 	protected static final Event END_ELEMENT = new EndElement();
 	protected static final Event START_ELEMENT_GENERIC = new StartElementGeneric();
@@ -333,9 +336,7 @@ public abstract class EXIContentModelBuilder extends CMBuilder implements
 
 			CMState startState = new CMState(possibleElements, isEnd, state,
 					elementsMaxOccursUnbounded, occurenceInfo);
-			if (DEBUG) {
-				System.out.println("Start = " + startState);
-			}
+			LOGGER.debug("Start = {}", startState);
 
 			Map<CMState, SchemaInformedGrammar> knownStates = new HashMap<CMState, SchemaInformedGrammar>();
 			addNewState(knownStates, startState, isMixedContent);
@@ -568,10 +569,7 @@ public abstract class EXIContentModelBuilder extends CMBuilder implements
 
 	private static void printTransition(CMState startState, XSObject xs,
 			CMState nextState) {
-		if (DEBUG) {
-			System.out.println("\t" + startState + " --> " + xs + " --> "
-					+ nextState);
-		}
+		LOGGER.debug("\t{} --> {} --> {}", startState, xs, nextState);
 	}
 
 	/*

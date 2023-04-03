@@ -21,6 +21,9 @@ import java.text.CharacterIterator;
 import java.util.Locale;
 import java.util.Stack;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 //import org.apache.xerces.impl.xpath.regex.BMPattern;
 //import org.apache.xerces.impl.xpath.regex.Match;
 //import org.apache.xerces.impl.xpath.regex.Op;
@@ -582,7 +585,8 @@ public class RegularExpression implements java.io.Serializable {
 
 	private static final long serialVersionUID = 6242499334195006401L;
 
-	static final boolean DEBUG = false;
+	/** The logger used in this class. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(RegularExpression.class);
 
 	/**
 	 * Compiles a token tree into an operation flow.
@@ -1033,15 +1037,10 @@ public class RegularExpression implements java.io.Serializable {
 		con.match = match;
 
 		if (RegularExpression.isSet(this.options, XMLSCHEMA_MODE)) {
-			if (DEBUG) {
-				System.err.println("target string=" + target);
-			}
+			LOGGER.debug("target string={}", target);
 			int matchEnd = this.match(con, this.operations, con.start, 1,
 					this.options);
-			if (DEBUG) {
-				System.err.println("matchEnd=" + matchEnd);
-				System.err.println("con.limit=" + con.limit);
-			}
+			LOGGER.debug("matchEnd={}, con.limit={}", matchEnd, con.limit);
 			if (matchEnd == con.limit) {
 				if (con.match != null) {
 					con.match.setBeginning(0, con.start);
@@ -1466,10 +1465,7 @@ public class RegularExpression implements java.io.Serializable {
 
 				case Op.UNION: {
 					int unionIndex = dataStack.pop();
-					if (DEBUG) {
-						System.err.println("UNION: " + unionIndex + ", ret="
-								+ retValue);
-					}
+					LOGGER.debug("UNION={}, ret={}", unionIndex, retValue);
 
 					if (retValue < 0) {
 						if (++unionIndex < op.size()) {
@@ -2256,8 +2252,7 @@ public class RegularExpression implements java.io.Serializable {
 		 * anchor.next = this.operations; this.operations = anchor; }
 		 */
 		if (Op.COUNT)
-			System.err.println("DEBUG: The number of operations: "
-					+ Op.nofinstances);
+			LOGGER.error("DEBUG: The number of operations: {}", Op.nofinstances);
 
 		this.minlength = this.tokentree.getMinLength();
 
@@ -2270,18 +2265,14 @@ public class RegularExpression implements java.io.Serializable {
 			if (fresult == Token.FC_TERMINAL) {
 				firstChar.compactRanges();
 				this.firstChar = firstChar;
-				if (DEBUG)
-					System.err
-							.println("DEBUG: Use the first character optimization: "
-									+ firstChar);
+				LOGGER.debug("DEBUG: Use the first character optimization: {}", firstChar);
 			}
 		}
 
 		if (this.operations != null
 				&& (this.operations.type == Op.STRING || this.operations.type == Op.CHAR)
 				&& this.operations.next == null) {
-			if (DEBUG)
-				System.err.print(" *** Only fixed string! *** ");
+			LOGGER.debug(" *** Only fixed string! *** ");
 			this.fixedStringOnly = true;
 			if (this.operations.type == Op.STRING)
 				this.fixedString = this.operations.getString();
@@ -2309,16 +2300,9 @@ public class RegularExpression implements java.io.Serializable {
 			if (this.fixedString != null) {
 				this.fixedStringTable = new BMPattern(this.fixedString, 256,
 						isSet(this.fixedStringOptions, IGNORE_CASE));
-				if (DEBUG) {
-					System.err
-							.println("DEBUG: The longest fixed string: "
-									+ this.fixedString.length()
-									+ "/" // +this.fixedString
-									+ "/"
-									+ REUtil.createOptionString(this.fixedStringOptions));
-					System.err.print("String: ");
-					REUtil.dumpString(this.fixedString);
-				}
+				LOGGER.debug("DEBUG: The longest fixed string: {}/{}", this.fixedString.length(), REUtil.createOptionString(this.fixedStringOptions));
+				LOGGER.debug("String: ");
+				REUtil.dumpString(this.fixedString);
 			}
 		}
 	}
@@ -2695,28 +2679,6 @@ public class RegularExpression implements java.io.Serializable {
 		/** Clears the stack. */
 		public void clear() {
 			fDepth = 0;
-		}
-
-		// debugging
-
-		/** Prints the stack. */
-		public void print() {
-			System.out.print('(');
-			System.out.print(fDepth);
-			System.out.print(") {");
-			for (int i = 0; i < fDepth; i++) {
-				if (i == 3) {
-					System.out.print(" ...");
-					break;
-				}
-				System.out.print(' ');
-				System.out.print(fData[i]);
-				if (i < fDepth - 1) {
-					System.out.print(',');
-				}
-			}
-			System.out.print(" }");
-			System.out.println();
 		}
 
 		//

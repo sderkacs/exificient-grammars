@@ -32,6 +32,9 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.siemens.ct.exi.core.context.GrammarContext;
 import com.siemens.ct.exi.core.context.GrammarUriContext;
 import com.siemens.ct.exi.core.context.QNameContext;
@@ -71,6 +74,9 @@ import com.siemens.ct.exi.grammars.XSDGrammarsBuilder;
 import com.siemens.ct.exi.grammars.util.PrintfUtils;
 
 public class Grammars2JSON {
+
+	/** The logger used in this class. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(Grammars2JSON.class);
 
 	public static final PrintStream ps = System.out;
 
@@ -546,7 +552,7 @@ public class Grammars2JSON {
 						GrammarsConstants.CHARACTERS_GENERIC);
 				break;
 			default:
-				System.err.println("Unknown Event " + ei.getEvent());
+				LOGGER.error("Unknown Event {}", ei.getEvent());
 			}
 
 			// next state ID
