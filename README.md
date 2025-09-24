@@ -5,7 +5,12 @@ EXIficient schema-informed grammars part of the open source implementation of th
 See https://www.w3.org/TR/exi/#informedGrammars.
 
 
-[![Java CI](https://github.com/EXIficient/exificient-grammars/actions/workflows/java-ci.yml/badge.svg)](https://github.com/EXIficient/exificient-grammars/actions/workflows/java-ci.yml)
+> [!IMPORTANT]
+>
+> This is a modified version of the original project, which is a temporary solution for generating EXI grammars in the Go language for use with the [EXI-GO](http://github.com/sderkacs/exi-go) library. 
+>
+> The group and artifact IDs have been changed to avoid conflicts with the original Maven package.
+
 
 ## Exchange of EXI Grammars
 
@@ -15,7 +20,7 @@ Currently we support the following mechanisms
 
 1. Grammars serialized to JavaSourceCode (`class com.siemens.ct.exi.grammars.persistency.Grammars2JavaSourceCode` *explorative*)
 
-2. ~~Grammars serialized in XML (`class com.siemens.ct.exi.grammars.persistency.Grammars2X` *explorative*)~~ not supported anymore after v1.0.4 since JAXB dependencies are no longer available in recent JDKs
+2. Grammars serialized to GoSourceCode (`class com.siemens.ct.exi.grammars.persistency.Grammars2GoSourceCode` *explorative*) intended for use with the [EXI-GO](http://github.com/sderkacs/exi-go) library.
 
 3. Grammars serialized in JSON (`class com.siemens.ct.exi.grammars.persistency.Grammars2JSON` *explorative*). See its use in https://github.com/EXIficient/exificient-for-json.
 
