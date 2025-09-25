@@ -665,7 +665,7 @@ public class Grammars2GoSourceCode {
 		int qnameID = getQNameID(dt.getSchemaType());
 		String s;
 		if (qnameID < 0) {
-			s = BuiltIn.class.getSimpleName() + "GetDefaultDatatype()"; // .getClass().getName();
+			s = "core." + BuiltIn.class.getSimpleName() + "GetDefaultDatatype()"; // .getClass().getName();
 		} else {
 			s = "core.New" + dt.getClass().getSimpleName() + "(" + addP + "qnc" + qnameID + ")";
 		}
