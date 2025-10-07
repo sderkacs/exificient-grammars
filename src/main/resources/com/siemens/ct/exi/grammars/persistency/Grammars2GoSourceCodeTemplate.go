@@ -3,8 +3,8 @@ package template
 /* END Package ----- */
 
 import (
-    "github.com/sderkacs/exi-go/core"
-    "github.com/sderkacs/exi-go/utils"
+    "github.com/sderkacs/go-exi/core"
+    "github.com/sderkacs/go-exi/utils"
 )
 
 type Grammars2GoSourceCodeTemplate struct {
